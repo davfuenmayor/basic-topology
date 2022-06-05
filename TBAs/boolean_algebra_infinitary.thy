@@ -119,7 +119,10 @@ lemma dom_compl_invol: "(D\<^sup>-)\<^sup>- = D" by (simp add: BA_dn dom_compl_d
 lemma iDM_a: "\<^bold>\<midarrow>(\<^bold>\<And>S) \<^bold>\<approx> \<^bold>\<Or>(S\<^sup>-)" unfolding order conn dom_compl_def infimum_def supremum_def using compl_def by force
 lemma iDM_b:" \<^bold>\<midarrow>(\<^bold>\<Or>S) \<^bold>\<approx> \<^bold>\<And>(S\<^sup>-)" unfolding order conn dom_compl_def infimum_def supremum_def using compl_def by force
 
-(**and some useful dualities regarding the image of propositional functions (restricted wrt. a domain).*)
+(**and that D and their complements are in a 1-1 correspondance*)
+lemma dom_compl_1to1: "correspond1to1 D D\<^sup>-" by (metis BA_dn dom_compl_def injectiveRel_def surjectiveRel_def)
+
+(**as well as some useful dualities regarding the image of propositional functions (restricted wrt. a domain).*)
 lemma Ra_compl: "\<lbrakk>\<pi>\<^sup>c D\<rbrakk>  = \<lbrakk>\<pi> D\<rbrakk>\<^sup>-" unfolding img_dir_def dom_compl_char by (metis op_compl_def)
 lemma Ra_dual1: "\<lbrakk>\<pi>\<^sup>d D\<rbrakk>  = \<lbrakk>\<pi> D\<^sup>-\<rbrakk>\<^sup>-" unfolding img_dir_def dom_compl_char by (metis op_dual_def)
 lemma Ra_dual2: "\<lbrakk>\<pi>\<^sup>d D\<rbrakk>  = \<lbrakk>\<pi>\<^sup>c D\<^sup>-\<rbrakk>" unfolding img_dir_def dom_compl_char by (metis op_compl_def op_dual_def)
