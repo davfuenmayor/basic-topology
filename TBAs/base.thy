@@ -74,6 +74,7 @@ definition "injectiveRel \<phi> Dom \<equiv> \<forall>x y. Dom x \<and> Dom y \<
 definition "surjectiveRel \<phi> Dom Cod \<equiv> \<forall>y. Cod y \<longrightarrow> (\<exists>x. Dom x \<and> (\<phi> x) = y)"
 abbreviation "bijectiveRel \<phi> Dom Cod \<equiv> injectiveRel \<phi> Dom \<and> surjectiveRel \<phi> Dom Cod"
 
+abbreviation "correspond1to1 A B \<equiv> \<exists>f. bijectiveRel f A B"
 
 (**Swapping arguments for binary functions.*)
 definition swap::\<open>('a \<Rightarrow> 'b \<Rightarrow> 'c) \<Rightarrow> ('b \<Rightarrow> 'a \<Rightarrow> 'c)\<close> ("_\<^sup>\<leftrightarrow>")
@@ -145,5 +146,6 @@ lemma finite_prop: "finite A \<Longrightarrow> \<forall>f. mapping f A A \<and> 
 lemma infinite_prop: "infinite A \<Longrightarrow> \<exists>f. mapping f A A \<and> surjectiveRel f A A \<and> \<not>injectiveRel f A"
   oops (** as exercise *)
 
+lemma finite1to1: "finite A \<and> correspond1to1 A B \<longrightarrow> finite B" sorry (**as exercise*)
 
 end
