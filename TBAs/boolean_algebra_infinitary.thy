@@ -120,7 +120,7 @@ lemma iDM_a: "\<^bold>\<midarrow>(\<^bold>\<And>S) \<^bold>\<approx> \<^bold>\<O
 lemma iDM_b:" \<^bold>\<midarrow>(\<^bold>\<Or>S) \<^bold>\<approx> \<^bold>\<And>(S\<^sup>-)" unfolding order conn dom_compl_def infimum_def supremum_def using compl_def by force
 
 (**and that D and their complements are in a 1-1 correspondance*)
-lemma dom_compl_1to1: "correspond1to1 D D\<^sup>-" by (metis BA_dn dom_compl_def injectiveRel_def surjectiveRel_def)
+lemma dom_compl_1to1: "correspond1to1 D D\<^sup>-" by (metis (mono_tags, lifting) BA_dn dom_compl_def injectiveRel_def mapping_def surjectiveRel_def)
 
 (**as well as some useful dualities regarding the image of propositional functions (restricted wrt. a domain).*)
 lemma Ra_compl: "\<lbrakk>\<pi>\<^sup>c D\<rbrakk>  = \<lbrakk>\<pi> D\<rbrakk>\<^sup>-" unfolding img_dir_def dom_compl_char by (metis op_compl_def)

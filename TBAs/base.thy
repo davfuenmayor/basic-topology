@@ -57,11 +57,11 @@ abbreviation "bijective \<phi> \<equiv> injective \<phi> \<and> surjective \<phi
 
 (**Inverse is defined for bijective functions (only!).*)
 definition inverse::\<open>('a,'b)\<phi> \<Rightarrow> ('b,'a)\<phi>\<close> ("_\<inverse>")
-  where "\<phi>\<inverse> B \<equiv> THE A. (\<phi> A = B)"
+  where "\<phi>\<inverse> \<equiv> \<lambda>b. THE a. (\<phi> a = b)"
 
 (**We verify some properties of inverse functions.*)
-lemma inverse_char1: "bijective \<phi> \<Longrightarrow> (\<phi>\<inverse>\<circ>\<phi>) A = A" by (simp add: fun_comp_def injective_def inverse_def the_equality)
-lemma inverse_char2: "bijective \<phi> \<Longrightarrow> (\<phi>\<circ>(\<phi>\<inverse>)) A = A" by (metis (no_types) fun_comp_def inverse_char1 surjective_def)
+lemma inverse_char1: "bijective \<phi> \<Longrightarrow> (\<phi>\<inverse>\<circ>\<phi>) a = a" by (simp add: fun_comp_def injective_def inverse_def the_equality)
+lemma inverse_char2: "bijective \<phi> \<Longrightarrow> (\<phi>\<circ>(\<phi>\<inverse>)) a = a" by (metis (no_types) fun_comp_def inverse_char1 surjective_def)
 lemma "(\<phi>\<inverse>\<circ>\<phi>) A = A" nitpick oops (*counterexample if \<phi> is not assumed bijective*)
 lemma inverse_invol: "bijective \<phi> \<Longrightarrow> (\<phi>\<inverse>)\<inverse> = \<phi>" by (metis (no_types) ext fun_comp_def injective_def inverse_char1 surjective_def)
 lemma "(\<phi>\<inverse>)\<inverse> = \<phi>" nitpick oops (*counterexample if \<phi> is not assumed bijective*)
@@ -74,7 +74,42 @@ definition "injectiveRel \<phi> Dom \<equiv> \<forall>x y. Dom x \<and> Dom y \<
 definition "surjectiveRel \<phi> Dom Cod \<equiv> \<forall>y. Cod y \<longrightarrow> (\<exists>x. Dom x \<and> (\<phi> x) = y)"
 abbreviation "bijectiveRel \<phi> Dom Cod \<equiv> injectiveRel \<phi> Dom \<and> surjectiveRel \<phi> Dom Cod"
 
-abbreviation "correspond1to1 A B \<equiv> \<exists>f. bijectiveRel f A B"
+(**Inverse (relativized to a given domain D) is defined only for \<phi> a bijective function (wrt. to D) 
+ and an element b that is in the image of D under \<phi>.*)
+definition inverseRel::\<open>('a,'b)\<phi> \<Rightarrow> ('a\<Rightarrow> bool) \<Rightarrow> ('b,'a)\<phi>\<close> ("_[_]\<inverse>")
+  where "\<phi>[D]\<inverse> \<equiv> \<lambda>b. THE a. D a \<and> (\<phi> a = b)"
+
+lemma map_comp: "mapping \<phi> A B \<and> mapping \<psi> B C \<longrightarrow> mapping (\<psi> \<circ> \<phi>) A C" 
+  by (simp add: fun_comp_def mapping_def)
+
+lemma inj_comp1: "mapping \<phi> A B \<and> mapping \<psi> B C \<and> injectiveRel \<phi> A \<and> injectiveRel \<psi> B 
+                                          \<longrightarrow> injectiveRel (\<psi> \<circ> \<phi>) A"
+  by (simp add: fun_comp_def injectiveRel_def mapping_def)
+lemma inj_comp2: "mapping \<phi> A B \<and> mapping \<psi> B C \<and> injectiveRel \<psi> B \<and> injectiveRel (\<psi> \<circ> \<phi>) A
+                                          \<longrightarrow> injectiveRel \<phi> A"
+  by (simp add: fun_comp_def injectiveRel_def)
+
+lemma surj_comp1: "mapping \<phi> A B \<and> mapping \<psi> B C \<and> surjectiveRel \<phi> A B \<and> surjectiveRel \<psi> B C
+                                          \<longrightarrow> surjectiveRel (\<psi> \<circ> \<phi>) A C"
+  by (smt (verit) fun_comp_def surjectiveRel_def)
+lemma surj_comp2: "mapping \<phi> A B \<and> mapping \<psi> B C \<and> surjectiveRel \<phi> A B \<and>  surjectiveRel (\<psi> \<circ> \<phi>) A C
+                                          \<longrightarrow> surjectiveRel \<psi> B C"
+  by (smt (verit) fun_comp_def mapping_def surjectiveRel_def)
+
+lemma bij_comp1: "mapping \<phi> A B \<and> mapping \<psi> B C \<and> bijectiveRel \<phi> A B \<and> bijectiveRel \<psi> B C
+                                          \<longrightarrow> bijectiveRel (\<psi> \<circ> \<phi>) A C"
+  by (meson inj_comp1 surj_comp1)
+lemma bij_comp2: "mapping \<phi> A B \<and> mapping \<psi> B C \<and> bijectiveRel \<psi> B C \<and>  bijectiveRel (\<psi> \<circ> \<phi>) A C
+                                          \<longrightarrow> bijectiveRel \<phi> A B"
+  by (smt (verit) fun_comp_def injectiveRel_def mapping_def surjectiveRel_def)
+lemma bij_comp3: "mapping \<phi> A B \<and> mapping \<psi> B C \<and> bijectiveRel \<phi> A B \<and>  bijectiveRel (\<psi> \<circ> \<phi>) A C
+                                          \<longrightarrow> bijectiveRel \<psi> B C"
+  by (smt (verit, ccfv_SIG) fun_comp_def injectiveRel_def mapping_def surjectiveRel_def)
+
+lemma bij_inv: "(mapping \<phi> A B \<and> bijectiveRel \<phi> A B) \<longrightarrow> (mapping \<phi>[A]\<inverse> B A \<and> bijectiveRel \<phi>[A]\<inverse> B A)"
+  unfolding inverseRel_def injectiveRel_def surjectiveRel_def mapping_def by (smt (z3) the_equality)
+
+abbreviation "correspond1to1 A B \<equiv> \<exists>f. mapping f A B \<and> bijectiveRel f A B"
 
 (**Swapping arguments for binary functions.*)
 definition swap::\<open>('a \<Rightarrow> 'b \<Rightarrow> 'c) \<Rightarrow> ('b \<Rightarrow> 'a \<Rightarrow> 'c)\<close> ("_\<^sup>\<leftrightarrow>")
@@ -146,6 +181,22 @@ lemma finite_prop: "finite A \<Longrightarrow> \<forall>f. mapping f A A \<and> 
 lemma infinite_prop: "infinite A \<Longrightarrow> \<exists>f. mapping f A A \<and> surjectiveRel f A A \<and> \<not>injectiveRel f A"
   oops (** as exercise *)
 
-lemma finite1to1: "finite A \<and> correspond1to1 A B \<longrightarrow> finite B" sorry (**as exercise*)
+lemma finite1to1: "finite A \<and> correspond1to1 B A \<longrightarrow> finite B" proof -
+  { assume finA: "finite A" and corrAB: "correspond1to1 B A"
+    from corrAB obtain bij where mapBij: "mapping bij B A" and  bijBij: "bijectiveRel bij B A" by auto
+    have "finite B" proof -
+      { fix G
+        { assume mapG: "mapping G B B"  and  injG: "injectiveRel G B"
+          let ?h = "(bij \<circ> G) \<circ> bij[B]\<inverse>"
+          have "mapping ?h A A \<and> injectiveRel ?h A" by (meson bijBij bij_inv injG inj_comp1 mapBij mapG map_comp)
+          hence "surjectiveRel ?h A A" using finA finite_def by auto
+          hence "surjectiveRel (bij \<circ> G) B A" by (meson bijBij bij_inv mapBij mapG map_comp surj_comp2)
+          moreover from injG have "injectiveRel (bij \<circ> G) B" using bijBij inj_comp1 mapBij mapG by blast
+          ultimately have "bijectiveRel (bij \<circ> G) B A" by simp
+          hence "bijectiveRel G B B" using bijBij bij_comp2 mapBij mapG by blast
+       }} thus ?thesis using finite_def by blast
+    qed
+  } thus ?thesis by simp
+qed
 
 end
