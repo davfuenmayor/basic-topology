@@ -19,10 +19,9 @@ lemma conn_prop1: "Connected[\<C>] \<^bold>\<bottom>" by (smt (verit, best) L10 
 lemma conn_prop2: "Cl_2 \<C> \<Longrightarrow> \<forall>x. Connected[\<C>] \<lbrace>x\<rbrace>" by (smt (verit, best) singleton_def Disj_def Sep_disj Separated_def Separation_def bottom_def join_def meet_def setequ_equ)
 
 (**A connected subset of a separated set X = (A|B) is contained in either A or B. *)
-lemma conn_prop3: "MONO \<C> 
-        \<Longrightarrow> \<forall>S X. Connected[\<C>] S \<and> S \<^bold>\<preceq> X \<longrightarrow> (\<forall>A B. Separation[\<C>] X A B \<longrightarrow> (S \<^bold>\<preceq> A \<or> S \<^bold>\<preceq> B))"
+lemma conn_prop3: assumes mono: "MONO \<C>"
+              shows "\<forall>S X. Connected[\<C>] S \<and> S \<^bold>\<preceq> X \<longrightarrow> (\<forall>A B. Separation[\<C>] X A B \<longrightarrow> (S \<^bold>\<preceq> A \<or> S \<^bold>\<preceq> B))"
 proof -
-  assume mono: "MONO \<C>"
   { fix S X { assume conn: "Connected[\<C>] S" and subset: "S \<^bold>\<preceq> X"
     { fix A B { assume sep: "Separation[\<C>] X A B"
       from subset sep have aux: "S \<^bold>\<approx> (S \<^bold>\<and> A) \<^bold>\<or> (S \<^bold>\<and> B)" by (smt (verit, best) BA_distr1 L10 Separation_def meet_def setequ_char)
@@ -32,9 +31,9 @@ proof -
 qed
 
 (**If S is connected and @{text "S \<^bold>\<preceq> X \<^bold>\<preceq> \<C>(S)"} then X is connected too.*)
-lemma conn_prop4: "MONO \<C> \<Longrightarrow> \<forall>S X. Connected[\<C>] S \<and> S \<^bold>\<preceq> X \<and> X \<^bold>\<preceq> \<C> S \<longrightarrow> Connected[\<C>] X"
+lemma conn_prop4: assumes mono: "MONO \<C>" 
+                  shows "\<forall>S X. Connected[\<C>] S \<and> S \<^bold>\<preceq> X \<and> X \<^bold>\<preceq> \<C> S \<longrightarrow> Connected[\<C>] X"
 proof -
-  assume mono: "MONO \<C>"
   { fix S X { assume conn: "Connected[\<C>] S" and SsubsetX: "S \<^bold>\<preceq> X" and XsubsetCS: "X \<^bold>\<preceq> \<C> S"
     from mono conn SsubsetX have aux: "(\<forall>A B. Separation[\<C>] X A B \<longrightarrow> (S \<^bold>\<preceq> A \<or> S \<^bold>\<preceq> B))" 
       using conn_prop3 by blast
@@ -62,26 +61,27 @@ proof -
 qed
   
 (**If every two points of a set X are contained in some connected subset of X then X is connected.*)
-lemma conn_prop5: "MONO \<C> \<Longrightarrow> Cl_2 \<C>
-             \<Longrightarrow> \<forall>p q. X p \<and> X q \<longrightarrow> (\<exists>S. S \<^bold>\<preceq> X \<and> Connected[\<C>] S \<and> S p \<and> S q) \<Longrightarrow> Connected[\<C>] X"
+lemma conn_prop5: assumes mono: \<open>MONO \<C>\<close> and cl2: \<open>Cl_2 \<C>\<close>
+      shows \<open>(\<forall>p q. X p \<and> X q \<and> (\<exists>S. S \<^bold>\<preceq> X \<and> Connected[\<C>] S \<and> S p \<and> S q)) \<longrightarrow> Connected[\<C>] X\<close>
 proof -
-  assume mono: "MONO \<C>" and cl2: "Cl_2 \<C>" 
-          and assm: "\<forall>p q. X p \<and> X q \<longrightarrow> (\<exists>S. S \<^bold>\<preceq> X \<and> Connected[\<C>] S \<and> S p \<and> S q)"
-  have "Connected[\<C>] X" proof 
-    assume sepX: "Separated[\<C>] X"
-    from sepX obtain A and B where sepXAB: "Separation[\<C>] X A B" using Separated_def by blast
-    hence nonempty: "nonEmpty A \<and> nonEmpty B" by (simp add: Separation_def)
-    let ?p="SOME a. A a" and ?q="SOME b. B b" (*well-defined since both A and B are non-empty*)
-    from nonempty have "X ?p \<and> X ?q" by (metis Separation_def join_def sepXAB setequ_equ someI_ex)
-    from this assm have "\<exists>S. S \<^bold>\<preceq> X \<and> Connected[\<C>] S \<and> S ?p \<and> S ?q" by blast
-    from this obtain S where aux: "S \<^bold>\<preceq> X \<and> Connected[\<C>] S \<and> S ?p \<and> S ?q" by blast
-    from aux nonempty have 1: "\<not>Disj S A \<and> \<not>Disj S B" by (smt (verit, best) Disj_def bottom_def meet_def  setequ_char someI_ex)
-    from aux mono sepXAB have 2: "S \<^bold>\<preceq> A \<or> S \<^bold>\<preceq> B" using conn_prop3 by blast
-    from cl2 sepXAB have 3: "Disj A B" by (simp add: Sep_disj Separation_def)
-    from 1 2 3 show "False" unfolding Disj_def by (smt (verit, del_insts) bottom_def meet_def setequ_char subset_def)
+{ assume premise: \<open>\<forall>p q. X p \<and> X q \<and> (\<exists>S. S \<^bold>\<preceq> X \<and> Connected[\<C>] S \<and> S p \<and> S q)\<close>
+  have \<open>Connected[\<C>] X\<close> proof
+    assume \<open>Separated[\<C>] X\<close>
+    then obtain A and B where sepXAB: \<open>Separation[\<C>] X A B\<close> using Separated_def by blast
+    hence nonempty: \<open>nonEmpty A \<and> nonEmpty B\<close> by (simp add: Separation_def)
+    let ?p = \<open>SOME a. A a\<close> and ?q = \<open>SOME b. B b\<close> (*well-defined since A and B are non-empty*)
+    from nonempty have \<open>X ?p \<and> X ?q\<close>
+      by (metis Separation_def join_def sepXAB setequ_equ someI_ex)
+    hence \<open>\<exists>S. S \<^bold>\<preceq> X \<and> Connected[\<C>] S \<and> S ?p \<and> S ?q\<close> using premise by blast
+    then obtain S where aux: \<open>S \<^bold>\<preceq> X \<and> Connected[\<C>] S \<and> S ?p \<and> S ?q\<close> by blast
+    from aux nonempty have \<open>\<not>Disj S A \<and> \<not>Disj S B\<close>
+      by (smt (verit, best) Disj_def bottom_def meet_def  setequ_char someI_ex)
+    moreover from aux mono sepXAB have \<open>S \<^bold>\<preceq> A \<or> S \<^bold>\<preceq> B\<close> using conn_prop3 by blast
+    moreover from cl2 sepXAB have \<open>Disj A B\<close> by (simp add: Sep_disj Separation_def)
+    ultimately show False
+      unfolding Disj_def by (smt (verit) bottom_def meet_def setequ_char subset_def)
   qed
-  thus ?thesis by simp
+} thus ?thesis by blast
 qed
-  
 
 end
