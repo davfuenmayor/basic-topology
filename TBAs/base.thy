@@ -199,4 +199,11 @@ lemma finite1to1: "finite A \<and> correspond1to1 B A \<longrightarrow> finite B
   } thus ?thesis by simp
 qed
 
+(**We encode useful notions of disjointness (orthogonality) and covering (of the whole domain)*)
+definition Disj ::"('a \<Rightarrow> bool,'a \<Rightarrow> bool)\<rho>" where "Disj  A B \<equiv> \<forall>x. \<not>(A x) \<or> \<not>(B x)"
+definition Cover::"('a \<Rightarrow> bool,'a \<Rightarrow> bool)\<rho>" where "Cover A B \<equiv> \<forall>x.  (A x) \<or>  (B x)"
+
+lemma Disj_symm: "Disj A B = Disj B A" by (metis Disj_def)
+lemma Cover_symm: "Cover A B = Cover B A" by (metis Cover_def)
+
 end

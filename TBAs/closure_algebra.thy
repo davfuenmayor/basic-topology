@@ -183,8 +183,8 @@ lemma Disj_B: "\<forall>A. Disj (\<B>[\<C>] A) (\<B>[\<C>] (\<^bold>\<midarrow>A
 lemma Disj_I: "Cl_2 \<C> \<Longrightarrow> \<forall>A. Disj (\<I>[\<C>] A) (\<^bold>\<midarrow>A)" by (smt (verit, best) Disj_def EXPN_def bottom_def compl_def meet_def op_dual_def setequ_char subset_def)
 lemma Disj_BCI: "\<forall>A. Disj (\<B>[\<C>] (\<C> A)) (\<I>[\<C>] (\<^bold>\<midarrow>A))" by (simp add: Br_cl_def Disj_def bottom_def compl_def meet_def op_dual_def setequ_char)
 lemma Disj_FCI: "Cl_4 \<C> \<Longrightarrow> \<forall>A. Disj (\<F>[\<C>] (\<C> A)) (\<I>[\<C>] (\<^bold>\<midarrow>A))" by (metis Br_cl_def Disj_BCI Fr_cl_def IDEM_def setequ_equ)
-lemma Disj_CRI: "MONO \<C> \<Longrightarrow> Cl_4 \<C> \<Longrightarrow> \<forall>A. Disj (\<C> (\<B>[\<C>] (\<^bold>\<midarrow>A))) (\<I>[\<C>] (\<^bold>\<midarrow>A))" by (smt (verit) Br_cl_def Disj_def IDEM_def MONO_def bottom_def compl_def meet_def op_dual_def setequ_char subset_def)
-lemma Disj_Rcompl: "MONO \<C> \<Longrightarrow> Cl_4 \<C> \<Longrightarrow> \<forall>A. Disj (\<R>[\<C>] A) (\<^bold>\<midarrow>A)" unfolding Disj_def by (smt (verit, del_insts) BA_dn Br_cl_def Disj_CRI Disj_def Rs_cl_def compl_def meet_def op_dual_def setequ_char)
+lemma Disj_CRI: "MONO \<C> \<Longrightarrow> Cl_4 \<C> \<Longrightarrow> \<forall>A. Disj (\<C> (\<B>[\<C>] (\<^bold>\<midarrow>A))) (\<I>[\<C>] (\<^bold>\<midarrow>A))" unfolding Disj_def by (smt (verit, ccfv_threshold) Br_cl_def Cl_9_def L3 L5 PC9 compl_def op_dual_def subset_def)
+lemma Disj_Rcompl: "MONO \<C> \<Longrightarrow> Cl_4 \<C> \<Longrightarrow> \<forall>A. Disj (\<R>[\<C>] A) (\<^bold>\<midarrow>A)" by (smt (verit, del_insts) BA_dn Br_cl_def Disj_CRI Disj_def Rs_cl_def compl_def meet_def op_dual_def setequ_char)
 
 (**Closure and Interior can be interestingly characterized using the notion of disjointness*)
 lemma CI_Disj_rel_a: "\<forall>A p. (\<forall>E. (\<I>[\<C>] E) p \<longrightarrow> \<not>Disj E A) \<longrightarrow> (\<C> A) p" by (metis BA_deMorgan1 BA_dn Br_cl_def Disj_BCI L1 compl_def op_dual_def)

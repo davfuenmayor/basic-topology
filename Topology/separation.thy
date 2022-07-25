@@ -4,11 +4,11 @@ begin
 
 (**Introduces a predicate for indicating that A and B are separated and proves some properties.*)
 definition Sep ("Sep[_]") where "Sep[\<C>] A B \<equiv> Disj (\<C> A) B \<and> Disj (\<C> B) A"
-lemma Sep_def2: "Sep[\<C>] A B = ((A \<^bold>\<and> \<C> B) \<^bold>\<or> (B \<^bold>\<and> \<C> A) \<^bold>\<approx> \<^bold>\<bottom>)" by (metis BA_cp BA_deMorgan1 Disj_comm Disj_def L14 L3 L5 L9 Sep_def setequ_equ)
+lemma Sep_def2: "Sep[\<C>] A B = ((A \<^bold>\<and> \<C> B) \<^bold>\<or> (B \<^bold>\<and> \<C> A) \<^bold>\<approx> \<^bold>\<bottom>)" by (smt (verit, best) Disj_char Disj_def L7 Sep_def bottom_def join_def meet_def setequ_def subset_def)
 
 lemma Sep_comm: "\<forall>A B. Sep[\<C>] A B \<longrightarrow> Sep[\<C>] B A" by (simp add: Sep_def)
 lemma Sep_disj: "Cl_2 \<C> \<Longrightarrow> \<forall>A B. Sep[\<C>] A B \<longrightarrow> Disj A B" by (smt (verit, best) Disj_def EXPN_def Sep_def meet_def setequ_char subset_def)
-lemma Sep_I: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> Cl_4' \<C> \<Longrightarrow> \<forall>A. Sep[\<C>] (\<I>[\<C>] A) (\<I>[\<C>] (\<^bold>\<midarrow>A))" unfolding Sep_def Disj_def by (smt (verit, best) BA_dn CI_Disj_rel_b Disj_I Disj_comm bottom_def meet_def setequ_char)
+lemma Sep_I: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> Cl_4' \<C> \<Longrightarrow> \<forall>A. Sep[\<C>] (\<I>[\<C>] A) (\<I>[\<C>] (\<^bold>\<midarrow>A))" by (smt (verit, del_insts) BA_dn CI_Disj_rel_b Disj_I Disj_def Sep_def) 
 lemma Sep_sub: "MONO \<C> \<Longrightarrow> \<forall>A B C D. Sep[\<C>] A B \<and> C \<^bold>\<preceq> A \<and> D \<^bold>\<preceq> B \<longrightarrow> Sep[\<C>] C D" using MONO_def unfolding Sep_def Disj_def conn by (smt (verit, best) setequ_char subset_def)
 lemma Sep_Cl_diff: "MONO \<C>  \<Longrightarrow> \<forall>A B. Cl[\<C>](A) \<and> Cl[\<C>](B) \<longrightarrow> Sep[\<C>] (A \<^bold>\<leftharpoonup> B) (B \<^bold>\<leftharpoonup> A)" unfolding Disj_def MONO_def Sep_def fixpoint_pred_def setequ_char subset_def conn by (smt (z3))
 lemma Sep_Op_diff: "MONO \<C> \<Longrightarrow> \<forall>A B. Op[\<C>](A) \<and> Op[\<C>](B) \<longrightarrow> Sep[\<C>] (A \<^bold>\<leftharpoonup> B) (B \<^bold>\<leftharpoonup> A)" proof -
@@ -25,8 +25,7 @@ lemma Sep_Op_diff: "MONO \<C> \<Longrightarrow> \<forall>A B. Op[\<C>](A) \<and>
     } hence "Op[\<C>](A) \<and> Op[\<C>](B) \<longrightarrow> Sep[\<C>] (A \<^bold>\<leftharpoonup> B) (B \<^bold>\<leftharpoonup> A)" by (rule impI)
   } thus ?thesis by simp
 qed
-lemma Sep_Union: "Cl_1' \<C> \<Longrightarrow> \<forall>A B C. Sep[\<C>] A B \<and> Sep[\<C>] A C \<longrightarrow> Sep[\<C>] A (B \<^bold>\<or> C)"
-  unfolding ADDI_a_def Sep_def Disj_def setequ_char by (metis bottom_def join_def meet_def subset_def)
+lemma Sep_Union: "Cl_1' \<C> \<Longrightarrow> \<forall>A B C. Sep[\<C>] A B \<and> Sep[\<C>] A C \<longrightarrow> Sep[\<C>] A (B \<^bold>\<or> C)" by (smt (verit, ccfv_threshold) ADDI_a_def Disj_def Sep_def join_def subset_def)
 
 (**A stronger separation condition: the given sets are open, resp. closed, and disjoint*)
 definition OpenDisj ("OpenDisj[_]") 
@@ -34,8 +33,10 @@ definition OpenDisj ("OpenDisj[_]")
 definition ClosedDisj ("ClosedDisj[_]") 
   where "ClosedDisj[\<C>] A B \<equiv>  Cl[\<C>] A \<and> Cl[\<C>] B \<and> Disj A B"
 
-lemma ClDisj_implies_Sep: "\<forall>A B. ClosedDisj[\<C>] A B \<longrightarrow> Sep[\<C>] A B" by (simp add: ClosedDisj_def Disj_comm Sep_def fixpoint_pred_def setequ_equ) 
-lemma OpDisj_implies_Sep: "MONO \<C> \<Longrightarrow> \<forall>A B. OpenDisj[\<C>] A B \<longrightarrow> Sep[\<C>] A B" proof -
+lemma ClDisj_implies_Sep: "\<forall>A B. ClosedDisj[\<C>] A B \<longrightarrow> Sep[\<C>] A B" by (simp add: ClosedDisj_def Disj_symm Sep_def fixpoint_pred_def setequ_equ)
+lemma OpDisj_implies_Sep: "MONO \<C> \<Longrightarrow> \<forall>A B. OpenDisj[\<C>] A B \<longrightarrow> Sep[\<C>] A B" by (smt (verit, best) CI_Disj_rel Disj_def OpenDisj_def Sep_def fixpoint_pred_def setequ_char) 
+(*proof -
+
   assume mono:"MONO \<C>"
   { fix A B 
     from mono have aux: "Op[\<C>](A) \<and> Op[\<C>](B) \<longrightarrow> Sep[\<C>] (A \<^bold>\<leftharpoonup> B) (B \<^bold>\<leftharpoonup> A)" using Sep_Op_diff by blast
@@ -44,7 +45,7 @@ lemma OpDisj_implies_Sep: "MONO \<C> \<Longrightarrow> \<forall>A B. OpenDisj[\<
       hence "Sep[\<C>] A B" using op aux by (simp add: setequ_equ)
     } hence "OpenDisj[\<C>] A B \<longrightarrow> Sep[\<C>] A B" by (simp add: OpenDisj_def)
   } thus ?thesis by blast
-qed
+qed *)
 
 (**Another condition: separation by open sets (aka. "by open neighborhoods")*)
 definition SepByOpens ("SepByOpens[_]") 

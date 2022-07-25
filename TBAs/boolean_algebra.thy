@@ -130,8 +130,12 @@ definition "join_closed S \<equiv>  \<forall>X Y. (S X \<and> S Y) \<longrightar
 definition "upwards_closed S \<equiv> \<forall>X Y. S X \<and> X \<^bold>\<preceq> Y \<longrightarrow> S Y"
 definition "downwards_closed S \<equiv> \<forall>X Y. S X \<and> X \<^bold>\<succeq> Y \<longrightarrow> S Y"
 
-definition "Disj A B \<equiv> A \<^bold>\<and> B \<^bold>\<approx> \<^bold>\<bottom>" 
-lemma Disj_comm: "Disj A B \<Longrightarrow> Disj B A" by (smt (z3) Disj_def meet_def setequ_char)
+lemma Disj_char: "Disj A B \<equiv> A \<^bold>\<and> B \<^bold>\<approx> \<^bold>\<bottom>" by (simp add: Disj_def bottom_def meet_def setequ_char)
+lemma Cover_char: "Cover A B \<equiv> A \<^bold>\<or> B \<^bold>\<approx> \<^bold>\<top>" by (simp add: Cover_def join_def setequ_char top_def)
+
+lemma DisjCover1: "Disj A B = Cover (\<^bold>\<midarrow>A) (\<^bold>\<midarrow>B)" by (simp add: Cover_def Disj_def compl_def)
+lemma DisjCover2: "Cover A B = Disj (\<^bold>\<midarrow>A) (\<^bold>\<midarrow>B)" by (simp add: Cover_def Disj_def compl_def)
+lemma subset_char: "A \<^bold>\<preceq> B \<equiv> Disj A (\<^bold>\<midarrow>B)" by (simp add: compl_def Disj_def subset_def)
 
 definition singleton ("\<lbrace>_\<rbrace>") where "\<lbrace>x\<rbrace> \<equiv> \<lambda>y. y=x"
 lemma singleton_diff: "\<forall>p q. p \<noteq> q \<longleftrightarrow> \<not>(\<lbrace>p\<rbrace> \<^bold>\<approx> \<lbrace>q\<rbrace>)" by (metis singleton_def setequ_equ)
