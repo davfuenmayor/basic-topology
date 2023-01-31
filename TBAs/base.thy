@@ -113,40 +113,6 @@ abbreviation "correspond1to1 A B \<equiv> \<exists>f. mapping f A B \<and> bijec
 definition swap::\<open>('a \<Rightarrow> 'b \<Rightarrow> 'c) \<Rightarrow> ('b \<Rightarrow> 'a \<Rightarrow> 'c)\<close> ("_\<^sup>\<leftrightarrow>")
   where "\<xi>\<^sup>\<leftrightarrow> \<equiv> \<lambda>B A. \<xi> A B"
 
-(**Projections map each a unary function into a 'projected' binary function.*)
-definition proj1::\<open>('a \<Rightarrow> 'b) \<Rightarrow> ('a \<Rightarrow> 'a \<Rightarrow> 'b)\<close> ("\<^bold>\<pi>\<^sub>1")
-  where "\<^bold>\<pi>\<^sub>1 \<phi> \<equiv> \<lambda>A B. \<phi> A"
-definition proj2::\<open>('a \<Rightarrow> 'b) \<Rightarrow> ('a \<Rightarrow> 'a \<Rightarrow> 'b)\<close> ("\<^bold>\<pi>\<^sub>2")
-  where "\<^bold>\<pi>\<^sub>2 \<phi> \<equiv> \<lambda>A B. \<phi> B"
-
-(**Diagonalization maps a binary function into a unary function.*)
-definition diag::\<open>('a \<Rightarrow> 'a \<Rightarrow> 'b) \<Rightarrow> ('a \<Rightarrow> 'b)\<close> ("\<langle>_\<rangle>")
-  where "\<langle>\<xi>\<rangle> \<equiv> \<lambda>A. \<xi> A A"
-
-(**Partial application maps a binary function @{text "\<xi>"} into a unary function (modulo an element E).
- It comes in two flavours (#1 or #2) depending on whether @{text "\<xi>"} is partially applied to the 
- element E at the second, resp. first position. This 'switched' notation has been chosen for convenience.
- To avoid confusion we suggest employing the provided notation only.*)
-definition app1::\<open>('a \<Rightarrow> 'a \<Rightarrow> 'b) \<Rightarrow> 'a \<Rightarrow> ('a \<Rightarrow> 'b)\<close> ("\<lbrakk>_|'_ \<circ> _\<rbrakk>")
-  where "\<lbrakk>\<xi>|_\<circ> E\<rbrakk> \<equiv> \<lambda>A. \<xi> A E" (*argument A comes in first place*)
-definition app2::\<open>('a \<Rightarrow> 'a \<Rightarrow> 'b) \<Rightarrow> 'a \<Rightarrow> ('a \<Rightarrow> 'b)\<close> ("\<lbrakk>_|_ \<circ> '_\<rbrakk>")
-  where "\<lbrakk>\<xi>|E \<circ>_\<rbrakk> \<equiv> \<lambda>A. \<xi> E A" (*argument A comes in second place*)
-
-(**Projection and diagonalization are inverse in a sense.*)
-lemma diag_proj1: \<open>\<langle>\<^bold>\<pi>\<^sub>1 \<phi>\<rangle> = \<phi>\<close> unfolding diag_def proj1_def by simp
-lemma              \<open>\<^bold>\<pi>\<^sub>1\<langle>\<xi>\<rangle> = \<xi>\<close> nitpick oops (*counterexample - as expected*)
-lemma diag_proj2: \<open>\<langle>\<^bold>\<pi>\<^sub>2 \<phi>\<rangle> = \<phi>\<close> unfolding diag_def proj2_def by simp
-lemma              \<open>\<^bold>\<pi>\<^sub>2\<langle>\<xi>\<rangle> = \<xi>\<close> nitpick oops (*counterexample - as expected*)
-
-(**Projection and partial-application are also inverse in a sense.*)
-lemma app_proj1: \<open>\<lbrakk>\<^bold>\<pi>\<^sub>1 \<phi>|_ \<circ> X\<rbrakk> = \<phi>\<close> unfolding app1_def proj1_def by simp
-lemma            \<open>\<lbrakk>\<^bold>\<pi>\<^sub>1 \<phi>|X \<circ> _\<rbrakk> = \<phi>\<close> nitpick oops (*counterexample - as expected*)
-lemma            \<open>\<^bold>\<pi>\<^sub>1 \<lbrakk>\<xi>|_ \<circ> X\<rbrakk> = \<xi>\<close> nitpick oops (*counterexample - as expected*)
-lemma app_proj2: \<open>\<lbrakk>\<^bold>\<pi>\<^sub>2 \<phi>|X \<circ> _\<rbrakk> = \<phi>\<close> unfolding app2_def proj2_def by simp
-lemma            \<open>\<lbrakk>\<^bold>\<pi>\<^sub>2 \<phi>|_ \<circ> X\<rbrakk> = \<phi>\<close> nitpick oops (*counterexample - as expected*)
-lemma            \<open>\<^bold>\<pi>\<^sub>2 \<lbrakk>\<xi>|X \<circ> _\<rbrakk> = \<xi>\<close> nitpick oops (*counterexample - as expected*)
-
-
 (**Range, direct and inverse image of a unary function  @{text "\<phi>"}.*)
 definition range::"('a \<Rightarrow> 'b) \<Rightarrow> ('b \<Rightarrow> bool)" ("\<lbrakk>_ -\<rbrakk>") 
   where "\<lbrakk>\<phi> -\<rbrakk> \<equiv> \<lambda>Y. \<exists>x. (\<phi> x) = Y"

@@ -36,7 +36,7 @@ lemma dual_rel2: "\<I>[R] = \<C>[R]\<^sup>d" using dual_rel1 dual_symm op_equal_
 
 (**We explore minimal conditions of the specialization relation under which some operation's conditions obtain.*) 
 lemma rMONO: "MONO \<C>[R]" by (smt (verit, del_insts) Cl_rel_def MONO_def subset_def)
-lemma rC1i: "iCl_1 \<C>[R]" unfolding iADDI_def Cl_rel_def by (smt (verit, best) Ra_restr_ex mexists_restr_def setequ_char supremum_def)
+lemma rC1i: "iCl_1 \<C>[R]" unfolding iADDI_def Cl_rel_def img_dir_def supremum_def using setequ_char by fastforce
 lemma rC2: "reflexive R \<longrightarrow> Cl_2 \<C>[R]" by (smt (verit, ccfv_threshold) Cl_rel_def EXPN_def reflexive_def subset_def)
 lemma rC3: "Cl_3 \<C>[R]" by (simp add: iADDI_NORM rC1i)
 lemma rC4: "reflexive R \<and> transitive R \<longrightarrow> Cl_4 \<C>[R]" by (smt (verit, best) Cl_rel_def EXPN_def IDEM_def rC2 setequ_char subset_def transitive_def)
@@ -69,7 +69,7 @@ lemma sp_rel_b: "iADDI_a \<C> \<Longrightarrow> \<forall>A. \<C>[sp[\<C>]] A \<^
     let ?S="\<lambda>B. \<exists>w. A w \<and> B=(\<lambda>u. u=w)"
     have "A \<^bold>\<approx> (\<^bold>\<Or>?S)" by (smt (verit, best) setequ_char supremum_def)
     hence "\<C>(A) \<^bold>\<approx> \<C>(\<^bold>\<Or>?S)" by (simp add: setequ_equ) 
-    moreover have "\<^bold>\<Or>\<lbrakk>\<C> ?S\<rbrakk> \<^bold>\<approx> \<C>[sp[\<C>]] A" unfolding spec_rel_def singleton_def by (smt (verit, best) Cl_rel_def Ra_restr_ex mexists_restr_def setequ_char)
+    moreover have "\<^bold>\<Or>\<lbrakk>\<C> ?S\<rbrakk> \<^bold>\<approx> \<C>[sp[\<C>]] A" unfolding spec_rel_def singleton_def by (smt (verit) Cl_rel_def img_dir_def setequ_char supremum_def)
     moreover from iaddia have "\<C>(\<^bold>\<Or>?S) \<^bold>\<preceq> \<^bold>\<Or>\<lbrakk>\<C> ?S\<rbrakk>" unfolding iADDI_a_def by simp
     ultimately have "\<C> A \<^bold>\<preceq> \<C>[sp[\<C>]] A" by (simp add: setequ_equ)
   } thus ?thesis by simp
