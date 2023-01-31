@@ -21,7 +21,7 @@ abbreviation Nbhd_all::"('w,'w \<sigma>)\<rho> \<Rightarrow> bool" ("\<NN>")
 definition adherent_points::"('w,'w \<sigma>)\<rho> \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>)" ("ADH[_]") 
   where "ADH[F] A \<equiv> \<lambda>p. \<forall>N. F p N \<longrightarrow> \<not>Disj N A"
 definition accumulation_points::"('w,'w \<sigma>)\<rho> \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>)" ("ACC[_]") 
-  where "ACC[F] A \<equiv> \<lambda>p. \<forall>N. F p N \<longrightarrow> \<not>Disj N (A \<^bold>\<leftharpoonup> \<lbrace>p\<rbrace>)"
+  where "ACC[F] A \<equiv> \<lambda>p. \<forall>N. F p N \<longrightarrow> \<not>Disj N (A \<^bold>\<leftharpoonup> {p})"
 
 (**We can in fact easily define a neighborhood function given a closure operator.*)
 definition Nbhd_Cl::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> ('w,'w \<sigma>)\<rho>" ("\<N>[_]") 
@@ -50,7 +50,7 @@ lemma open_nbhd: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> \<fora
 
 (**Having a closure operator allows for an alternative characterization of the set of limit points*)
 definition limit::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>)" ("limit[_]")
-  where "limit[\<C>] A \<equiv> \<lambda>w. \<C> (A \<^bold>\<leftharpoonup> \<lbrace>w\<rbrace>) w"
+  where "limit[\<C>] A \<equiv> \<lambda>w. \<C> (A \<^bold>\<leftharpoonup> {w}) w"
 
 lemma "MONO \<C> \<Longrightarrow> limit[\<C>] = ACC[\<N>[\<C>]]" 
   unfolding limit_def accumulation_points_def Nbhd_Cl_def swap_def 

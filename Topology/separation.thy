@@ -59,9 +59,9 @@ definition "T0 \<C> \<equiv> \<forall>p q. p \<noteq> q \<longrightarrow> (\<exi
 (**T1 (Fréchet): for any two distinct points there exist two (not necessarily disjoint) open sets, each containing one point but not the other.*)
 definition "T1 \<C> \<equiv> \<forall>p q. p \<noteq> q \<longrightarrow> (\<exists>G H. Op[\<C>] G \<and> Op[\<C>] H \<and> G p \<and> \<not>G q \<and> H q \<and> \<not>H p)"
 (**T2 (Hausdorff): any two distinct points are separated by open sets*)
-definition "T2 \<C> \<equiv> \<forall>p q. p \<noteq> q \<longrightarrow> SepByOpens[\<C>] \<lbrace>p\<rbrace> \<lbrace>q\<rbrace>"
+definition "T2 \<C> \<equiv> \<forall>p q. p \<noteq> q \<longrightarrow> SepByOpens[\<C>] {p} {q}"
 (**Regular: closed sets and their non-contained points are separated by open sets*)
-definition "Regular \<C> \<equiv> \<forall>p Q. Cl[\<C>] Q \<and> \<not>Q p \<longrightarrow> SepByOpens[\<C>] \<lbrace>p\<rbrace> Q"
+definition "Regular \<C> \<equiv> \<forall>p Q. Cl[\<C>] Q \<and> \<not>Q p \<longrightarrow> SepByOpens[\<C>] {p} Q"
 (**Normal: disjoint closed sets are separated by open sets*)
 definition "Normal \<C> \<equiv> \<forall>P Q. ClosedDisj[\<C>] P Q \<longrightarrow> SepByOpens[\<C>] P Q"
 (**T3 (regular Hausdorff): *)
@@ -75,17 +75,17 @@ lemma T1_def2: "T1 \<C> = (\<forall>p q. p \<noteq> q \<longrightarrow> (\<exist
 
 (**Another alternative definition for T0: the closures of distinct points are distinct.*)
 lemma T0_def3: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> Cl_4' \<C>      
-          \<Longrightarrow> T0 \<C> = (\<forall>p q. p \<noteq> q \<longrightarrow> \<not>(\<C> \<lbrace>p\<rbrace> \<approx> \<C> \<lbrace>q\<rbrace>))"
+          \<Longrightarrow> T0 \<C> = (\<forall>p q. p \<noteq> q \<longrightarrow> \<not>(\<C> {p} \<approx> \<C> {q}))"
 proof -
   assume mono: "MONO \<C>" and cl2: "Cl_2 \<C>" and cl4: "Cl_4' \<C>"
-  from mono cl2 cl4 have l2r: "T0 \<C> \<longrightarrow> (\<forall>p q. p \<noteq> q \<longrightarrow> \<not>(\<C> \<lbrace>p\<rbrace> \<approx> \<C> \<lbrace>q\<rbrace>))"
+  from mono cl2 cl4 have l2r: "T0 \<C> \<longrightarrow> (\<forall>p q. p \<noteq> q \<longrightarrow> \<not>(\<C> {p} \<approx> \<C> {q}))"
     unfolding T0_def2 by (smt (z3) C_fp_def singleton_def inf_char setequ_equ subset_def)
-  have r2l: "(\<forall>p q. p \<noteq> q \<longrightarrow> \<not>(\<C> \<lbrace>p\<rbrace> \<approx> \<C> \<lbrace>q\<rbrace>)) \<longrightarrow> T0 \<C>" 
+  have r2l: "(\<forall>p q. p \<noteq> q \<longrightarrow> \<not>(\<C> {p} \<approx> \<C> {q})) \<longrightarrow> T0 \<C>" 
     proof -
-      { assume def3: "\<forall>p q. p \<noteq> q \<longrightarrow> \<not>(\<C> \<lbrace>p\<rbrace> \<approx> \<C> \<lbrace>q\<rbrace>)"
+      { assume def3: "\<forall>p q. p \<noteq> q \<longrightarrow> \<not>(\<C> {p} \<approx> \<C> {q})"
         { fix p::'a and q::'a 
           { assume pqdiff: "p \<noteq> q" 
-            from this def3 have "\<not>(\<C> \<lbrace>p\<rbrace> \<approx> \<C> \<lbrace>q\<rbrace>)" by simp
+            from this def3 have "\<not>(\<C> {p} \<approx> \<C> {q})" by simp
             from this mono cl2 cl4 have "(\<exists>G. Cl[\<C>] G \<and> \<not>(G p \<longleftrightarrow> G q))" using C_fp_def inf_char by (smt (z3) singleton_def  setequ_def setequ_equ subset_def)
           }} hence "T0 \<C>" by (simp add: T0_def2)
         } thus ?thesis by blast
@@ -94,23 +94,23 @@ proof -
 qed
 
 (**Another alternative definition for T1: singleton sets are all closed.*)
-lemma T1_def3a: "(\<forall>p. Cl[\<C>] \<lbrace>p\<rbrace>) \<longrightarrow> T1 \<C>" by (metis T1_def2 singleton_def)
-lemma T1_def3b: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> T1 \<C> \<longrightarrow> (\<forall>p. Cl[\<C>] \<lbrace>p\<rbrace>)" proof -
+lemma T1_def3a: "(\<forall>p. Cl[\<C>] {p}) \<longrightarrow> T1 \<C>" by (metis T1_def2 singleton_def)
+lemma T1_def3b: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> T1 \<C> \<longrightarrow> (\<forall>p. Cl[\<C>] {p})" proof -
   assume mono: "MONO \<C>" and cl2: "Cl_2 \<C>" 
   { assume t1: "T1 \<C>"
-    have "\<forall>p. Cl[\<C>] \<lbrace>p\<rbrace>" proof (rule ccontr)
-      assume "\<not>(\<forall>p. Cl[\<C>] \<lbrace>p\<rbrace>)"
-      hence "\<exists>p. \<not>Cl[\<C>] \<lbrace>p\<rbrace>" by simp
-      from this obtain p where "\<not>Cl[\<C>] \<lbrace>p\<rbrace>" ..
-      hence "\<exists>q. p \<noteq> q \<and> \<C>\<lbrace>p\<rbrace> q" by (smt (verit, ccfv_threshold) EXPN_def singleton_def cl2 fixpoint_pred_def setequ_char subset_def)
-      from this obtain q where 1: "p \<noteq> q \<and> \<C>\<lbrace>p\<rbrace> q" ..
+    have "\<forall>p. Cl[\<C>] {p}" proof (rule ccontr)
+      assume "\<not>(\<forall>p. Cl[\<C>] {p})"
+      hence "\<exists>p. \<not>Cl[\<C>] {p}" by simp
+      from this obtain p where "\<not>Cl[\<C>] {p}" ..
+      hence "\<exists>q. p \<noteq> q \<and> \<C>{p} q" by (smt (verit, ccfv_threshold) EXPN_def singleton_def cl2 fixpoint_pred_def setequ_char subset_def)
+      from this obtain q where 1: "p \<noteq> q \<and> \<C>{p} q" ..
       from this t1 have "\<exists>G H. Cl[\<C>] G \<and> Cl[\<C>] H \<and> G p \<and> \<not>G q \<and> H q \<and> \<not>H p" by (simp add: T1_def2)
       from this obtain G H where 2: "Cl[\<C>] G \<and> Cl[\<C>] H \<and> G p \<and> \<not>G q \<and> H q \<and> \<not>H p" by blast
       from 1 2 mono show False by (metis (no_types, lifting) MONO_def singleton_def fixpoint_pred_def setequ_equ subset_def)
     qed
   } thus ?thesis by blast
 qed
-lemma T1_def3: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> T1 \<C> = (\<forall>p. Cl[\<C>] \<lbrace>p\<rbrace>)" using T1_def3a T1_def3b by auto
+lemma T1_def3: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> T1 \<C> = (\<forall>p. Cl[\<C>] {p})" using T1_def3a T1_def3b by auto
 
 (**As expected, our encoding does not (a priori) assume any separation property.*)
 lemma "\<CC> \<C> \<Longrightarrow> Normal \<C>" nitpick oops (**countermodel to NORM *)
@@ -139,10 +139,10 @@ lemma T1_Normal_implies_Regular: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longri
   { assume T1: "T1 \<C>" and NORM: "Normal \<C>" 
     { fix p and Q
       { assume clQ: "Cl[\<C>](Q)" and nQp: "\<not>Q(p)"
-        from T1 cl2 mono have "Cl[\<C>](\<lbrace>p\<rbrace>)" by (simp add: T1_def3)
-        moreover have "Disj \<lbrace>p\<rbrace> Q" by (simp add: singleton_def Disj_def bottom_def meet_def nQp setequ_char)
-        ultimately have "SepByOpens[\<C>] \<lbrace>p\<rbrace> Q" using ClosedDisj_def NORM Normal_def clQ by blast
-      } hence "Cl[\<C>](Q) \<and> \<not>Q(p) \<longrightarrow> SepByOpens[\<C>] \<lbrace>p\<rbrace> Q" by simp
+        from T1 cl2 mono have "Cl[\<C>]({p})" by (simp add: T1_def3)
+        moreover have "Disj {p} Q" by (simp add: singleton_def Disj_def bottom_def meet_def nQp setequ_char)
+        ultimately have "SepByOpens[\<C>] {p} Q" using ClosedDisj_def NORM Normal_def clQ by blast
+      } hence "Cl[\<C>](Q) \<and> \<not>Q(p) \<longrightarrow> SepByOpens[\<C>] {p} Q" by simp
     } hence "Regular \<C>" by (simp add: Regular_def)
   } thus ?thesis by simp
 qed
@@ -175,7 +175,7 @@ lemma "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> T2 \<C> \<longrig
     from T2 have "\<forall>x. ?np x \<longrightarrow> (\<exists>G. ?Prop(G) \<and> G(x))" unfolding singleton_def SepByOpens_def OpenDisj_def T2_def Disj_def by (smt (verit, best) bottom_def meet_def setequ_char subset_def)
     hence "?np \<approx> \<^bold>\<Or>?Prop" by (smt (verit) setequ_char supremum_def)
     hence "Op[\<C>](?np)" using aux setequ_equ by force
-    hence "Cl[\<C>]\<lbrace>p\<rbrace>" by (simp add: singleton_def ClOpdual compl_def)
+    hence "Cl[\<C>]{p}" by (simp add: singleton_def ClOpdual compl_def)
   } thus ?thesis unfolding singleton_def using T1_def2 by blast
 qed
 

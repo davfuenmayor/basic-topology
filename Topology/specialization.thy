@@ -43,7 +43,7 @@ lemma rC4: "reflexive R \<and> transitive R \<longrightarrow> Cl_4 \<C>[R]" by (
 
 (**A specialization relation can be derived from a given operation (intended as a closure-like operation).*)
 definition spec_rel::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> ('w,'w)\<rho>" ("sp[_]") 
-  where "sp[\<C>] \<equiv> \<lambda>w v. \<C> \<lbrace>v\<rbrace> w"
+  where "sp[\<C>] \<equiv> \<lambda>w v. \<C> {v} w"
 
 (**Preorder properties of the specialization relation follow directly from the corresponding operation's conditions.*)
 lemma sp_rel_refl: "Cl_2 \<C> \<Longrightarrow> reflexive sp[\<C>]"by (simp add: singleton_def EXPN_def reflexive_def spec_rel_def subset_def)
@@ -77,7 +77,7 @@ qed
 lemma sp_rel: "iCl_1 \<C> \<Longrightarrow> \<C> = \<C>[sp[\<C>]]" by (meson MONO_iADDIb ext iADDI_char setequ_def setequ_equ sp_rel_a sp_rel_b)
 
 (**It is instructive to expand the definitions in the above result:*)
-lemma "iCl_1 \<C> \<Longrightarrow>  \<forall>A. \<forall>w. (\<C> A) w \<longleftrightarrow> (\<exists>v. A v \<and> \<C>\<lbrace>v\<rbrace> w)" by (smt (z3) Cl_rel_def singleton_def sp_rel)
+lemma "iCl_1 \<C> \<Longrightarrow>  \<forall>A. \<forall>w. (\<C> A) w \<longleftrightarrow> (\<exists>v. A v \<and> \<C>{v} w)" by (smt (z3) Cl_rel_def singleton_def sp_rel)
 
 (**We now turn to the more traditional characterization of Alexandrov topologies in terms of closure under
 infinite joins/meets.*)

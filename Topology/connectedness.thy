@@ -16,7 +16,7 @@ abbreviation Connected ("Connected[_]")
 
 (**Empty sets and singletons are connected.*)
 lemma conn_prop1: "Connected[\<C>] \<^bold>\<bottom>" by (smt (verit, best) L10 L6 Separated_def Separation_def bottom_def setequ_equ subset_def)
-lemma conn_prop2: "Cl_2 \<C> \<Longrightarrow> \<forall>x. Connected[\<C>] \<lbrace>x\<rbrace>" by (smt (verit, best) singleton_def Disj_def Sep_disj Separated_def Separation_def bottom_def join_def meet_def setequ_equ)
+lemma conn_prop2: "Cl_2 \<C> \<Longrightarrow> \<forall>x. Connected[\<C>] {x}" by (smt (verit, best) singleton_def Disj_def Sep_disj Separated_def Separation_def bottom_def join_def meet_def setequ_equ)
 
 (**A connected subset of a separated set X = (A|B) is contained in either A or B. *)
 lemma conn_prop3: assumes mono: "MONO \<C>"

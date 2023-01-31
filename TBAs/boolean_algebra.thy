@@ -138,8 +138,8 @@ lemma DisjCover1: "Disj A B = Cover (\<^bold>\<midarrow>A) (\<^bold>\<midarrow>B
 lemma DisjCover2: "Cover A B = Disj (\<^bold>\<midarrow>A) (\<^bold>\<midarrow>B)" by (simp add: Cover_def Disj_def compl_def)
 lemma subset_char: "A \<preceq> B \<equiv> Disj A (\<^bold>\<midarrow>B)" by (simp add: compl_def Disj_def subset_def)
 
-definition singleton ("\<lbrace>_\<rbrace>") where "\<lbrace>x\<rbrace> \<equiv> \<lambda>y. y=x"
-lemma singleton_diff: "\<forall>p q. p \<noteq> q \<longleftrightarrow> \<not>(\<lbrace>p\<rbrace> \<approx> \<lbrace>q\<rbrace>)" by (metis singleton_def setequ_equ)
+definition singleton ("{_}") where "{x} \<equiv> \<lambda>y. y=x"
+lemma singleton_diff: "\<forall>p q. p \<noteq> q \<longleftrightarrow> \<not>({p} \<approx> {q})" by (metis singleton_def setequ_equ)
 
 
 subsection \<open>Transformations and relations on unary connectives\<close>
