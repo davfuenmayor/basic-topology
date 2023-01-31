@@ -6,14 +6,14 @@ begin
 
 (**Sets with an empty interior are called boundary.*)
 definition boundary ("boundary[_]") 
-  where "boundary[\<C>] A \<equiv> \<I>[\<C>] A \<^bold>\<approx> \<^bold>\<bottom>"
+  where "boundary[\<C>] A \<equiv> \<I>[\<C>] A \<approx> \<^bold>\<bottom>"
 
 (**Boundary sets can be equivalently defined as the fixed points of the border operator.*)
 lemma boundary_def2: "Cl_2 \<C> \<Longrightarrow> boundary[\<C>] = Br[\<C>]" by (simp add: Br_Iempty boundary_def ext)
 
 (**Sets whose closure is the whole domain are called dense.*)
 definition dense ("dense[_]") 
-  where "dense[\<C>] A \<equiv> \<C> A \<^bold>\<approx> \<^bold>\<top>"
+  where "dense[\<C>] A \<equiv> \<C> A \<approx> \<^bold>\<top>"
 
 (**A set is dense iff its complement is boundary.*)
 lemma dense_def2: "dense[\<C>] A = boundary[\<C>] (\<^bold>\<midarrow>A)" unfolding dense_def boundary_def by (simp add: bottom_def compl_def op_dual_def setequ_char top_def)

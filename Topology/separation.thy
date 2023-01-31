@@ -4,12 +4,12 @@ begin
 
 (**Introduces a predicate for indicating that A and B are separated and proves some properties.*)
 definition Sep ("Sep[_]") where "Sep[\<C>] A B \<equiv> Disj (\<C> A) B \<and> Disj (\<C> B) A"
-lemma Sep_def2: "Sep[\<C>] A B = ((A \<^bold>\<and> \<C> B) \<^bold>\<or> (B \<^bold>\<and> \<C> A) \<^bold>\<approx> \<^bold>\<bottom>)" by (smt (verit, best) Disj_char Disj_def L7 Sep_def bottom_def join_def meet_def setequ_def subset_def)
+lemma Sep_def2: "Sep[\<C>] A B = ((A \<^bold>\<and> \<C> B) \<^bold>\<or> (B \<^bold>\<and> \<C> A) \<approx> \<^bold>\<bottom>)" by (smt (verit, best) Disj_char Disj_def L7 Sep_def bottom_def join_def meet_def setequ_def subset_def)
 
 lemma Sep_comm: "\<forall>A B. Sep[\<C>] A B \<longrightarrow> Sep[\<C>] B A" by (simp add: Sep_def)
 lemma Sep_disj: "Cl_2 \<C> \<Longrightarrow> \<forall>A B. Sep[\<C>] A B \<longrightarrow> Disj A B" by (smt (verit, best) Disj_def EXPN_def Sep_def meet_def setequ_char subset_def)
 lemma Sep_I: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> Cl_4' \<C> \<Longrightarrow> \<forall>A. Sep[\<C>] (\<I>[\<C>] A) (\<I>[\<C>] (\<^bold>\<midarrow>A))" by (smt (verit, del_insts) BA_dn CI_Disj_rel_b Disj_I Disj_def Sep_def) 
-lemma Sep_sub: "MONO \<C> \<Longrightarrow> \<forall>A B C D. Sep[\<C>] A B \<and> C \<^bold>\<preceq> A \<and> D \<^bold>\<preceq> B \<longrightarrow> Sep[\<C>] C D" using MONO_def unfolding Sep_def Disj_def conn by (smt (verit, best) setequ_char subset_def)
+lemma Sep_sub: "MONO \<C> \<Longrightarrow> \<forall>A B C D. Sep[\<C>] A B \<and> C \<preceq> A \<and> D \<preceq> B \<longrightarrow> Sep[\<C>] C D" using MONO_def unfolding Sep_def Disj_def conn by (smt (verit, best) setequ_char subset_def)
 lemma Sep_Cl_diff: "MONO \<C>  \<Longrightarrow> \<forall>A B. Cl[\<C>](A) \<and> Cl[\<C>](B) \<longrightarrow> Sep[\<C>] (A \<^bold>\<leftharpoonup> B) (B \<^bold>\<leftharpoonup> A)" unfolding Disj_def MONO_def Sep_def fixpoint_pred_def setequ_char subset_def conn by (smt (z3))
 lemma Sep_Op_diff: "MONO \<C> \<Longrightarrow> \<forall>A B. Op[\<C>](A) \<and> Op[\<C>](B) \<longrightarrow> Sep[\<C>] (A \<^bold>\<leftharpoonup> B) (B \<^bold>\<leftharpoonup> A)" proof -
   assume mono:"MONO \<C>"
@@ -18,8 +18,8 @@ lemma Sep_Op_diff: "MONO \<C> \<Longrightarrow> \<forall>A B. Op[\<C>](A) \<and>
     { assume "Op[\<C>](A) \<and> Op[\<C>](B)"
       hence "Cl[\<C>](\<^bold>\<midarrow>A) \<and> Cl[\<C>](\<^bold>\<midarrow>B)" using fp_d by blast
       hence "Sep[\<C>] (\<^bold>\<midarrow>A \<^bold>\<leftharpoonup> \<^bold>\<midarrow>B) (\<^bold>\<midarrow>B \<^bold>\<leftharpoonup> \<^bold>\<midarrow>A)" using mono aux unfolding conn by simp
-      moreover have "(\<^bold>\<midarrow>A \<^bold>\<leftharpoonup> \<^bold>\<midarrow>B) \<^bold>\<approx> (B \<^bold>\<leftharpoonup> A)" unfolding conn setequ_char by blast
-      moreover have "(\<^bold>\<midarrow>B \<^bold>\<leftharpoonup> \<^bold>\<midarrow>A) \<^bold>\<approx> (A \<^bold>\<leftharpoonup> B)" unfolding conn setequ_char by blast
+      moreover have "(\<^bold>\<midarrow>A \<^bold>\<leftharpoonup> \<^bold>\<midarrow>B) \<approx> (B \<^bold>\<leftharpoonup> A)" unfolding conn setequ_char by blast
+      moreover have "(\<^bold>\<midarrow>B \<^bold>\<leftharpoonup> \<^bold>\<midarrow>A) \<approx> (A \<^bold>\<leftharpoonup> B)" unfolding conn setequ_char by blast
       ultimately have "Sep[\<C>] (B \<^bold>\<leftharpoonup> A) (A \<^bold>\<leftharpoonup> B)" unfolding conn setequ_char by simp
       hence "Sep[\<C>] (A \<^bold>\<leftharpoonup> B) (B \<^bold>\<leftharpoonup> A)" using Sep_comm by blast
     } hence "Op[\<C>](A) \<and> Op[\<C>](B) \<longrightarrow> Sep[\<C>] (A \<^bold>\<leftharpoonup> B) (B \<^bold>\<leftharpoonup> A)" by (rule impI)
@@ -41,7 +41,7 @@ lemma OpDisj_implies_Sep: "MONO \<C> \<Longrightarrow> \<forall>A B. OpenDisj[\<
   { fix A B 
     from mono have aux: "Op[\<C>](A) \<and> Op[\<C>](B) \<longrightarrow> Sep[\<C>] (A \<^bold>\<leftharpoonup> B) (B \<^bold>\<leftharpoonup> A)" using Sep_Op_diff by blast
     { assume op: "Op[\<C>](A) \<and> Op[\<C>](B)" and disj: "Disj A B"
-      hence "(A \<^bold>\<leftharpoonup> B) \<^bold>\<approx> A \<and> (B \<^bold>\<leftharpoonup> A) \<^bold>\<approx> B" unfolding conn by (smt (verit, best) Disj_def bottom_def meet_def setequ_char) 
+      hence "(A \<^bold>\<leftharpoonup> B) \<approx> A \<and> (B \<^bold>\<leftharpoonup> A) \<approx> B" unfolding conn by (smt (verit, best) Disj_def bottom_def meet_def setequ_char) 
       hence "Sep[\<C>] A B" using op aux by (simp add: setequ_equ)
     } hence "OpenDisj[\<C>] A B \<longrightarrow> Sep[\<C>] A B" by (simp add: OpenDisj_def)
   } thus ?thesis by blast
@@ -49,7 +49,7 @@ qed *)
 
 (**Another condition: separation by open sets (aka. "by open neighborhoods")*)
 definition SepByOpens ("SepByOpens[_]") 
-  where "SepByOpens[\<C>] A B \<equiv> (\<exists>G H. OpenDisj[\<C>] G H \<and> A \<^bold>\<preceq> G \<and> B \<^bold>\<preceq> H)"
+  where "SepByOpens[\<C>] A B \<equiv> (\<exists>G H. OpenDisj[\<C>] G H \<and> A \<preceq> G \<and> B \<preceq> H)"
 
 lemma SepByOpens_implies_Sep: "MONO \<C> \<Longrightarrow> SepByOpens[\<C>] A B \<longrightarrow> Sep[\<C>] A B" using SepByOpens_def OpDisj_implies_Sep Sep_sub by blast
 lemma "\<CC> \<C> \<Longrightarrow> Sep[\<C>] A B \<longrightarrow> SepByOpens[\<C>] A B" nitpick oops (*countermodel*)
@@ -75,17 +75,17 @@ lemma T1_def2: "T1 \<C> = (\<forall>p q. p \<noteq> q \<longrightarrow> (\<exist
 
 (**Another alternative definition for T0: the closures of distinct points are distinct.*)
 lemma T0_def3: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> Cl_4' \<C>      
-          \<Longrightarrow> T0 \<C> = (\<forall>p q. p \<noteq> q \<longrightarrow> \<not>(\<C> \<lbrace>p\<rbrace> \<^bold>\<approx> \<C> \<lbrace>q\<rbrace>))"
+          \<Longrightarrow> T0 \<C> = (\<forall>p q. p \<noteq> q \<longrightarrow> \<not>(\<C> \<lbrace>p\<rbrace> \<approx> \<C> \<lbrace>q\<rbrace>))"
 proof -
   assume mono: "MONO \<C>" and cl2: "Cl_2 \<C>" and cl4: "Cl_4' \<C>"
-  from mono cl2 cl4 have l2r: "T0 \<C> \<longrightarrow> (\<forall>p q. p \<noteq> q \<longrightarrow> \<not>(\<C> \<lbrace>p\<rbrace> \<^bold>\<approx> \<C> \<lbrace>q\<rbrace>))"
+  from mono cl2 cl4 have l2r: "T0 \<C> \<longrightarrow> (\<forall>p q. p \<noteq> q \<longrightarrow> \<not>(\<C> \<lbrace>p\<rbrace> \<approx> \<C> \<lbrace>q\<rbrace>))"
     unfolding T0_def2 by (smt (z3) C_fp_def singleton_def inf_char setequ_equ subset_def)
-  have r2l: "(\<forall>p q. p \<noteq> q \<longrightarrow> \<not>(\<C> \<lbrace>p\<rbrace> \<^bold>\<approx> \<C> \<lbrace>q\<rbrace>)) \<longrightarrow> T0 \<C>" 
+  have r2l: "(\<forall>p q. p \<noteq> q \<longrightarrow> \<not>(\<C> \<lbrace>p\<rbrace> \<approx> \<C> \<lbrace>q\<rbrace>)) \<longrightarrow> T0 \<C>" 
     proof -
-      { assume def3: "\<forall>p q. p \<noteq> q \<longrightarrow> \<not>(\<C> \<lbrace>p\<rbrace> \<^bold>\<approx> \<C> \<lbrace>q\<rbrace>)"
+      { assume def3: "\<forall>p q. p \<noteq> q \<longrightarrow> \<not>(\<C> \<lbrace>p\<rbrace> \<approx> \<C> \<lbrace>q\<rbrace>)"
         { fix p::'a and q::'a 
           { assume pqdiff: "p \<noteq> q" 
-            from this def3 have "\<not>(\<C> \<lbrace>p\<rbrace> \<^bold>\<approx> \<C> \<lbrace>q\<rbrace>)" by simp
+            from this def3 have "\<not>(\<C> \<lbrace>p\<rbrace> \<approx> \<C> \<lbrace>q\<rbrace>)" by simp
             from this mono cl2 cl4 have "(\<exists>G. Cl[\<C>] G \<and> \<not>(G p \<longleftrightarrow> G q))" using C_fp_def inf_char by (smt (z3) singleton_def  setequ_def setequ_equ subset_def)
           }} hence "T0 \<C>" by (simp add: T0_def2)
         } thus ?thesis by blast
@@ -173,7 +173,7 @@ lemma "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> T2 \<C> \<longrig
     let ?Prop= "\<lambda>G.  Op[\<C>](G) \<and> \<not>G(p)"    
     have aux: "Op[\<C>](\<^bold>\<Or>?Prop)" by (metis (no_types, lifting) Int_sup_closed cl2 mono supremum_closed_def)
     from T2 have "\<forall>x. ?np x \<longrightarrow> (\<exists>G. ?Prop(G) \<and> G(x))" unfolding singleton_def SepByOpens_def OpenDisj_def T2_def Disj_def by (smt (verit, best) bottom_def meet_def setequ_char subset_def)
-    hence "?np \<^bold>\<approx> \<^bold>\<Or>?Prop" by (smt (verit) setequ_char supremum_def)
+    hence "?np \<approx> \<^bold>\<Or>?Prop" by (smt (verit) setequ_char supremum_def)
     hence "Op[\<C>](?np)" using aux setequ_equ by force
     hence "Cl[\<C>]\<lbrace>p\<rbrace>" by (simp add: singleton_def ClOpdual compl_def)
   } thus ?thesis unfolding singleton_def using T1_def2 by blast

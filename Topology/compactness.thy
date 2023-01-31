@@ -3,16 +3,16 @@ theory compactness
 begin
 
 (**The "finite intersection property" (FIP)*)
-definition "FIP S \<equiv> \<forall>D. nonEmpty D \<and> D \<sqsubseteq> S \<and> finite D \<longrightarrow> \<not>(\<^bold>\<And>D \<^bold>\<approx> \<^bold>\<bottom>)"
+definition "FIP S \<equiv> \<forall>D. nonEmpty D \<and> D \<sqsubseteq> S \<and> finite D \<longrightarrow> \<not>(\<^bold>\<And>D \<approx> \<^bold>\<bottom>)"
 (**It can be shown that for meet-closed collections FIP is equivalent to the following "binary intersection property" (BIP)*)
-definition "BIP S \<equiv> \<forall>A B. S A \<and> S B \<longrightarrow> \<not>(A \<^bold>\<and> B \<^bold>\<approx> \<^bold>\<bottom>)"
+definition "BIP S \<equiv> \<forall>A B. S A \<and> S B \<longrightarrow> \<not>(A \<^bold>\<and> B \<approx> \<^bold>\<bottom>)"
 (**Both definitions are equivalent (for meet-closed collections) *)
 lemma FBIP_equiv: "meet_closed S \<Longrightarrow> BIP S = FIP S" oops (*Exercise: prove this*)
 
 (**For convenience, we can dualize the FIP towards some sort of "finite union property" (FUP)*)
-definition "FUP S \<equiv> \<exists>D. nonEmpty D \<and> D \<sqsubseteq> S \<and> finite D \<and> \<^bold>\<Or>D \<^bold>\<approx> \<^bold>\<top>"
+definition "FUP S \<equiv> \<exists>D. nonEmpty D \<and> D \<sqsubseteq> S \<and> finite D \<and> \<^bold>\<Or>D \<approx> \<^bold>\<top>"
 (**and, similarly, the FUP is equivalent to its binary counterpart (BUP) for join-closed collections*)
-definition "BUP S \<equiv> \<exists>A B. S A \<and> S B \<and> (A \<^bold>\<or> B \<^bold>\<approx> \<^bold>\<top>)"
+definition "BUP S \<equiv> \<exists>A B. S A \<and> S B \<and> (A \<^bold>\<or> B \<approx> \<^bold>\<top>)"
 (**Both definitions are equivalent (for join-closed collections)*)
 lemma FBUP_equiv: "join_closed S \<Longrightarrow> BUP S = FUP S" oops (*Exercise: prove this*)
 
@@ -29,11 +29,11 @@ lemma FIUP_dual2: "(\<not>FUP S) = FIP S\<^sup>-" by (metis FIUP_dual1 dom_compl
 
 (**The definition of compactness using closed sets*)
 definition compact_cl::"('a \<sigma> \<Rightarrow> 'a \<sigma>) \<Rightarrow> bool" ("compact\<^sup>c\<^sup>l")
-  where "compact\<^sup>c\<^sup>l \<C> \<equiv> \<forall>S. S \<sqsubseteq> Cl[\<C>] \<and> FIP S \<longrightarrow> \<not>(\<^bold>\<And>S \<^bold>\<approx> \<^bold>\<bottom>)"
+  where "compact\<^sup>c\<^sup>l \<C> \<equiv> \<forall>S. S \<sqsubseteq> Cl[\<C>] \<and> FIP S \<longrightarrow> \<not>(\<^bold>\<And>S \<approx> \<^bold>\<bottom>)"
 
 (**The more usual (dual) definition using open sets (i.e. 'every open cover has a finite subcover')*)
 definition compact_op::"('a \<sigma> \<Rightarrow> 'a \<sigma>) \<Rightarrow> bool" ("compact\<^sup>o\<^sup>p")
-  where "compact\<^sup>o\<^sup>p \<C> \<equiv> \<forall>S. S \<sqsubseteq> Op[\<C>] \<and> \<^bold>\<Or>S \<^bold>\<approx> \<^bold>\<top> \<longrightarrow> FUP S"
+  where "compact\<^sup>o\<^sup>p \<C> \<equiv> \<forall>S. S \<sqsubseteq> Op[\<C>] \<and> \<^bold>\<Or>S \<approx> \<^bold>\<top> \<longrightarrow> FUP S"
 
 (**Both definitions above are equivalent (without assuming any condition on \<C>)*)
 lemma "compact\<^sup>c\<^sup>l \<C> = compact\<^sup>o\<^sup>p \<C>" unfolding compact_cl_def compact_op_def by (smt (verit) ClOpdual FIUP_dual1 FIUP_dual2 OpCldual bottom_def compl_def dom_compl_def iDM_a iDM_b setequ_char top_def) 

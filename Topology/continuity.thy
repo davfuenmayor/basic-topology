@@ -6,11 +6,11 @@ begin
 
 (**The mapping \<phi>:'u\<Rightarrow>'v is continuous if its direct image distributes (increasingly) over the closure*)
 definition ContinuousC::"('u \<sigma> \<Rightarrow> 'u \<sigma>) \<Rightarrow> ('v \<sigma> \<Rightarrow> 'v \<sigma>) \<Rightarrow> ('u \<Rightarrow> 'v) \<Rightarrow> bool" ("Cont\<^sup>C[_,_]")
-  where "Cont\<^sup>C[\<C>\<^sub>1,\<C>\<^sub>2] \<phi> \<equiv> \<forall>U. \<lbrakk>\<phi> (\<C>\<^sub>1 U)\<rbrakk> \<^bold>\<preceq> \<C>\<^sub>2 \<lbrakk>\<phi> U\<rbrakk>"
+  where "Cont\<^sup>C[\<C>\<^sub>1,\<C>\<^sub>2] \<phi> \<equiv> \<forall>U. \<lbrakk>\<phi> (\<C>\<^sub>1 U)\<rbrakk> \<preceq> \<C>\<^sub>2 \<lbrakk>\<phi> U\<rbrakk>"
 
 (**The mapping \<phi>:'u\<Rightarrow>'v is continuous if its inverse image distributes (decreasingly) over the interior*)
 definition ContinuousI::"('u \<sigma> \<Rightarrow> 'u \<sigma>) \<Rightarrow> ('v \<sigma> \<Rightarrow> 'v \<sigma>) \<Rightarrow> ('u \<Rightarrow> 'v) \<Rightarrow> bool" ("Cont\<^sup>I[_,_]")
-  where "Cont\<^sup>I[\<C>\<^sub>1,\<C>\<^sub>2] \<phi> \<equiv> \<forall>V. \<lbrakk>\<phi> (\<I>[\<C>\<^sub>2] V)\<rbrakk>\<inverse> \<^bold>\<preceq> \<I>[\<C>\<^sub>1] \<lbrakk>\<phi> V\<rbrakk>\<inverse>"
+  where "Cont\<^sup>I[\<C>\<^sub>1,\<C>\<^sub>2] \<phi> \<equiv> \<forall>V. \<lbrakk>\<phi> (\<I>[\<C>\<^sub>2] V)\<rbrakk>\<inverse> \<preceq> \<I>[\<C>\<^sub>1] \<lbrakk>\<phi> V\<rbrakk>\<inverse>"
 
 (**The two definitions above are equivalent (modulo some conditions on the closures)*)
 lemma ContinuousIC_equiv:
@@ -45,20 +45,20 @@ lemma ContinuousCCl_equiv: "MONO \<C>\<^sub>1 \<Longrightarrow> MONO \<C>\<^sub>
 (**Point-continuity based on interior *)
 (**using direct image*)
 definition pointContinuous1I::"('u \<sigma> \<Rightarrow> 'u \<sigma>) \<Rightarrow> ('v \<sigma> \<Rightarrow> 'v \<sigma>) \<Rightarrow> ('u \<Rightarrow> 'v) \<Rightarrow> 'u \<Rightarrow> bool" ("pCont1\<^sup>I[_,_]")
-  where "pCont1\<^sup>I[\<C>\<^sub>1,\<C>\<^sub>2] \<phi> x \<equiv> \<forall>V. \<I>[\<C>\<^sub>2] V (\<phi> x) \<longrightarrow> (\<exists>U. \<I>[\<C>\<^sub>1] U x \<and> \<lbrakk>\<phi> U\<rbrakk> \<^bold>\<preceq> V)"
+  where "pCont1\<^sup>I[\<C>\<^sub>1,\<C>\<^sub>2] \<phi> x \<equiv> \<forall>V. \<I>[\<C>\<^sub>2] V (\<phi> x) \<longrightarrow> (\<exists>U. \<I>[\<C>\<^sub>1] U x \<and> \<lbrakk>\<phi> U\<rbrakk> \<preceq> V)"
 (**using inverse image*)
 definition pointContinuous2I::"('u \<sigma> \<Rightarrow> 'u \<sigma>) \<Rightarrow> ('v \<sigma> \<Rightarrow> 'v \<sigma>) \<Rightarrow> ('u \<Rightarrow> 'v) \<Rightarrow> 'u \<Rightarrow> bool" ("pCont2\<^sup>I[_,_]")
-  where "pCont2\<^sup>I[\<C>\<^sub>1,\<C>\<^sub>2] \<phi> x \<equiv> \<forall>V. \<I>[\<C>\<^sub>2] V (\<phi> x) \<longrightarrow> (\<exists>U. \<I>[\<C>\<^sub>1] U x \<and> U \<^bold>\<preceq> \<lbrakk>\<phi> V\<rbrakk>\<inverse>)"
+  where "pCont2\<^sup>I[\<C>\<^sub>1,\<C>\<^sub>2] \<phi> x \<equiv> \<forall>V. \<I>[\<C>\<^sub>2] V (\<phi> x) \<longrightarrow> (\<exists>U. \<I>[\<C>\<^sub>1] U x \<and> U \<preceq> \<lbrakk>\<phi> V\<rbrakk>\<inverse>)"
 (**Definitions using direct or inverse image are equivalent*)
 lemma pointContinuousI_equiv: "pCont1\<^sup>I[\<C>\<^sub>1,\<C>\<^sub>2] \<phi> x = pCont2\<^sup>I[\<C>\<^sub>1,\<C>\<^sub>2] \<phi> x" unfolding pointContinuous1I_def pointContinuous2I_def by (smt (verit, del_insts) img_dir_def img_inv_def subset_def)
 
 (**Point-continuity based on neighborhood *)
 (**using direct image*)
 definition pointContinuous1N::"('u \<sigma> \<Rightarrow> 'u \<sigma>) \<Rightarrow> ('v \<sigma> \<Rightarrow> 'v \<sigma>) \<Rightarrow> ('u \<Rightarrow> 'v) \<Rightarrow> 'u \<Rightarrow> bool" ("pCont1\<^sup>N[_,_]")
-  where "pCont1\<^sup>N[\<C>\<^sub>1,\<C>\<^sub>2] \<phi> x \<equiv> \<forall>V. \<N>[\<C>\<^sub>2] (\<phi> x) V \<longrightarrow> (\<exists>U. \<lbrakk>\<phi> U\<rbrakk> \<^bold>\<preceq> V \<and> \<N>[\<C>\<^sub>1] x U)"
+  where "pCont1\<^sup>N[\<C>\<^sub>1,\<C>\<^sub>2] \<phi> x \<equiv> \<forall>V. \<N>[\<C>\<^sub>2] (\<phi> x) V \<longrightarrow> (\<exists>U. \<lbrakk>\<phi> U\<rbrakk> \<preceq> V \<and> \<N>[\<C>\<^sub>1] x U)"
 (**using inverse image*)
 definition pointContinuous2N::"('u \<sigma> \<Rightarrow> 'u \<sigma>) \<Rightarrow> ('v \<sigma> \<Rightarrow> 'v \<sigma>) \<Rightarrow> ('u \<Rightarrow> 'v) \<Rightarrow> 'u \<Rightarrow> bool" ("pCont2\<^sup>N[_,_]")
-  where "pCont2\<^sup>N[\<C>\<^sub>1,\<C>\<^sub>2] \<phi> x \<equiv> \<forall>V. \<N>[\<C>\<^sub>2] (\<phi> x) V \<longrightarrow> (\<exists>U. U \<^bold>\<preceq> \<lbrakk>\<phi> V\<rbrakk>\<inverse> \<and> \<N>[\<C>\<^sub>1] x U)"
+  where "pCont2\<^sup>N[\<C>\<^sub>1,\<C>\<^sub>2] \<phi> x \<equiv> \<forall>V. \<N>[\<C>\<^sub>2] (\<phi> x) V \<longrightarrow> (\<exists>U. U \<preceq> \<lbrakk>\<phi> V\<rbrakk>\<inverse> \<and> \<N>[\<C>\<^sub>1] x U)"
 (**Definitions using direct or inverse image are equivalent*)
 lemma pointContinuousN_equiv: "pCont1\<^sup>N[\<C>\<^sub>1,\<C>\<^sub>2] \<phi> x = pCont2\<^sup>N[\<C>\<^sub>1,\<C>\<^sub>2] \<phi> x" unfolding pointContinuous1N_def pointContinuous2N_def by (smt (verit, best) img_dir_def img_inv_def subset_def)
 

@@ -25,7 +25,7 @@ definition accumulation_points::"('w,'w \<sigma>)\<rho> \<Rightarrow> ('w \<sigm
 
 (**We can in fact easily define a neighborhood function given a closure operator.*)
 definition Nbhd_Cl::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> ('w,'w \<sigma>)\<rho>" ("\<N>[_]") 
-  where "\<N>[\<C>] \<equiv> \<I>[\<C>]\<^sup>\<leftrightarrow>"
+  where "\<N>[\<C>] \<equiv> \<I>[\<C>]\<Zcat>"
 
 (**We prove below that in doing this the characterising neighborhood conditions are satisfied.*)
 lemma nbhd_prop1: "Cl_1' \<C> \<Longrightarrow> Nbhd_1 \<N>[\<C>]" unfolding Nbhd_1_def Nbhd_Cl_def swap_def op_dual_def by (smt (z3) ADDI_a_def BA_deMorgan2 compl_def join_def meet_closed_def subset_def)
@@ -35,10 +35,10 @@ lemma nbhd_prop4: "Cl_2 \<C> \<Longrightarrow> Cl_4' \<C> \<Longrightarrow> Nbhd
 
 (**Moreover, we can show under which (minimal) conditions the well-known characterisation of neighborhood
 functions in terms of open sets obtains.*)
-lemma nbhd_open1: "Cl_2 \<C> \<Longrightarrow> Cl_4' \<C> \<Longrightarrow> \<forall>p N. \<N>[\<C>] p N \<longrightarrow> (\<exists>E. Op[\<C>] E \<and> E \<^bold>\<preceq> N \<and> E p)" by (metis BA_cp BA_dn EXPN_def IDEM_a_def IDEM_char Int_Open Nbhd_Cl_def base.swap_def op_dual_def)
-lemma nbhd_open2: "MONO \<C> \<Longrightarrow> \<forall>p N. (\<exists>E. Op[\<C>] E \<and> E \<^bold>\<preceq> N \<and> E p) \<longrightarrow> \<N>[\<C>] p N" unfolding Nbhd_Cl_def swap_def by (metis MONO_def MONO_dual fixpoint_pred_def setequ_equ subset_def)
+lemma nbhd_open1: "Cl_2 \<C> \<Longrightarrow> Cl_4' \<C> \<Longrightarrow> \<forall>p N. \<N>[\<C>] p N \<longrightarrow> (\<exists>E. Op[\<C>] E \<and> E \<preceq> N \<and> E p)" by (metis BA_cp BA_dn EXPN_def IDEM_a_def IDEM_char Int_Open Nbhd_Cl_def base.swap_def op_dual_def)
+lemma nbhd_open2: "MONO \<C> \<Longrightarrow> \<forall>p N. (\<exists>E. Op[\<C>] E \<and> E \<preceq> N \<and> E p) \<longrightarrow> \<N>[\<C>] p N" unfolding Nbhd_Cl_def swap_def by (metis MONO_def MONO_dual fixpoint_pred_def setequ_equ subset_def)
 lemma nbhd_open: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> Cl_4' \<C> \<Longrightarrow>
-                 \<forall>p. \<N>[\<C>] p = (\<lambda>N. (\<exists>E. Op[\<C>] E \<and> E \<^bold>\<preceq> N \<and> E p))" by (meson nbhd_open1 nbhd_open2)
+                 \<forall>p. \<N>[\<C>] p = (\<lambda>N. (\<exists>E. Op[\<C>] E \<and> E \<preceq> N \<and> E p))" by (meson nbhd_open1 nbhd_open2)
 
 (**We can also verify (using minimal conditions) the characterization of open sets by neighborhoods.*)
 (**Every open set is a neighborhood of all (and only) of its points.*)

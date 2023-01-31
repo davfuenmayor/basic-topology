@@ -17,10 +17,10 @@ named_theorems iconn (*to group together definitions involving infinitary algebr
 declare infimum_def[iconn] supremum_def[iconn]
 
 (**and show that the encoded Boolean algebra is complete (as a lattice).*)
-abbreviation "upper_bound U S \<equiv> \<forall>X. (S X) \<longrightarrow> X \<^bold>\<preceq> U"
-abbreviation "lower_bound L S \<equiv> \<forall>X. (S X) \<longrightarrow> L \<^bold>\<preceq> X"
-abbreviation "is_supremum U S \<equiv> upper_bound U S \<and> (\<forall>X. upper_bound X S \<longrightarrow> U \<^bold>\<preceq> X)"
-abbreviation "is_infimum  L S \<equiv> lower_bound L S \<and> (\<forall>X. lower_bound X S \<longrightarrow> X \<^bold>\<preceq> L)"
+abbreviation "upper_bound U S \<equiv> \<forall>X. (S X) \<longrightarrow> X \<preceq> U"
+abbreviation "lower_bound L S \<equiv> \<forall>X. (S X) \<longrightarrow> L \<preceq> X"
+abbreviation "is_supremum U S \<equiv> upper_bound U S \<and> (\<forall>X. upper_bound X S \<longrightarrow> U \<preceq> X)"
+abbreviation "is_infimum  L S \<equiv> lower_bound L S \<and> (\<forall>X. lower_bound X S \<longrightarrow> X \<preceq> L)"
 
 lemma sup_char: "is_supremum \<^bold>\<Or>S S" unfolding order supremum_def by auto
 lemma sup_ext: "\<forall>S. \<exists>X. is_supremum X S" unfolding order by (metis supremum_def)
@@ -32,8 +32,8 @@ abbreviation "nonEmpty S \<equiv> \<exists>x. S x"
 abbreviation containment (infix "\<sqsubseteq>" 100) 
   where "D \<sqsubseteq> S \<equiv>  \<forall>X. D X \<longrightarrow> S X" (*read as "all Ds are contained in S"*)
 
-lemma "isEmpty S \<Longrightarrow> \<^bold>\<And>S \<^bold>\<approx> \<^bold>\<top>" by (simp add: infimum_def setequ_char top_def)
-lemma "isEmpty S \<Longrightarrow> \<^bold>\<Or>S \<^bold>\<approx> \<^bold>\<bottom>" by (simp add: bottom_def setequ_char supremum_def)
+lemma "isEmpty S \<Longrightarrow> \<^bold>\<And>S \<approx> \<^bold>\<top>" by (simp add: infimum_def setequ_char top_def)
+lemma "isEmpty S \<Longrightarrow> \<^bold>\<Or>S \<approx> \<^bold>\<bottom>" by (simp add: bottom_def setequ_char supremum_def)
 
 (**The property of being closed under arbitrary (resp. nonempty) supremum/infimum.*)
 definition "infimum_closed S  \<equiv> \<forall>D. D \<sqsubseteq> S \<longrightarrow> S(\<^bold>\<And>D)" (*observe that D can be empty*)
@@ -116,8 +116,8 @@ lemma dom_compl_char: "D\<^sup>- = (\<lambda>X. \<exists>Y. (D Y) \<and> (X = \<
 lemma dom_compl_invol: "(D\<^sup>-)\<^sup>- = D" by (simp add: BA_dn dom_compl_def)
 
 (**We can now check an infinite variant of the De Morgan laws,*)
-lemma iDM_a: "\<^bold>\<midarrow>(\<^bold>\<And>S) \<^bold>\<approx> \<^bold>\<Or>(S\<^sup>-)" unfolding order conn dom_compl_def infimum_def supremum_def using compl_def by force
-lemma iDM_b:" \<^bold>\<midarrow>(\<^bold>\<Or>S) \<^bold>\<approx> \<^bold>\<And>(S\<^sup>-)" unfolding order conn dom_compl_def infimum_def supremum_def using compl_def by force
+lemma iDM_a: "\<^bold>\<midarrow>(\<^bold>\<And>S) \<approx> \<^bold>\<Or>(S\<^sup>-)" unfolding order conn dom_compl_def infimum_def supremum_def using compl_def by force
+lemma iDM_b:" \<^bold>\<midarrow>(\<^bold>\<Or>S) \<approx> \<^bold>\<And>(S\<^sup>-)" unfolding order conn dom_compl_def infimum_def supremum_def using compl_def by force
 
 (**and that D and their complements are in a 1-1 correspondance*)
 lemma dom_compl_1to1: "correspond1to1 D D\<^sup>-" by (metis (mono_tags, lifting) BA_dn dom_compl_def injectiveRel_def mapping_def surjectiveRel_def)

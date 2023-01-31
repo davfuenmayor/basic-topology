@@ -30,8 +30,8 @@ abbreviation "Cl_4' \<phi> \<equiv> IDEM\<^sup>b \<phi>" (* Given EXPN, this is 
 abbreviation "Cl_5 \<phi>  \<equiv> DNRM \<phi>" (*the dual of NORM*)
 abbreviation "Cl_6 \<phi> \<equiv> DISTR\<^sub>\<rightarrow>\<^sup>d \<phi>"  (* decreasing distribution over implication *)
 abbreviation "Cl_7 \<phi> \<equiv> DISTR\<^sub>\<leftharpoonup>\<^sup>d \<phi>"  (* decreasing distribution over difference *)
-definition "Cl_8 \<phi>  \<equiv> \<forall>A B. \<phi>(\<phi> A \<^bold>\<and> \<phi> B) \<^bold>\<approx> (\<phi> A) \<^bold>\<and> (\<phi> B)"
-definition "Cl_9 \<phi>  \<equiv> \<forall>A B.  A \<^bold>\<preceq> (\<phi> B) \<longrightarrow> (\<phi> A) \<^bold>\<preceq> (\<phi> B)"
+definition "Cl_8 \<phi>  \<equiv> \<forall>A B. \<phi>(\<phi> A \<^bold>\<and> \<phi> B) \<approx> (\<phi> A) \<^bold>\<and> (\<phi> B)"
+definition "Cl_9 \<phi>  \<equiv> \<forall>A B.  A \<preceq> (\<phi> B) \<longrightarrow> (\<phi> A) \<preceq> (\<phi> B)"
 
 (**As for Cl-8 and Cl-9 we show which axioms entail them*)
 lemma PC8: "MONO \<phi> \<Longrightarrow> Cl_2 \<phi> \<Longrightarrow> Cl_4 \<phi> \<Longrightarrow> Cl_8 \<phi>" by (smt (verit, del_insts) Cl_8_def EXPN_def IDEM_def MONO_MULTa MULT_a_def setequ_def setequ_equ)
@@ -61,8 +61,8 @@ abbreviation "Int_4' \<phi> \<equiv> IDEM\<^sup>a \<phi>" (* Given CNTR, this is
 abbreviation "Int_5 \<phi>  \<equiv> NORM \<phi>"    (* 3th Kuratowski condition: 'normality'*)
 abbreviation "Int_6 \<phi>  \<equiv> DISTR\<^sub>\<leftharpoonup>\<^sup>i \<phi>" (* increasing distribution over difference *)
 abbreviation "Int_7 \<phi>  \<equiv> DISTR\<^sub>\<rightarrow>\<^sup>i \<phi>" (* increasing distribution over implication *)
-definition "Int_8 \<phi>  \<equiv> \<forall>A B. \<phi>(\<phi> A \<^bold>\<or> \<phi> B) \<^bold>\<approx> (\<phi> A) \<^bold>\<or> (\<phi> B)" (* dual of Cl-8 *)
-definition "Int_9 \<phi>  \<equiv> \<forall>A B. \<phi> A \<^bold>\<preceq> B \<longrightarrow> (\<phi> A) \<^bold>\<preceq> (\<phi> B)"   (* dual of Cl-9 *)
+definition "Int_8 \<phi>  \<equiv> \<forall>A B. \<phi>(\<phi> A \<^bold>\<or> \<phi> B) \<approx> (\<phi> A) \<^bold>\<or> (\<phi> B)" (* dual of Cl-8 *)
+definition "Int_9 \<phi>  \<equiv> \<forall>A B. \<phi> A \<preceq> B \<longrightarrow> (\<phi> A) \<preceq> (\<phi> B)"   (* dual of Cl-9 *)
 
 (**As for Int-8 and Int-9 we show which axioms entail them*)
 lemma PI8: "MONO \<phi> \<Longrightarrow> Int_2 \<phi> \<Longrightarrow> Int_4 \<phi> \<Longrightarrow> Int_8 \<phi>" by (metis ADDI_b_def CNTR_def IDEM_def Int_8_def MONO_ADDIb setequ_def setequ_equ) 
@@ -107,11 +107,11 @@ lemma F_symm: "\<forall>A. (\<F>[\<C>] A) = (\<F>[\<C>] (\<^bold>\<midarrow>A))"
 
 (**Fixed-point and other operators are interestingly related. 
 Note that below only the second Kuratowski condition for \<C> (expansiveness) is required.*)
-lemma fp1: "Cl_2 \<C> \<Longrightarrow> \<I>[\<C>]\<^sup>f\<^sup>p \<^bold>\<equiv> \<B>[\<C>]\<^sup>c" by (smt (verit, del_insts) Br_cl_def CNTR_def EXPN_CNTR_dual2 compl_def dimpl_char fixpoint_op_def meet_def op_compl_def op_dual_def op_equal_def setequ_char subset_def)
-lemma fp2: "Cl_2 \<C> \<Longrightarrow> \<B>[\<C>]\<^sup>f\<^sup>p \<^bold>\<equiv> \<I>[\<C>]\<^sup>c" by (metis comp_symm fp1 ofp_c ofp_invol op_equal_equ)
-lemma fp3: "Cl_2 \<C> \<Longrightarrow> \<C>\<^sup>f\<^sup>p \<^bold>\<equiv> \<B>[\<C>]\<^sup>d" by (metis dual_invol fp2 ofp_d ofp_invol op_equal_equ)
-lemma fp4: "Cl_2 \<C> \<Longrightarrow> (\<B>[\<C>]\<^sup>d)\<^sup>f\<^sup>p \<^bold>\<equiv> \<C>" by (metis fp3 ofp_invol op_equal_equ)
-lemma fp5: "Cl_2 \<C> \<Longrightarrow> \<F>[\<C>]\<^sup>f\<^sup>p \<^bold>\<equiv> (\<lambda>X. (\<B>[\<C>] X) \<^bold>\<or> (\<C>\<^sup>c X))"  by (smt (verit, del_insts) Br_cl_def EXPN_def Fr_cl_def compl_def dimpl_char fixpoint_op_def join_def meet_def op_compl_def op_equal_def setequ_char subset_def)
+lemma fp1: "Cl_2 \<C> \<Longrightarrow> \<I>[\<C>]\<^sup>f\<^sup>p \<cong> \<B>[\<C>]\<^sup>c" by (smt (verit, del_insts) Br_cl_def CNTR_def EXPN_CNTR_dual2 compl_def dimpl_char fixpoint_op_def meet_def op_compl_def op_dual_def op_equal_def setequ_char subset_def)
+lemma fp2: "Cl_2 \<C> \<Longrightarrow> \<B>[\<C>]\<^sup>f\<^sup>p \<cong> \<I>[\<C>]\<^sup>c" by (metis comp_symm fp1 ofp_c ofp_invol op_equal_equ)
+lemma fp3: "Cl_2 \<C> \<Longrightarrow> \<C>\<^sup>f\<^sup>p \<cong> \<B>[\<C>]\<^sup>d" by (metis dual_invol fp2 ofp_d ofp_invol op_equal_equ)
+lemma fp4: "Cl_2 \<C> \<Longrightarrow> (\<B>[\<C>]\<^sup>d)\<^sup>f\<^sup>p \<cong> \<C>" by (metis fp3 ofp_invol op_equal_equ)
+lemma fp5: "Cl_2 \<C> \<Longrightarrow> \<F>[\<C>]\<^sup>f\<^sup>p \<cong> (\<lambda>X. (\<B>[\<C>] X) \<^bold>\<or> (\<C>\<^sup>c X))"  by (smt (verit, del_insts) Br_cl_def EXPN_def Fr_cl_def compl_def dimpl_char fixpoint_op_def join_def meet_def op_compl_def op_equal_def setequ_char subset_def)
 
 (**Define some fixed-point predicates and prove some properties.*)
 abbreviation closedset ("Cl[_]") where "Cl[\<C>] \<equiv> fp \<C>"
@@ -130,9 +130,9 @@ lemma "\<CC> \<C> \<Longrightarrow> \<forall>A. Rs[\<C>](\<R>[\<C>] A)" nitpick 
 
 lemma OpCldual: "\<forall>A. Cl[\<C>] A \<longleftrightarrow> Op[\<C>](\<^bold>\<midarrow>A)" by (simp add: BA_dn fp_d)
 lemma ClOpdual: "\<forall>A. Op[\<C>] A \<longleftrightarrow> Cl[\<C>] (\<^bold>\<midarrow>A)" by (simp add: fp_d)
-lemma Op_Bempty: "Cl_2 \<C> \<Longrightarrow> \<forall>A. Op[\<C>] A \<longleftrightarrow> \<B>[\<C>] A \<^bold>\<approx> \<^bold>\<bottom>" by (metis comp_symm fp1 fp_c_rel ofp_d ofp_dc op_equal_equ)
-lemma Cl_Bempty: "Cl_2 \<C> \<Longrightarrow> \<forall>A. Cl[\<C>] A \<longleftrightarrow> \<B>[\<C>] (\<^bold>\<midarrow>A) \<^bold>\<approx> \<^bold>\<bottom>" using OpCldual Op_Bempty by blast
-lemma Br_Iempty: "Cl_2 \<C> \<Longrightarrow> \<forall>A. Br[\<C>] A \<longleftrightarrow> \<I>[\<C>] A \<^bold>\<approx> \<^bold>\<bottom>" by (metis comp_invol fp2 fp_c_rel ofp_c op_equal_equ)
+lemma Op_Bempty: "Cl_2 \<C> \<Longrightarrow> \<forall>A. Op[\<C>] A \<longleftrightarrow> \<B>[\<C>] A \<approx> \<^bold>\<bottom>" by (metis comp_symm fp1 fp_c_rel ofp_d ofp_dc op_equal_equ)
+lemma Cl_Bempty: "Cl_2 \<C> \<Longrightarrow> \<forall>A. Cl[\<C>] A \<longleftrightarrow> \<B>[\<C>] (\<^bold>\<midarrow>A) \<approx> \<^bold>\<bottom>" using OpCldual Op_Bempty by blast
+lemma Br_Iempty: "Cl_2 \<C> \<Longrightarrow> \<forall>A. Br[\<C>] A \<longleftrightarrow> \<I>[\<C>] A \<approx> \<^bold>\<bottom>" by (metis comp_invol fp2 fp_c_rel ofp_c op_equal_equ)
 lemma Fr_ClBr: "Cl_2 \<C> \<Longrightarrow> \<forall>A. Fr[\<C>] A \<longleftrightarrow> (Cl[\<C>] A \<and> Br[\<C>] A)" by (smt (verit, best) Br_cl_def EXPN_def Fr_cl_def compl_def fixpoint_pred_def meet_def setequ_def setequ_equ subset_def)
 
 lemma Int_join_closed: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> join_closed Op[\<C>]" using fp_inf_closed_cond3 fp_meet_join_closed_dual inf_closed_char inf_meet_closed by auto
@@ -150,18 +150,18 @@ proof -
   assume cl1: "Cl_1 \<C> " and cl2: "Cl_2 \<C>" and cl4: "Cl_4' \<C>"
   { fix A B
     { assume brA: "Br[\<C>] A" and frB: "Fr[\<C>] B"
-      from cl2 brA have bndA: "\<I>[\<C>] A \<^bold>\<approx> \<^bold>\<bottom>" by (simp add: Br_Iempty)
-      hence 1: "\<C>(\<^bold>\<midarrow>A) \<^bold>\<approx> \<^bold>\<top>" by (metis brA cl2 dual_invol fp4 fp_d_rel op_equal_equ)
-      from frB have "\<I>[\<C>](\<C> B) \<^bold>\<approx> \<^bold>\<bottom>" by (metis Br_Iempty Fr_ClBr cl2 fixpoint_pred_def setequ_equ)
-      hence 2: "\<C>(\<^bold>\<midarrow>(\<C> B)) \<^bold>\<approx> \<^bold>\<top>" by (metis Br_Iempty cl2 fp2 fp_d_rel ofp_dc ofp_invol op_equal_equ)
-      from cl1 cl2 have "\<C>(\<^bold>\<midarrow>A) \<^bold>\<leftharpoonup> \<C> B \<^bold>\<preceq> \<C>((\<^bold>\<midarrow>A) \<^bold>\<leftharpoonup> B)" using DISTR_diff_dec_def DISTR_diff_dec_prop by blast
-      hence "\<C>(\<^bold>\<midarrow>A) \<^bold>\<leftharpoonup> \<C> B \<^bold>\<preceq> \<C>(\<^bold>\<midarrow>(A \<^bold>\<or> B))" unfolding conn by simp
-      hence "\<^bold>\<top> \<^bold>\<leftharpoonup> \<C> B \<^bold>\<preceq> \<C>(\<^bold>\<midarrow>(A \<^bold>\<or> B))" using 1 setequ_equ by force
-      hence 3: "\<^bold>\<midarrow>(\<C> B) \<^bold>\<preceq> \<C>(\<^bold>\<midarrow>(A \<^bold>\<or> B))" unfolding conn by simp
-      from cl1 cl2 cl4 have 4: "let M=\<^bold>\<midarrow>(\<C> B); N=\<^bold>\<midarrow>(A \<^bold>\<or> B) in  M \<^bold>\<preceq> \<C> N \<longrightarrow> \<C> M \<^bold>\<preceq> \<C> N" by (metis (no_types) ADDI_char Cl_9_def EXPN_def IDEM_b_def IDEM_def MONO_ADDIb PC9 antisymmetric_def setequ_equ subset_antisymmetric)
-      from 3 4 have "\<C>(\<^bold>\<midarrow>(\<C> B)) \<^bold>\<preceq> \<C>(\<^bold>\<midarrow>(A \<^bold>\<or> B))" by simp 
-      hence "\<^bold>\<top> \<^bold>\<approx> \<C>(\<^bold>\<midarrow>(A \<^bold>\<or> B))" using 2 unfolding top_def by (simp add: setequ_char subset_def)
-      hence "\<^bold>\<bottom> \<^bold>\<approx> \<I>[\<C>](A \<^bold>\<or> B)" using cl2 1 bndA by (simp add: op_dual_def setequ_equ)
+      from cl2 brA have bndA: "\<I>[\<C>] A \<approx> \<^bold>\<bottom>" by (simp add: Br_Iempty)
+      hence 1: "\<C>(\<^bold>\<midarrow>A) \<approx> \<^bold>\<top>" by (metis brA cl2 dual_invol fp4 fp_d_rel op_equal_equ)
+      from frB have "\<I>[\<C>](\<C> B) \<approx> \<^bold>\<bottom>" by (metis Br_Iempty Fr_ClBr cl2 fixpoint_pred_def setequ_equ)
+      hence 2: "\<C>(\<^bold>\<midarrow>(\<C> B)) \<approx> \<^bold>\<top>" by (metis Br_Iempty cl2 fp2 fp_d_rel ofp_dc ofp_invol op_equal_equ)
+      from cl1 cl2 have "\<C>(\<^bold>\<midarrow>A) \<^bold>\<leftharpoonup> \<C> B \<preceq> \<C>((\<^bold>\<midarrow>A) \<^bold>\<leftharpoonup> B)" using DISTR_diff_dec_def DISTR_diff_dec_prop by blast
+      hence "\<C>(\<^bold>\<midarrow>A) \<^bold>\<leftharpoonup> \<C> B \<preceq> \<C>(\<^bold>\<midarrow>(A \<^bold>\<or> B))" unfolding conn by simp
+      hence "\<^bold>\<top> \<^bold>\<leftharpoonup> \<C> B \<preceq> \<C>(\<^bold>\<midarrow>(A \<^bold>\<or> B))" using 1 setequ_equ by force
+      hence 3: "\<^bold>\<midarrow>(\<C> B) \<preceq> \<C>(\<^bold>\<midarrow>(A \<^bold>\<or> B))" unfolding conn by simp
+      from cl1 cl2 cl4 have 4: "let M=\<^bold>\<midarrow>(\<C> B); N=\<^bold>\<midarrow>(A \<^bold>\<or> B) in  M \<preceq> \<C> N \<longrightarrow> \<C> M \<preceq> \<C> N" by (metis (no_types) ADDI_char Cl_9_def EXPN_def IDEM_b_def IDEM_def MONO_ADDIb PC9 antisymmetric_def setequ_equ subset_antisymmetric)
+      from 3 4 have "\<C>(\<^bold>\<midarrow>(\<C> B)) \<preceq> \<C>(\<^bold>\<midarrow>(A \<^bold>\<or> B))" by simp 
+      hence "\<^bold>\<top> \<approx> \<C>(\<^bold>\<midarrow>(A \<^bold>\<or> B))" using 2 unfolding top_def by (simp add: setequ_char subset_def)
+      hence "\<^bold>\<bottom> \<approx> \<I>[\<C>](A \<^bold>\<or> B)" using cl2 1 bndA by (simp add: op_dual_def setequ_equ)
       hence "Br[\<C>] (A \<^bold>\<or> B)" using cl2 Br_Iempty by (metis setequ_equ)
     } hence "Br[\<C>] A \<and> Fr[\<C>] B \<longrightarrow> Br[\<C>] (A \<^bold>\<or> B)" by simp
   } hence "\<forall>A B. Br[\<C>] A \<and> Fr[\<C>] B \<longrightarrow> Br[\<C>] (A \<^bold>\<or> B)" by simp
@@ -171,11 +171,11 @@ lemma Fr_inf_closed: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> in
 lemma "\<CC> \<C> \<Longrightarrow> infimum_closed Fr[\<C>]" nitpick oops (*countermodel*)
 lemma Fr_join_closed: "Cl_1 \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> Cl_4' \<C> \<Longrightarrow> join_closed Fr[\<C>]" by (metis (full_types) ADDI_joinclosed Br_Fr_join Fr_ClBr join_closed_def)
 
-lemma pFI: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> Cl_4' \<C> \<Longrightarrow> \<forall>A. \<F>[\<C>](\<I>[\<C>] A) \<^bold>\<preceq> \<F>[\<C>] A" by (simp add: BA_dn CNTR_def EXPN_CNTR_dual2 Fr_cl_def IDEM_b_def L12 MONO_def op_dual_def)
-lemma pFC: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> Cl_4' \<C> \<Longrightarrow> \<forall>A. \<F>[\<C>](\<C> A) \<^bold>\<preceq> \<F>[\<C>] A" by (metis BA_dn F_symm op_dual_def pFI)
-lemma pBI: "Cl_4' \<C> \<Longrightarrow> \<forall>A. \<B>[\<C>](\<I>[\<C>] A) \<^bold>\<preceq> \<B>[\<C>] A" by (smt (verit, best) BA_dn Br_cl_def IDEM_b_def compl_def meet_def op_dual_def subset_def)
-lemma "\<CC> \<C> \<Longrightarrow> \<forall>A. \<B>[\<C>](\<C> A) \<^bold>\<preceq> \<B>[\<C>] A" nitpick oops
-lemma pRB: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> Cl_4' \<C> \<Longrightarrow> \<forall>A. \<R>[\<C>] A \<^bold>\<preceq> \<B>[\<C>] A" oops (** as exercise (evtl. without using Cl-2) *)
+lemma pFI: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> Cl_4' \<C> \<Longrightarrow> \<forall>A. \<F>[\<C>](\<I>[\<C>] A) \<preceq> \<F>[\<C>] A" by (simp add: BA_dn CNTR_def EXPN_CNTR_dual2 Fr_cl_def IDEM_b_def L12 MONO_def op_dual_def)
+lemma pFC: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> Cl_4' \<C> \<Longrightarrow> \<forall>A. \<F>[\<C>](\<C> A) \<preceq> \<F>[\<C>] A" by (metis BA_dn F_symm op_dual_def pFI)
+lemma pBI: "Cl_4' \<C> \<Longrightarrow> \<forall>A. \<B>[\<C>](\<I>[\<C>] A) \<preceq> \<B>[\<C>] A" by (smt (verit, best) BA_dn Br_cl_def IDEM_b_def compl_def meet_def op_dual_def subset_def)
+lemma "\<CC> \<C> \<Longrightarrow> \<forall>A. \<B>[\<C>](\<C> A) \<preceq> \<B>[\<C>] A" nitpick oops
+lemma pRB: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> Cl_4' \<C> \<Longrightarrow> \<forall>A. \<R>[\<C>] A \<preceq> \<B>[\<C>] A" oops (** as exercise (evtl. without using Cl-2) *)
 
 (**Properties involving disjointness*)
 lemma Disj_IF: "\<forall>A. Disj (\<I>[\<C>] A) (\<F>[\<C>] A)" by (simp add: Disj_def Fr_cl_def bottom_def compl_def meet_def op_dual_def setequ_char)
@@ -193,11 +193,11 @@ lemma CI_Disj_rel: "MONO \<C> \<Longrightarrow> \<forall>A. \<C> A = (\<lambda>p
 
 (**Closure and interior can be characterised in terms of their fixed points.*)
 lemma C_fp_def: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> Cl_4' \<C> 
-                  \<Longrightarrow> \<forall>A. \<C> A \<^bold>\<approx> \<^bold>\<And>(\<lambda>S. Cl[\<C>] S \<and> A \<^bold>\<preceq> S)"
+                  \<Longrightarrow> \<forall>A. \<C> A \<approx> \<^bold>\<And>(\<lambda>S. Cl[\<C>] S \<and> A \<preceq> S)"
   using inf_char unfolding setequ_def by (smt (verit, del_insts) Cl_Closed EXPN_def IDEM_a_def IDEM_char MONO_def fixpoint_pred_def setequ_equ)
 
 lemma I_fp_def: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> Cl_4' \<C>
-                   \<Longrightarrow> \<forall>A. \<I>[\<C>] A \<^bold>\<approx> \<^bold>\<Or>(\<lambda>S. Op[\<C>] S \<and> S \<^bold>\<preceq> A)" 
+                   \<Longrightarrow> \<forall>A. \<I>[\<C>] A \<approx> \<^bold>\<Or>(\<lambda>S. Op[\<C>] S \<and> S \<preceq> A)" 
   using iDM_b op_dual_def setequ_char by (smt (z3) BA_cp BA_dn C_fp_def EXPN_def IDEM_b_def Int_sup_closed MONO_def MONO_dual OpCldual fixpoint_pred_def setequ_def setequ_equ subset_def sup_char supremum_closed_def)
   
 

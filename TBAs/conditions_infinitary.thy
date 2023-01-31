@@ -7,21 +7,21 @@ begin
 
 (**Distribution over infinite meets (infima) or infinite multiplicativity (iMULT).*)
 definition iMULT::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("iMULT")
-  where "iMULT \<phi>   \<equiv> \<forall>S. \<phi>(\<^bold>\<And>S) \<^bold>\<approx> \<^bold>\<And>\<lbrakk>\<phi> S\<rbrakk>" 
+  where "iMULT \<phi>   \<equiv> \<forall>S. \<phi>(\<^bold>\<And>S) \<approx> \<^bold>\<And>\<lbrakk>\<phi> S\<rbrakk>" 
 definition iMULT_a::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("iMULT\<^sup>a")
-  where "iMULT\<^sup>a \<phi> \<equiv> \<forall>S. \<phi>(\<^bold>\<And>S) \<^bold>\<preceq> \<^bold>\<And>\<lbrakk>\<phi> S\<rbrakk>"
+  where "iMULT\<^sup>a \<phi> \<equiv> \<forall>S. \<phi>(\<^bold>\<And>S) \<preceq> \<^bold>\<And>\<lbrakk>\<phi> S\<rbrakk>"
 definition iMULT_b::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("iMULT\<^sup>b")
-  where "iMULT\<^sup>b \<phi> \<equiv> \<forall>S. \<phi>(\<^bold>\<And>S) \<^bold>\<succeq> \<^bold>\<And>\<lbrakk>\<phi> S\<rbrakk>"
+  where "iMULT\<^sup>b \<phi> \<equiv> \<forall>S. \<phi>(\<^bold>\<And>S) \<succeq> \<^bold>\<And>\<lbrakk>\<phi> S\<rbrakk>"
 
 declare iMULT_def[cond] iMULT_a_def[cond] iMULT_b_def[cond]
 
 (**Distribution over infinite joins (suprema) or infinite additivity (iADDI).*)
 definition iADDI::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("iADDI")
-  where "iADDI \<phi>   \<equiv> \<forall>S. \<phi>(\<^bold>\<Or>S) \<^bold>\<approx> \<^bold>\<Or>\<lbrakk>\<phi> S\<rbrakk>" 
+  where "iADDI \<phi>   \<equiv> \<forall>S. \<phi>(\<^bold>\<Or>S) \<approx> \<^bold>\<Or>\<lbrakk>\<phi> S\<rbrakk>" 
 definition iADDI_a::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("iADDI\<^sup>a")
-  where "iADDI\<^sup>a \<phi> \<equiv> \<forall>S. \<phi>(\<^bold>\<Or>S) \<^bold>\<preceq> \<^bold>\<Or>\<lbrakk>\<phi> S\<rbrakk>" 
+  where "iADDI\<^sup>a \<phi> \<equiv> \<forall>S. \<phi>(\<^bold>\<Or>S) \<preceq> \<^bold>\<Or>\<lbrakk>\<phi> S\<rbrakk>" 
 definition iADDI_b::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("iADDI\<^sup>b")
-  where "iADDI\<^sup>b \<phi> \<equiv> \<forall>S. \<phi>(\<^bold>\<Or>S) \<^bold>\<succeq> \<^bold>\<Or>\<lbrakk>\<phi> S\<rbrakk>"
+  where "iADDI\<^sup>b \<phi> \<equiv> \<forall>S. \<phi>(\<^bold>\<Or>S) \<succeq> \<^bold>\<Or>\<lbrakk>\<phi> S\<rbrakk>"
 
 declare iADDI_def[cond] iADDI_a_def[cond] iADDI_b_def[cond]
 
@@ -38,8 +38,8 @@ lemma iMULTa_equ: "iMULT\<^sup>a \<phi> = MULT\<^sup>a \<phi>" proof -
     hence p1: "\<phi>(\<^bold>\<And>?S) = \<phi>(A \<^bold>\<and> B)" by simp
     have "\<lbrakk>\<phi> ?S\<rbrakk> = (\<lambda>Z. Z=(\<phi> A) \<or> Z=(\<phi> B))" unfolding img_dir_def by blast
     hence p2: "\<^bold>\<And>\<lbrakk>\<phi> ?S\<rbrakk> = (\<phi> A) \<^bold>\<and> (\<phi> B)" unfolding infimum_def meet_def by auto
-    have "\<phi>(\<^bold>\<And>?S) \<^bold>\<preceq> \<^bold>\<And>\<lbrakk>\<phi> ?S\<rbrakk>" using imulta iMULT_a_def by blast    
-    hence "\<phi>(A \<^bold>\<and> B) \<^bold>\<preceq> (\<phi> A) \<^bold>\<and> (\<phi> B)" using p1 p2 by simp
+    have "\<phi>(\<^bold>\<And>?S) \<preceq> \<^bold>\<And>\<lbrakk>\<phi> ?S\<rbrakk>" using imulta iMULT_a_def by blast    
+    hence "\<phi>(A \<^bold>\<and> B) \<preceq> (\<phi> A) \<^bold>\<and> (\<phi> B)" using p1 p2 by simp
   } thus ?thesis by (simp add: MULT_a_def) qed
   have rl: "MULT\<^sup>a \<phi> \<Longrightarrow> iMULT\<^sup>a \<phi>" by (smt (verit, best) MONO_MULTa MONO_def iMULT_a_def img_dir_def inf_char)
   from lr rl show ?thesis by blast
@@ -54,8 +54,8 @@ lemma iADDIb_equ: "iADDI\<^sup>b \<phi> = ADDI\<^sup>b \<phi>" proof -
     hence p1: "\<phi>(\<^bold>\<Or>?S) = \<phi>(A \<^bold>\<or> B)" by simp
     have "\<lbrakk>\<phi> ?S\<rbrakk> = (\<lambda>Z. Z=(\<phi> A) \<or> Z=(\<phi> B))" unfolding img_dir_def by blast
     hence p2: "\<^bold>\<Or>\<lbrakk>\<phi> ?S\<rbrakk> = (\<phi> A) \<^bold>\<or> (\<phi> B)" unfolding supremum_def join_def by auto
-    have " \<^bold>\<Or>\<lbrakk>\<phi> ?S\<rbrakk> \<^bold>\<preceq> \<phi>(\<^bold>\<Or>?S)" using iaddib iADDI_b_def by blast    
-    hence "(\<phi> A) \<^bold>\<or> (\<phi> B) \<^bold>\<preceq> \<phi>(A \<^bold>\<or> B)" using p1 p2 by simp
+    have " \<^bold>\<Or>\<lbrakk>\<phi> ?S\<rbrakk> \<preceq> \<phi>(\<^bold>\<Or>?S)" using iaddib iADDI_b_def by blast    
+    hence "(\<phi> A) \<^bold>\<or> (\<phi> B) \<preceq> \<phi>(A \<^bold>\<or> B)" using p1 p2 by simp
   } thus ?thesis by (simp add: ADDI_b_def) qed
   have rl: "ADDI\<^sup>b \<phi> \<Longrightarrow> iADDI\<^sup>b \<phi>"  by (smt (verit, best) MONO_ADDIb MONO_def iADDI_b_def img_dir_def sup_char)
   from lr rl show ?thesis by auto
@@ -111,13 +111,13 @@ proof -
   assume mono: "MONO \<phi>" and cntr: "CNTR \<phi>" and idem:"IDEM\<^sup>a \<phi>" and ic:"infimum_closed (fp \<phi>)"
   { fix S
     from ic have "\<forall>D. D \<sqsubseteq> (fp \<phi>) \<longrightarrow> (fp \<phi>)(\<^bold>\<And>D)" unfolding infimum_closed_def by simp
-    hence "let D=\<lbrakk>\<phi> S\<rbrakk> in (\<forall>X. D X \<longrightarrow> (X \<^bold>\<approx> \<phi> X)) \<longrightarrow> \<^bold>\<And>D \<^bold>\<approx> \<phi> \<^bold>\<And>D" by (simp add: fixpoint_pred_def setequ_equ)
-    moreover from idem have "(\<forall>X. \<lbrakk>\<phi> S\<rbrakk> X \<longrightarrow> (X \<^bold>\<approx> \<phi> X))" by (metis (mono_tags, lifting) CNTR_def IDEM_a_def cntr img_dir_def setequ_def)
-    ultimately have aux: "\<^bold>\<And>(\<lbrakk>\<phi> S\<rbrakk>) \<^bold>\<approx> \<phi>(\<^bold>\<And>\<lbrakk>\<phi> S\<rbrakk>)" by meson
-    from cntr have "\<^bold>\<And>\<lbrakk>\<phi> S\<rbrakk> \<^bold>\<preceq> \<^bold>\<And>S" by (smt (verit, best) CNTR_def img_dir_def infimum_def subset_def)
-    hence "\<phi>(\<^bold>\<And>\<lbrakk>\<phi> S\<rbrakk>) \<^bold>\<preceq> \<phi>(\<^bold>\<And>S)" using mono by (simp add: MONO_def) 
-    from this aux have "\<^bold>\<And>\<lbrakk>\<phi> S\<rbrakk> \<^bold>\<preceq> \<phi>(\<^bold>\<And>S)" by (simp add: setequ_equ)
-  } hence "\<forall>S. \<^bold>\<And>\<lbrakk>\<phi> S\<rbrakk> \<^bold>\<preceq> \<phi>(\<^bold>\<And>S)" by (rule allI)
+    hence "let D=\<lbrakk>\<phi> S\<rbrakk> in (\<forall>X. D X \<longrightarrow> (X \<approx> \<phi> X)) \<longrightarrow> \<^bold>\<And>D \<approx> \<phi> \<^bold>\<And>D" by (simp add: fixpoint_pred_def setequ_equ)
+    moreover from idem have "(\<forall>X. \<lbrakk>\<phi> S\<rbrakk> X \<longrightarrow> (X \<approx> \<phi> X))" by (metis (mono_tags, lifting) CNTR_def IDEM_a_def cntr img_dir_def setequ_def)
+    ultimately have aux: "\<^bold>\<And>(\<lbrakk>\<phi> S\<rbrakk>) \<approx> \<phi>(\<^bold>\<And>\<lbrakk>\<phi> S\<rbrakk>)" by meson
+    from cntr have "\<^bold>\<And>\<lbrakk>\<phi> S\<rbrakk> \<preceq> \<^bold>\<And>S" by (smt (verit, best) CNTR_def img_dir_def infimum_def subset_def)
+    hence "\<phi>(\<^bold>\<And>\<lbrakk>\<phi> S\<rbrakk>) \<preceq> \<phi>(\<^bold>\<And>S)" using mono by (simp add: MONO_def) 
+    from this aux have "\<^bold>\<And>\<lbrakk>\<phi> S\<rbrakk> \<preceq> \<phi>(\<^bold>\<And>S)" by (simp add: setequ_equ)
+  } hence "\<forall>S. \<^bold>\<And>\<lbrakk>\<phi> S\<rbrakk> \<preceq> \<phi>(\<^bold>\<And>S)" by (rule allI)
   thus ?thesis using MONO_iMULTa iMULT_b_def iMULT_char mono by blast
 qed
 lemma fp_sup_closed_iADDI: "MONO \<phi> \<Longrightarrow> EXPN \<phi> \<Longrightarrow> IDEM\<^sup>b \<phi> \<Longrightarrow> supremum_closed (fp \<phi>) \<Longrightarrow> iADDI \<phi>" 
@@ -127,13 +127,13 @@ proof -
   assume mono: "MONO \<phi>" and expn: "EXPN \<phi>" and idem:"IDEM\<^sup>b \<phi>" and sc:"supremum_closed (fp \<phi>)"
   { fix S
     from sc have "\<forall>D. D \<sqsubseteq> (fp \<phi>) \<longrightarrow> (fp \<phi>)(\<^bold>\<Or>D)" unfolding supremum_closed_def by simp
-    hence "let D=\<lbrakk>\<phi> S\<rbrakk> in (\<forall>X. D X \<longrightarrow> (X \<^bold>\<approx> \<phi> X)) \<longrightarrow> \<^bold>\<Or>D \<^bold>\<approx> \<phi> \<^bold>\<Or>D" by (simp add: fixpoint_pred_def setequ_def)
-    moreover have "(\<forall>X. \<lbrakk>\<phi> S\<rbrakk> X \<longrightarrow> (X \<^bold>\<approx> \<phi> X))" by (metis (mono_tags, lifting) EXPN_def IDEM_b_def expn idem img_dir_def setequ_def)
-    ultimately have aux: "\<^bold>\<Or>(\<lbrakk>\<phi> S\<rbrakk>) \<^bold>\<approx> \<phi>(\<^bold>\<Or>\<lbrakk>\<phi> S\<rbrakk>)" by meson
-    have "\<^bold>\<Or>S \<^bold>\<preceq> \<^bold>\<Or>\<lbrakk>\<phi> S\<rbrakk>" by (metis EXPN_CNTR_dual2 EXPN_def IDEM_dual2 MONO_dual expn fp_inf_closed_iMULT fp_sup_inf_closed_dual iADDI_def iADDI_iMULT_dual1 idem mono sc setequ_equ)
-    hence "\<phi>(\<^bold>\<Or>S) \<^bold>\<preceq> \<phi>(\<^bold>\<Or>\<lbrakk>\<phi> S\<rbrakk>)" using mono by (simp add: MONO_def) 
-    from this aux have "\<phi>(\<^bold>\<Or>S) \<^bold>\<preceq> \<^bold>\<Or>\<lbrakk>\<phi> S\<rbrakk>" by (metis setequ_equ)
-  } hence "\<forall>S. \<phi>(\<^bold>\<Or>S) \<^bold>\<preceq> \<^bold>\<Or>\<lbrakk>\<phi> S\<rbrakk>" by (rule allI)
+    hence "let D=\<lbrakk>\<phi> S\<rbrakk> in (\<forall>X. D X \<longrightarrow> (X \<approx> \<phi> X)) \<longrightarrow> \<^bold>\<Or>D \<approx> \<phi> \<^bold>\<Or>D" by (simp add: fixpoint_pred_def setequ_def)
+    moreover have "(\<forall>X. \<lbrakk>\<phi> S\<rbrakk> X \<longrightarrow> (X \<approx> \<phi> X))" by (metis (mono_tags, lifting) EXPN_def IDEM_b_def expn idem img_dir_def setequ_def)
+    ultimately have aux: "\<^bold>\<Or>(\<lbrakk>\<phi> S\<rbrakk>) \<approx> \<phi>(\<^bold>\<Or>\<lbrakk>\<phi> S\<rbrakk>)" by meson
+    have "\<^bold>\<Or>S \<preceq> \<^bold>\<Or>\<lbrakk>\<phi> S\<rbrakk>" by (metis EXPN_CNTR_dual2 EXPN_def IDEM_dual2 MONO_dual expn fp_inf_closed_iMULT fp_sup_inf_closed_dual iADDI_def iADDI_iMULT_dual1 idem mono sc setequ_equ)
+    hence "\<phi>(\<^bold>\<Or>S) \<preceq> \<phi>(\<^bold>\<Or>\<lbrakk>\<phi> S\<rbrakk>)" using mono by (simp add: MONO_def) 
+    from this aux have "\<phi>(\<^bold>\<Or>S) \<preceq> \<^bold>\<Or>\<lbrakk>\<phi> S\<rbrakk>" by (metis setequ_equ)
+  } hence "\<forall>S. \<phi>(\<^bold>\<Or>S) \<preceq> \<^bold>\<Or>\<lbrakk>\<phi> S\<rbrakk>" by (rule allI)
   thus ?thesis by (simp add: MONO_iADDIb iADDI_a_def iADDI_char mono)
 qed
 *)

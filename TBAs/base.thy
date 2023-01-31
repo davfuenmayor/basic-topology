@@ -24,25 +24,11 @@ type_synonym ('a,'b)\<rho> = \<open>'a \<Rightarrow> 'b \<Rightarrow> bool\<clos
 unary functions/operations (e.g. type @{type "('a \<Rightarrow> 'b)"}); and the letters
 @{text "\<xi>"} and @{text "\<delta>"} to denote binary functions/operations (e.g. type @{type "('a \<Rightarrow> 'a \<Rightarrow> 'b)"}).*)
 
-(**Useful transformations on relations (on a same domain).*)
-abbreviation symm_clsr::"('a,'a)\<rho> \<Rightarrow> ('a,'a)\<rho>" ("_\<^sup>C" [90]) 
-  where \<open>\<rho>\<^sup>C a b \<equiv> \<rho> a b \<or> \<rho> b a\<close> (** Symmetric closure ('C' for Closure/Connected)*)
-abbreviation symm_restr::"('a,'a)\<rho> \<Rightarrow> ('a,'a)\<rho>" ("_\<^sup>R" [90]) 
-  where \<open>\<rho>\<^sup>R a b \<equiv> \<rho> a b \<and> \<rho> b a\<close> (** Symmetric restriction ('R' for clusteR/Reciprocal)*)
-abbreviation strict_rel::"('a,'a)\<rho> \<Rightarrow> ('a,'a)\<rho>" ("_\<^sup>S" [90])
-  where \<open>\<rho>\<^sup>S a b \<equiv> \<rho> a b \<and> \<not>\<rho> b a\<close> (** Strict variant*)
-
 (**Useful well-known properties of relations.*)
 definition \<open>reflexive \<rho> \<equiv> \<forall>a. \<rho> a a\<close>
 definition \<open>transitive \<rho> \<equiv> \<forall>a b c. \<rho> a b \<and> \<rho> b c \<longrightarrow> \<rho> a c\<close>
-definition \<open>wtransitive \<rho> \<equiv> \<forall>a b c. \<rho> a b \<and> \<rho> b c \<and> a \<noteq> c \<longrightarrow> \<rho> a c\<close> (*weak transitivity*)
 definition \<open>symmetric \<rho> \<equiv> \<forall>a b. \<rho> a b \<longrightarrow> \<rho> b a\<close>
-definition \<open>serial \<rho> \<equiv> \<forall>a. \<exists>b. \<rho> a b\<close>
-definition \<open>antisymmetric \<rho> \<equiv> \<forall>a b. \<rho>\<^sup>R a b \<longrightarrow> a = b\<close>
-definition \<open>connected \<rho> \<equiv> \<forall>a b. a \<noteq> b \<longrightarrow>  \<rho>\<^sup>C a b\<close>
-definition \<open>sconnected \<rho> \<equiv> \<forall>a b. \<rho>\<^sup>C a b\<close> (*strongly connected*)
-definition \<open>dense \<rho> \<equiv> \<forall>a b. \<rho>\<^sup>S a b \<longrightarrow> (\<exists>c. \<rho>\<^sup>S a c \<and> \<rho>\<^sup>S c b)\<close>
-
+definition \<open>antisymmetric \<rho> \<equiv> \<forall>a b. (\<rho> a b \<and> \<rho> b a) \<longrightarrow> a = b\<close>
 
 (**Function composition.*)
 definition fun_comp :: "('b \<Rightarrow> 'c) \<Rightarrow> ('a \<Rightarrow> 'b) \<Rightarrow> 'a \<Rightarrow> 'c" (infixl "\<circ>" 75) 
@@ -110,8 +96,8 @@ lemma bij_inv: "(mapping \<phi> A B \<and> bijectiveRel \<phi> A B) \<longrighta
 abbreviation "correspond1to1 A B \<equiv> \<exists>f. mapping f A B \<and> bijectiveRel f A B"
 
 (**Swapping arguments for binary functions.*)
-definition swap::\<open>('a \<Rightarrow> 'b \<Rightarrow> 'c) \<Rightarrow> ('b \<Rightarrow> 'a \<Rightarrow> 'c)\<close> ("_\<^sup>\<leftrightarrow>")
-  where "\<xi>\<^sup>\<leftrightarrow> \<equiv> \<lambda>B A. \<xi> A B"
+definition swap::\<open>('a \<Rightarrow> 'b \<Rightarrow> 'c) \<Rightarrow> ('b \<Rightarrow> 'a \<Rightarrow> 'c)\<close> ("_\<Zcat>")
+  where "\<xi>\<Zcat> \<equiv> \<lambda>B A. \<xi> A B"
 
 (**Range, direct and inverse image of a unary function  @{text "\<phi>"}.*)
 definition range::"('a \<Rightarrow> 'b) \<Rightarrow> ('b \<Rightarrow> bool)" ("\<lbrakk>_ -\<rbrakk>") 

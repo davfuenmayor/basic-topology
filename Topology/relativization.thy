@@ -13,13 +13,13 @@ definition relativization::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow
  can be relativized wrt. to a given subset S of the space.*)
 
 definition ADDI_rel::"'w \<sigma> \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("ADDI\<downharpoonleft>\<^sub>_")
-  where "ADDI\<downharpoonleft>\<^sub>S \<phi> \<equiv> \<forall>A B. S \<^bold>\<and> \<phi>(A \<^bold>\<or> B) \<^bold>\<approx> (S \<^bold>\<and> \<phi> A) \<^bold>\<or> (S \<^bold>\<and> \<phi> B)"
+  where "ADDI\<downharpoonleft>\<^sub>S \<phi> \<equiv> \<forall>A B. S \<^bold>\<and> \<phi>(A \<^bold>\<or> B) \<approx> (S \<^bold>\<and> \<phi> A) \<^bold>\<or> (S \<^bold>\<and> \<phi> B)"
 definition EXPN_rel::"'w \<sigma> \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("EXPN\<downharpoonleft>\<^sub>_")
-  where "EXPN\<downharpoonleft>\<^sub>S \<phi>  \<equiv> \<forall>A. S \<^bold>\<and> A \<^bold>\<preceq> S \<^bold>\<and> \<phi> A"
+  where "EXPN\<downharpoonleft>\<^sub>S \<phi>  \<equiv> \<forall>A. S \<^bold>\<and> A \<preceq> S \<^bold>\<and> \<phi> A"
 definition NORM_rel::"'w \<sigma> \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("NORM\<downharpoonleft>\<^sub>_")
-  where "NORM\<downharpoonleft>\<^sub>S \<phi>  \<equiv> S \<^bold>\<and> (\<phi> \<^bold>\<bottom>) \<^bold>\<approx> S \<^bold>\<and> \<^bold>\<bottom>"
+  where "NORM\<downharpoonleft>\<^sub>S \<phi>  \<equiv> S \<^bold>\<and> (\<phi> \<^bold>\<bottom>) \<approx> S \<^bold>\<and> \<^bold>\<bottom>"
 definition IDEM_rel::"'w \<sigma> \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("IDEM\<downharpoonleft>\<^sub>_") 
-  where "IDEM\<downharpoonleft>\<^sub>S \<phi>  \<equiv> \<forall>A. S \<^bold>\<and> (\<phi> A) \<^bold>\<approx> S \<^bold>\<and> \<phi>(S \<^bold>\<and> \<phi> A)"
+  where "IDEM\<downharpoonleft>\<^sub>S \<phi>  \<equiv> \<forall>A. S \<^bold>\<and> (\<phi> A) \<approx> S \<^bold>\<and> \<phi>(S \<^bold>\<and> \<phi> A)"
 
 abbreviation Cl_1_rel ("Cl'_1\<downharpoonleft>\<^sub>_") where "Cl_1\<downharpoonleft>\<^sub>S \<phi> \<equiv> (ADDI\<downharpoonleft>\<^sub>S) \<phi>"
 abbreviation Cl_2_rel ("Cl'_2\<downharpoonleft>\<^sub>_") where "Cl_2\<downharpoonleft>\<^sub>S \<phi> \<equiv> (EXPN\<downharpoonleft>\<^sub>S) \<phi>"
@@ -40,9 +40,9 @@ abbreviation openset_rel ("Op\<downharpoonleft>\<^sub>_[_]") where "Op\<downharp
 
 (**A necessary and sufficient condition for a set to be closed relative to S
 is that it is to be the intersection of S and of a closed set.*) (*exercise: verify for opens*)
-lemma aux1: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> \<forall>A. (\<exists>E. Cl[\<C>] E \<and> A \<^bold>\<approx> S \<^bold>\<and> E) \<longrightarrow> Cl\<downharpoonleft>\<^sub>S[\<C>] A" unfolding fixpoint_pred_def relativization_def by (metis EXPN_def L12 L3 L4 L5 L8 MONO_def setequ_def setequ_equ) 
-lemma aux2: "Cl_4 \<C> \<Longrightarrow> \<forall>A. Cl\<downharpoonleft>\<^sub>S[\<C>] A \<longrightarrow> (\<exists>E. Cl[\<C>] E \<and> A \<^bold>\<approx> S \<^bold>\<and> E)" unfolding fixpoint_pred_def relativization_def by (metis IDEM_def setequ_equ)
-lemma "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> Cl_4 \<C> \<Longrightarrow> \<forall>A. Cl\<downharpoonleft>\<^sub>S[\<C>] A \<longleftrightarrow> (\<exists>E. Cl[\<C>] E \<and> A \<^bold>\<approx> S \<^bold>\<and> E)" 
+lemma aux1: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> \<forall>A. (\<exists>E. Cl[\<C>] E \<and> A \<approx> S \<^bold>\<and> E) \<longrightarrow> Cl\<downharpoonleft>\<^sub>S[\<C>] A" unfolding fixpoint_pred_def relativization_def by (metis EXPN_def L12 L3 L4 L5 L8 MONO_def setequ_def setequ_equ) 
+lemma aux2: "Cl_4 \<C> \<Longrightarrow> \<forall>A. Cl\<downharpoonleft>\<^sub>S[\<C>] A \<longrightarrow> (\<exists>E. Cl[\<C>] E \<and> A \<approx> S \<^bold>\<and> E)" unfolding fixpoint_pred_def relativization_def by (metis IDEM_def setequ_equ)
+lemma "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> Cl_4 \<C> \<Longrightarrow> \<forall>A. Cl\<downharpoonleft>\<^sub>S[\<C>] A \<longleftrightarrow> (\<exists>E. Cl[\<C>] E \<and> A \<approx> S \<^bold>\<and> E)" 
   using aux1 aux2 by blast
 
 (*In particular, if S is closed, then the property of being closed relative to S

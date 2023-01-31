@@ -62,16 +62,16 @@ relations. It is worth mentioning that in Alexandrov topologies every point has 
 namely the set of points related to it by the specialization (aka. accessibility) relation.
 We examine below  minimal conditions under which these relations obtain.*)
 
-lemma sp_rel_a:   "MONO \<C>  \<Longrightarrow> \<forall>A. \<C>[sp[\<C>]] A \<^bold>\<preceq> \<C> A" by (smt (verit, best) singleton_def Cl_rel_def MONO_def spec_rel_def subset_def)
-lemma sp_rel_b: "iADDI_a \<C> \<Longrightarrow> \<forall>A. \<C>[sp[\<C>]] A \<^bold>\<succeq> \<C> A" proof -
+lemma sp_rel_a:   "MONO \<C>  \<Longrightarrow> \<forall>A. \<C>[sp[\<C>]] A \<preceq> \<C> A" by (smt (verit, best) singleton_def Cl_rel_def MONO_def spec_rel_def subset_def)
+lemma sp_rel_b: "iADDI_a \<C> \<Longrightarrow> \<forall>A. \<C>[sp[\<C>]] A \<succeq> \<C> A" proof -
   assume iaddia: "iADDI_a \<C>"
   { fix A::"'a \<sigma>"
     let ?S="\<lambda>B. \<exists>w. A w \<and> B=(\<lambda>u. u=w)"
-    have "A \<^bold>\<approx> (\<^bold>\<Or>?S)" by (smt (verit, best) setequ_char supremum_def)
-    hence "\<C>(A) \<^bold>\<approx> \<C>(\<^bold>\<Or>?S)" by (simp add: setequ_equ) 
-    moreover have "\<^bold>\<Or>\<lbrakk>\<C> ?S\<rbrakk> \<^bold>\<approx> \<C>[sp[\<C>]] A" unfolding spec_rel_def singleton_def by (smt (verit) Cl_rel_def img_dir_def setequ_char supremum_def)
-    moreover from iaddia have "\<C>(\<^bold>\<Or>?S) \<^bold>\<preceq> \<^bold>\<Or>\<lbrakk>\<C> ?S\<rbrakk>" unfolding iADDI_a_def by simp
-    ultimately have "\<C> A \<^bold>\<preceq> \<C>[sp[\<C>]] A" by (simp add: setequ_equ)
+    have "A \<approx> (\<^bold>\<Or>?S)" by (smt (verit, best) setequ_char supremum_def)
+    hence "\<C>(A) \<approx> \<C>(\<^bold>\<Or>?S)" by (simp add: setequ_equ) 
+    moreover have "\<^bold>\<Or>\<lbrakk>\<C> ?S\<rbrakk> \<approx> \<C>[sp[\<C>]] A" unfolding spec_rel_def singleton_def by (smt (verit) Cl_rel_def img_dir_def setequ_char supremum_def)
+    moreover from iaddia have "\<C>(\<^bold>\<Or>?S) \<preceq> \<^bold>\<Or>\<lbrakk>\<C> ?S\<rbrakk>" unfolding iADDI_a_def by simp
+    ultimately have "\<C> A \<preceq> \<C>[sp[\<C>]] A" by (simp add: setequ_equ)
   } thus ?thesis by simp
 qed
 lemma sp_rel: "iCl_1 \<C> \<Longrightarrow> \<C> = \<C>[sp[\<C>]]" by (meson MONO_iADDIb ext iADDI_char setequ_def setequ_equ sp_rel_a sp_rel_b)

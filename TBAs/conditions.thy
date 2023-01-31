@@ -10,20 +10,20 @@ named_theorems cond
 
 (**Monotonicity (MONO).*)
 definition MONO::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("MONO")
-  where "MONO \<phi> \<equiv> \<forall>A B. A \<^bold>\<preceq> B \<longrightarrow> \<phi> A \<^bold>\<preceq> \<phi> B"
+  where "MONO \<phi> \<equiv> \<forall>A B. A \<preceq> B \<longrightarrow> \<phi> A \<preceq> \<phi> B"
 
 declare MONO_def[cond]
 
 lemma MONO_dual: "MONO \<phi> = MONO \<phi>\<^sup>d" by (smt (verit, best) BA_cp MONO_def dual_invol op_dual_def op_equal_equ)
-lemma MONO_ant: "MONO \<phi> \<Longrightarrow> \<forall>A B C. A \<^bold>\<preceq> B \<longrightarrow> \<phi>(B \<^bold>\<rightarrow> C) \<^bold>\<preceq> \<phi>(A \<^bold>\<rightarrow> C)" by (metis (full_types) MONO_def impl_def subset_def)
-lemma MONO_cons: "MONO \<phi> \<Longrightarrow> \<forall>A B C. A \<^bold>\<preceq> B \<longrightarrow> \<phi>(C \<^bold>\<rightarrow> A) \<^bold>\<preceq> \<phi>(C \<^bold>\<rightarrow> B)" by (metis (full_types) MONO_def impl_def subset_def)
+lemma MONO_ant: "MONO \<phi> \<Longrightarrow> \<forall>A B C. A \<preceq> B \<longrightarrow> \<phi>(B \<^bold>\<rightarrow> C) \<preceq> \<phi>(A \<^bold>\<rightarrow> C)" by (metis (full_types) MONO_def impl_def subset_def)
+lemma MONO_cons: "MONO \<phi> \<Longrightarrow> \<forall>A B C. A \<preceq> B \<longrightarrow> \<phi>(C \<^bold>\<rightarrow> A) \<preceq> \<phi>(C \<^bold>\<rightarrow> B)" by (metis (full_types) MONO_def impl_def subset_def)
 
 
 (**Expansive/extensive (EXPN) and its dual contractive (CNTR).*)
 definition EXPN::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("EXPN")
-  where "EXPN \<phi>  \<equiv> \<forall>A. A \<^bold>\<preceq> \<phi> A"
+  where "EXPN \<phi>  \<equiv> \<forall>A. A \<preceq> \<phi> A"
 definition CNTR::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("CNTR")
-  where "CNTR \<phi> \<equiv> \<forall>A. \<phi> A \<^bold>\<preceq> A"
+  where "CNTR \<phi> \<equiv> \<forall>A. \<phi> A \<preceq> A"
 
 declare EXPN_def[cond] CNTR_def[cond]
 
@@ -32,9 +32,9 @@ lemma EXPN_CNTR_dual2: "EXPN \<phi> = CNTR \<phi>\<^sup>d" by (simp add: EXPN_CN
 
 (**Normality (NORM) and its dual (DNRM).*)
 definition NORM::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("NORM")
-  where "NORM \<phi>  \<equiv> (\<phi> \<^bold>\<bottom>) \<^bold>\<approx> \<^bold>\<bottom>"
+  where "NORM \<phi>  \<equiv> (\<phi> \<^bold>\<bottom>) \<approx> \<^bold>\<bottom>"
 definition DNRM::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("DNRM")
-  where "DNRM \<phi> \<equiv> (\<phi> \<^bold>\<top>) \<^bold>\<approx> \<^bold>\<top>" 
+  where "DNRM \<phi> \<equiv> (\<phi> \<^bold>\<top>) \<approx> \<^bold>\<top>" 
 
 declare NORM_def[cond] DNRM_def[cond]
 
@@ -47,11 +47,11 @@ lemma CNTR_impl_NORM: "CNTR \<phi> \<Longrightarrow> NORM \<phi>" by (metis NORM
 
 (**Idempotence (IDEM).*)
 definition IDEM::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("IDEM") 
-  where "IDEM \<phi>  \<equiv> \<forall>A. (\<phi> A) \<^bold>\<approx> \<phi>(\<phi> A)"
+  where "IDEM \<phi>  \<equiv> \<forall>A. (\<phi> A) \<approx> \<phi>(\<phi> A)"
 definition IDEM_a::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("IDEM\<^sup>a") 
-  where "IDEM_a \<phi> \<equiv> \<forall>A. (\<phi> A) \<^bold>\<preceq> \<phi>(\<phi> A)"
+  where "IDEM_a \<phi> \<equiv> \<forall>A. (\<phi> A) \<preceq> \<phi>(\<phi> A)"
 definition IDEM_b::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("IDEM\<^sup>b") 
-  where "IDEM_b \<phi> \<equiv> \<forall>A. (\<phi> A) \<^bold>\<succeq> \<phi>(\<phi> A)"
+  where "IDEM_b \<phi> \<equiv> \<forall>A. (\<phi> A) \<succeq> \<phi>(\<phi> A)"
 lemma IDEM_char: "IDEM \<phi> = (IDEM_a \<phi> \<and> IDEM_b \<phi>)" using IDEM_def IDEM_a_def IDEM_b_def by (metis setequ_def) 
 
 declare IDEM_def[cond] IDEM_a_def[cond] IDEM_b_def[cond]
@@ -69,21 +69,21 @@ lemma IDEM_Ra_fp: "IDEM \<phi> \<Longrightarrow> \<lbrakk>\<phi> -\<rbrakk> = fp
 
 (**Distribution over joins or additivity (ADDI).*)
 definition ADDI::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("ADDI")
-  where "ADDI \<phi>   \<equiv> \<forall>A B. \<phi>(A \<^bold>\<or> B) \<^bold>\<approx> (\<phi> A) \<^bold>\<or> (\<phi> B)" 
+  where "ADDI \<phi>   \<equiv> \<forall>A B. \<phi>(A \<^bold>\<or> B) \<approx> (\<phi> A) \<^bold>\<or> (\<phi> B)" 
 definition ADDI_a::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("ADDI\<^sup>a")
-  where "ADDI\<^sup>a \<phi> \<equiv> \<forall>A B. \<phi>(A \<^bold>\<or> B) \<^bold>\<preceq> (\<phi> A) \<^bold>\<or> (\<phi> B)"
+  where "ADDI\<^sup>a \<phi> \<equiv> \<forall>A B. \<phi>(A \<^bold>\<or> B) \<preceq> (\<phi> A) \<^bold>\<or> (\<phi> B)"
 definition ADDI_b::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("ADDI\<^sup>b")
-  where "ADDI\<^sup>b \<phi> \<equiv> \<forall>A B. \<phi>(A \<^bold>\<or> B) \<^bold>\<succeq> (\<phi> A) \<^bold>\<or> (\<phi> B)" 
+  where "ADDI\<^sup>b \<phi> \<equiv> \<forall>A B. \<phi>(A \<^bold>\<or> B) \<succeq> (\<phi> A) \<^bold>\<or> (\<phi> B)" 
 
 declare ADDI_def[cond] ADDI_a_def[cond] ADDI_b_def[cond]
 
 (**Distribution over meets or multiplicativity (MULT).*)
 definition MULT::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("MULT") 
-  where "MULT \<phi>   \<equiv> \<forall>A B. \<phi>(A \<^bold>\<and> B) \<^bold>\<approx> (\<phi> A) \<^bold>\<and> (\<phi> B)" 
+  where "MULT \<phi>   \<equiv> \<forall>A B. \<phi>(A \<^bold>\<and> B) \<approx> (\<phi> A) \<^bold>\<and> (\<phi> B)" 
 definition MULT_a::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("MULT\<^sup>a")
-  where "MULT\<^sup>a \<phi> \<equiv> \<forall>A B. \<phi>(A \<^bold>\<and> B) \<^bold>\<preceq> (\<phi> A) \<^bold>\<and> (\<phi> B)" 
+  where "MULT\<^sup>a \<phi> \<equiv> \<forall>A B. \<phi>(A \<^bold>\<and> B) \<preceq> (\<phi> A) \<^bold>\<and> (\<phi> B)" 
 definition MULT_b::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("MULT\<^sup>b")
-  where "MULT_b \<phi> \<equiv> \<forall>A B. \<phi>(A \<^bold>\<and> B) \<^bold>\<succeq> (\<phi> A) \<^bold>\<and> (\<phi> B)"
+  where "MULT_b \<phi> \<equiv> \<forall>A B. \<phi>(A \<^bold>\<and> B) \<succeq> (\<phi> A) \<^bold>\<and> (\<phi> B)"
 
 declare MULT_def[cond] MULT_a_def[cond] MULT_b_def[cond]
 
@@ -105,10 +105,10 @@ lemma MULTb_impl_ADDIa: "\<forall>\<phi>. MULT\<^sup>b \<phi> \<longrightarrow> 
 lemma ADDIa_impl_MULTb: "\<forall>\<phi>. ADDI\<^sup>a \<phi> \<longrightarrow> MULT\<^sup>b \<phi>\<^sup>d" proof -
     { fix \<phi>::"('w \<sigma> \<Rightarrow> 'w \<sigma>)" { assume cl1a: "ADDI\<^sup>a \<phi>" 
       { fix A and B
-        have "\<^bold>\<midarrow>\<phi>(\<^bold>\<midarrow>(A \<^bold>\<and> B)) \<^bold>\<approx> \<^bold>\<midarrow>\<phi>(\<^bold>\<midarrow>A \<^bold>\<or> \<^bold>\<midarrow>B)" unfolding conn order by simp
-        moreover from cl1a have "\<^bold>\<midarrow>(\<phi>(\<^bold>\<midarrow>A) \<^bold>\<or> \<phi>(\<^bold>\<midarrow>B)) \<^bold>\<preceq> \<^bold>\<midarrow>\<phi>(\<^bold>\<midarrow>A \<^bold>\<or> \<^bold>\<midarrow>B)" using ADDI_a_def BA_cp by blast
-        ultimately have "\<^bold>\<midarrow>(\<phi>(\<^bold>\<midarrow>A)) \<^bold>\<and> \<^bold>\<midarrow>(\<phi>(\<^bold>\<midarrow>B)) \<^bold>\<preceq> \<^bold>\<midarrow>\<phi>(\<^bold>\<midarrow>(A \<^bold>\<and> B))" unfolding conn by simp
-        hence "(\<phi>\<^sup>d A) \<^bold>\<and> (\<phi>\<^sup>d B) \<^bold>\<preceq> (\<phi>\<^sup>d (A \<^bold>\<and> B))" unfolding op_dual_def by simp
+        have "\<^bold>\<midarrow>\<phi>(\<^bold>\<midarrow>(A \<^bold>\<and> B)) \<approx> \<^bold>\<midarrow>\<phi>(\<^bold>\<midarrow>A \<^bold>\<or> \<^bold>\<midarrow>B)" unfolding conn order by simp
+        moreover from cl1a have "\<^bold>\<midarrow>(\<phi>(\<^bold>\<midarrow>A) \<^bold>\<or> \<phi>(\<^bold>\<midarrow>B)) \<preceq> \<^bold>\<midarrow>\<phi>(\<^bold>\<midarrow>A \<^bold>\<or> \<^bold>\<midarrow>B)" using ADDI_a_def BA_cp by blast
+        ultimately have "\<^bold>\<midarrow>(\<phi>(\<^bold>\<midarrow>A)) \<^bold>\<and> \<^bold>\<midarrow>(\<phi>(\<^bold>\<midarrow>B)) \<preceq> \<^bold>\<midarrow>\<phi>(\<^bold>\<midarrow>(A \<^bold>\<and> B))" unfolding conn by simp
+        hence "(\<phi>\<^sup>d A) \<^bold>\<and> (\<phi>\<^sup>d B) \<preceq> (\<phi>\<^sup>d (A \<^bold>\<and> B))" unfolding op_dual_def by simp
       } hence "MULT\<^sup>b \<phi>\<^sup>d" using MULT_b_def by blast
     } hence "ADDI\<^sup>a \<phi> \<longrightarrow> MULT\<^sup>b \<phi>\<^sup>d" by simp
 } thus "\<forall>\<phi>. ADDI\<^sup>a \<phi> \<longrightarrow> MULT\<^sup>b \<phi>\<^sup>d" by blast qed
@@ -149,14 +149,14 @@ lemma "MONO \<phi> \<Longrightarrow> CNTR \<phi> \<Longrightarrow> IDEM \<phi> \
 
 (**Properties regarding distribution over implication/difference.*)
 definition DISTR_impl_inc::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("DISTR\<^sub>\<rightarrow>\<^sup>i")
-  where "DISTR\<^sub>\<rightarrow>\<^sup>i \<phi> \<equiv> \<forall>A B. \<phi> (A \<^bold>\<rightarrow> B) \<^bold>\<preceq> (\<phi> A) \<^bold>\<rightarrow> (\<phi> B)" 
+  where "DISTR\<^sub>\<rightarrow>\<^sup>i \<phi> \<equiv> \<forall>A B. \<phi> (A \<^bold>\<rightarrow> B) \<preceq> (\<phi> A) \<^bold>\<rightarrow> (\<phi> B)" 
 definition DISTR_impl_dec::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("DISTR\<^sub>\<rightarrow>\<^sup>d")
-  where "DISTR\<^sub>\<rightarrow>\<^sup>d \<phi> \<equiv> \<forall>A B. \<phi> (A \<^bold>\<rightarrow> B) \<^bold>\<succeq> (\<phi> A) \<^bold>\<rightarrow> (\<phi> B)"
+  where "DISTR\<^sub>\<rightarrow>\<^sup>d \<phi> \<equiv> \<forall>A B. \<phi> (A \<^bold>\<rightarrow> B) \<succeq> (\<phi> A) \<^bold>\<rightarrow> (\<phi> B)"
 
 definition DISTR_diff_inc::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("DISTR\<^sub>\<leftharpoonup>\<^sup>i")
-  where "DISTR\<^sub>\<leftharpoonup>\<^sup>i \<phi> \<equiv> \<forall>A B. \<phi> (A \<^bold>\<leftharpoonup> B) \<^bold>\<preceq> (\<phi> A) \<^bold>\<leftharpoonup> (\<phi> B)" 
+  where "DISTR\<^sub>\<leftharpoonup>\<^sup>i \<phi> \<equiv> \<forall>A B. \<phi> (A \<^bold>\<leftharpoonup> B) \<preceq> (\<phi> A) \<^bold>\<leftharpoonup> (\<phi> B)" 
 definition DISTR_diff_dec::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("DISTR\<^sub>\<leftharpoonup>\<^sup>d")
-  where "DISTR\<^sub>\<leftharpoonup>\<^sup>d \<phi> \<equiv> \<forall>A B. \<phi> (A \<^bold>\<leftharpoonup> B) \<^bold>\<succeq> (\<phi> A) \<^bold>\<leftharpoonup> (\<phi> B)" 
+  where "DISTR\<^sub>\<leftharpoonup>\<^sup>d \<phi> \<equiv> \<forall>A B. \<phi> (A \<^bold>\<leftharpoonup> B) \<succeq> (\<phi> A) \<^bold>\<leftharpoonup> (\<phi> B)" 
 
 lemma DISTR_diff_inc_prop: "MONO \<phi> \<Longrightarrow> CNTR \<phi> \<Longrightarrow> DISTR\<^sub>\<leftharpoonup>\<^sup>i \<phi>" unfolding DISTR_diff_inc_def CNTR_def by (smt (verit) MONO_def diff_def subset_def)
 lemma DISTR_impl_inc_prop: "MULT \<phi> \<Longrightarrow> DISTR\<^sub>\<rightarrow>\<^sup>i \<phi>" proof -
@@ -164,11 +164,11 @@ lemma DISTR_impl_inc_prop: "MULT \<phi> \<Longrightarrow> DISTR\<^sub>\<rightarr
   { fix a::"'a \<sigma>" and b::"'a \<sigma>"
     have "a \<^bold>\<and> b = a \<^bold>\<and> (a \<^bold>\<rightarrow> b)" unfolding conn by blast
     hence "\<phi>(a \<^bold>\<and> b) = \<phi>(a \<^bold>\<and> (a \<^bold>\<rightarrow> b))" by simp
-    moreover from mult have "\<phi>(a \<^bold>\<and> b) \<^bold>\<approx> \<phi> a \<^bold>\<and> \<phi> b" by (simp add: MULT_def)
-    moreover from mult have "\<phi>(a \<^bold>\<and> (a \<^bold>\<rightarrow> b)) \<^bold>\<approx> \<phi> a \<^bold>\<and> \<phi> (a \<^bold>\<rightarrow> b)" by (simp add: MULT_def)
-    ultimately have "\<phi> a \<^bold>\<and> \<phi> (a \<^bold>\<rightarrow> b) \<^bold>\<approx> \<phi> a \<^bold>\<and> \<phi> b" by (simp add: setequ_equ)
-    hence "\<phi> a \<^bold>\<and> \<phi> (a \<^bold>\<rightarrow> b) \<^bold>\<approx> \<phi> a \<^bold>\<and> (\<phi> a \<^bold>\<rightarrow> \<phi> b)" unfolding conn order by blast
-    hence "\<phi>(a \<^bold>\<rightarrow> b) \<^bold>\<preceq> \<phi> a \<^bold>\<rightarrow> \<phi> b" unfolding conn order by blast
+    moreover from mult have "\<phi>(a \<^bold>\<and> b) \<approx> \<phi> a \<^bold>\<and> \<phi> b" by (simp add: MULT_def)
+    moreover from mult have "\<phi>(a \<^bold>\<and> (a \<^bold>\<rightarrow> b)) \<approx> \<phi> a \<^bold>\<and> \<phi> (a \<^bold>\<rightarrow> b)" by (simp add: MULT_def)
+    ultimately have "\<phi> a \<^bold>\<and> \<phi> (a \<^bold>\<rightarrow> b) \<approx> \<phi> a \<^bold>\<and> \<phi> b" by (simp add: setequ_equ)
+    hence "\<phi> a \<^bold>\<and> \<phi> (a \<^bold>\<rightarrow> b) \<approx> \<phi> a \<^bold>\<and> (\<phi> a \<^bold>\<rightarrow> \<phi> b)" unfolding conn order by blast
+    hence "\<phi>(a \<^bold>\<rightarrow> b) \<preceq> \<phi> a \<^bold>\<rightarrow> \<phi> b" unfolding conn order by blast
   } thus ?thesis by (simp add: DISTR_impl_inc_def)
 qed
 lemma DISTR_impl_dec_prop: "MONO \<phi> \<Longrightarrow> EXPN \<phi> \<Longrightarrow> DISTR\<^sub>\<rightarrow>\<^sup>d \<phi>" by (smt (verit, best) DISTR_impl_dec_def EXPN_def MONO_def impl_def subset_def)
@@ -177,17 +177,17 @@ lemma DISTR_diff_dec_prop: "ADDI \<phi> \<Longrightarrow> DISTR\<^sub>\<leftharp
   { fix a::"'a \<sigma>" and b::"'a \<sigma>"
     have "a \<^bold>\<or> b = (a \<^bold>\<leftharpoonup> b) \<^bold>\<or> b" unfolding conn by blast
     hence "\<phi>(a \<^bold>\<or> b) = \<phi>((a \<^bold>\<leftharpoonup> b) \<^bold>\<or> b)" by simp
-    moreover from addi have "\<phi>(a \<^bold>\<or> b) \<^bold>\<approx> \<phi> a \<^bold>\<or> \<phi> b" by (simp add: ADDI_def)
-    moreover from addi have "\<phi>((a \<^bold>\<leftharpoonup> b) \<^bold>\<or> b) \<^bold>\<approx> \<phi> (a \<^bold>\<leftharpoonup> b) \<^bold>\<or> (\<phi> b)" by (simp add: ADDI_def)
-    ultimately have "\<phi> a \<^bold>\<or> \<phi> b \<^bold>\<approx> \<phi>(a \<^bold>\<leftharpoonup> b) \<^bold>\<or> \<phi> b" unfolding order by metis
-    hence "(\<phi> a \<^bold>\<leftharpoonup> \<phi> b) \<^bold>\<or> \<phi> b \<^bold>\<approx> \<phi>(a \<^bold>\<leftharpoonup> b) \<^bold>\<or> \<phi> b" unfolding conn order by blast
-    hence "\<phi> a \<^bold>\<leftharpoonup> \<phi> b \<^bold>\<preceq> \<phi> (a \<^bold>\<leftharpoonup> b)" unfolding conn order by blast
+    moreover from addi have "\<phi>(a \<^bold>\<or> b) \<approx> \<phi> a \<^bold>\<or> \<phi> b" by (simp add: ADDI_def)
+    moreover from addi have "\<phi>((a \<^bold>\<leftharpoonup> b) \<^bold>\<or> b) \<approx> \<phi> (a \<^bold>\<leftharpoonup> b) \<^bold>\<or> (\<phi> b)" by (simp add: ADDI_def)
+    ultimately have "\<phi> a \<^bold>\<or> \<phi> b \<approx> \<phi>(a \<^bold>\<leftharpoonup> b) \<^bold>\<or> \<phi> b" unfolding order by metis
+    hence "(\<phi> a \<^bold>\<leftharpoonup> \<phi> b) \<^bold>\<or> \<phi> b \<approx> \<phi>(a \<^bold>\<leftharpoonup> b) \<^bold>\<or> \<phi> b" unfolding conn order by blast
+    hence "\<phi> a \<^bold>\<leftharpoonup> \<phi> b \<preceq> \<phi> (a \<^bold>\<leftharpoonup> b)" unfolding conn order by blast
   } thus ?thesis by (simp add: DISTR_diff_dec_def)
 qed
 
-lemma ADDI_distr_impl_dual: "ADDI \<phi> \<Longrightarrow> \<forall>A B. \<phi>\<^sup>d(A \<^bold>\<rightarrow> B) \<^bold>\<preceq> \<phi> A \<^bold>\<rightarrow> \<phi> B" by (smt (verit) BA_cp BA_dn DISTR_diff_dec_def DISTR_diff_dec_prop impl_diff_rel op_dual_def setequ_equ)
-lemma MULT_distr_diff_dual: "MULT \<phi> \<Longrightarrow> \<forall>A B. \<phi>\<^sup>d(A \<^bold>\<leftharpoonup> B) \<^bold>\<succeq> \<phi> A \<^bold>\<leftharpoonup> \<phi> B" by (smt (verit) BA_cp BA_dn DISTR_impl_inc_def DISTR_impl_inc_prop impl_diff_rel op_dual_def setequ_equ)
-lemma ADDI_distr_diff_dual: "ADDI \<phi> \<Longrightarrow> \<forall>A B. \<phi>(A \<^bold>\<leftharpoonup> B) \<^bold>\<succeq> \<phi>\<^sup>d A \<^bold>\<leftharpoonup> \<phi>\<^sup>d B" by (smt (verit, ccfv_SIG) ADDI_MULT_dual1 BA_cp BA_dn DISTR_impl_inc_def DISTR_impl_inc_prop impl_diff_rel op_dual_def setequ_equ)
-lemma MULT_distr_impl_dual: "MULT \<phi> \<Longrightarrow> \<forall>A B. \<phi>(A \<^bold>\<rightarrow> B) \<^bold>\<preceq> \<phi>\<^sup>d A \<^bold>\<rightarrow> \<phi>\<^sup>d B" by (metis ADDI_MULT_dual2 ADDI_distr_impl_dual dual_invol op_equal_equ)
+lemma ADDI_distr_impl_dual: "ADDI \<phi> \<Longrightarrow> \<forall>A B. \<phi>\<^sup>d(A \<^bold>\<rightarrow> B) \<preceq> \<phi> A \<^bold>\<rightarrow> \<phi> B" by (smt (verit) BA_cp BA_dn DISTR_diff_dec_def DISTR_diff_dec_prop impl_diff_rel op_dual_def setequ_equ)
+lemma MULT_distr_diff_dual: "MULT \<phi> \<Longrightarrow> \<forall>A B. \<phi>\<^sup>d(A \<^bold>\<leftharpoonup> B) \<succeq> \<phi> A \<^bold>\<leftharpoonup> \<phi> B" by (smt (verit) BA_cp BA_dn DISTR_impl_inc_def DISTR_impl_inc_prop impl_diff_rel op_dual_def setequ_equ)
+lemma ADDI_distr_diff_dual: "ADDI \<phi> \<Longrightarrow> \<forall>A B. \<phi>(A \<^bold>\<leftharpoonup> B) \<succeq> \<phi>\<^sup>d A \<^bold>\<leftharpoonup> \<phi>\<^sup>d B" by (smt (verit, ccfv_SIG) ADDI_MULT_dual1 BA_cp BA_dn DISTR_impl_inc_def DISTR_impl_inc_prop impl_diff_rel op_dual_def setequ_equ)
+lemma MULT_distr_impl_dual: "MULT \<phi> \<Longrightarrow> \<forall>A B. \<phi>(A \<^bold>\<rightarrow> B) \<preceq> \<phi>\<^sup>d A \<^bold>\<rightarrow> \<phi>\<^sup>d B" by (metis ADDI_MULT_dual2 ADDI_distr_impl_dual dual_invol op_equal_equ)
 
 end
