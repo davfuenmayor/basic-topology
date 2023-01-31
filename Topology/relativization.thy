@@ -6,19 +6,19 @@ begin
 an analogous role to that of a subspace.*)
 
 (**We can relativize a closure operator wrt. a subset S of its carrier (implicitly given as 'a-type domain)*)
-definition relativization::"('w \<sigma>, 'w \<sigma>)\<phi> \<Rightarrow> 'w \<sigma> \<Rightarrow> ('w \<sigma>, 'w \<sigma>)\<phi>" ("_\<downharpoonleft>\<^sub>_")
+definition relativization::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> 'w \<sigma> \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>)" ("_\<downharpoonleft>\<^sub>_")
   where "\<C>\<downharpoonleft>\<^sub>S \<equiv> \<lambda>A. S \<^bold>\<and> \<C> A"
 
 (**Kuratowski conditions (like additivity, normality, idempotence, etc)
  can be relativized wrt. to a given subset S of the space.*)
 
-definition ADDI_rel::"'w \<sigma> \<Rightarrow> ('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("ADDI\<downharpoonleft>\<^sub>_")
+definition ADDI_rel::"'w \<sigma> \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("ADDI\<downharpoonleft>\<^sub>_")
   where "ADDI\<downharpoonleft>\<^sub>S \<phi> \<equiv> \<forall>A B. S \<^bold>\<and> \<phi>(A \<^bold>\<or> B) \<^bold>\<approx> (S \<^bold>\<and> \<phi> A) \<^bold>\<or> (S \<^bold>\<and> \<phi> B)"
-definition EXPN_rel::"'w \<sigma> \<Rightarrow> ('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("EXPN\<downharpoonleft>\<^sub>_")
+definition EXPN_rel::"'w \<sigma> \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("EXPN\<downharpoonleft>\<^sub>_")
   where "EXPN\<downharpoonleft>\<^sub>S \<phi>  \<equiv> \<forall>A. S \<^bold>\<and> A \<^bold>\<preceq> S \<^bold>\<and> \<phi> A"
-definition NORM_rel::"'w \<sigma> \<Rightarrow> ('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("NORM\<downharpoonleft>\<^sub>_")
+definition NORM_rel::"'w \<sigma> \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("NORM\<downharpoonleft>\<^sub>_")
   where "NORM\<downharpoonleft>\<^sub>S \<phi>  \<equiv> S \<^bold>\<and> (\<phi> \<^bold>\<bottom>) \<^bold>\<approx> S \<^bold>\<and> \<^bold>\<bottom>"
-definition IDEM_rel::"'w \<sigma> \<Rightarrow> ('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("IDEM\<downharpoonleft>\<^sub>_") 
+definition IDEM_rel::"'w \<sigma> \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("IDEM\<downharpoonleft>\<^sub>_") 
   where "IDEM\<downharpoonleft>\<^sub>S \<phi>  \<equiv> \<forall>A. S \<^bold>\<and> (\<phi> A) \<^bold>\<approx> S \<^bold>\<and> \<phi>(S \<^bold>\<and> \<phi> A)"
 
 abbreviation Cl_1_rel ("Cl'_1\<downharpoonleft>\<^sub>_") where "Cl_1\<downharpoonleft>\<^sub>S \<phi> \<equiv> (ADDI\<downharpoonleft>\<^sub>S) \<phi>"

@@ -16,10 +16,11 @@ Propositional functions, as the name indicates, are basically anything with a (p
 (**We utilize a particular convention on the naming of type variables:
 Type variable @{type "'w"} is intended for the domain of points (aka. 'worlds').
 This way the polymorphic type @{type "'w \<sigma>"} is a type alias for sets of points (i.e. propositions)
-encoded as their corresponding characteristic functions.*)
+encoded as their corresponding characteristic functions.
+In the same vein, the type ('e,'w)\<rho> (i.e. 'e \<Rightarrow> 'w \<sigma>) becomes the type for propositional functions.
+*)
 
 type_synonym 'w \<sigma> = \<open>'w \<Rightarrow> bool\<close> (*type for propositions as (characteristic functions of) sets*)
-type_synonym ('e,'w)\<pi> = \<open>'e \<Rightarrow> 'w \<sigma>\<close> (*type for propositional functions*)
 
 (**In the sequel, we introduce the following naming convention for variables:
 

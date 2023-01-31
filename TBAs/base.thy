@@ -16,15 +16,13 @@ hide_const(open) Fun.comp no_notation Fun.comp (infixl "\<circ>" 55) (*we redefi
 
 section \<open>Basic definitions\<close>
 
-(**We begin by introducing some useful(?) type aliases for frequently employed types.*)
+(**We begin by introducing an useful(?) type alias *)
 type_synonym ('a,'b)\<rho> = \<open>'a \<Rightarrow> 'b \<Rightarrow> bool\<close> (** for (curried) relations between 'a-type and 'b-type*)
-type_synonym ('a,'b)\<phi> = \<open>'a \<Rightarrow> 'b\<close> (** for unary functions from 'a-type (domain) to 'b-type (codomain)*)
-type_synonym ('a,'b)\<xi> = \<open>'a \<Rightarrow> 'a \<Rightarrow> 'b\<close> (** for (curried) binary functions from 'a-type to 'b-type*)
-type_synonym ('a,'b)\<Phi> = \<open>('a \<Rightarrow> bool) \<Rightarrow> 'b\<close> (** for infinitary functions from 'a-type to 'b-type*)
+(* type_synonym ('a,'b)\<rho> = \<open>'a \<times> 'b \<Rightarrow> bool\<close> *)
 
 (**In the sequel we employ the letters @{text "\<phi>"}, @{text "\<psi>"} and @{text "\<eta>"} to explicitly denote
-unary functions/operations (e.g. type @{type "('a,'b)\<phi>"}); and the letters
-@{text "\<xi>"} and @{text "\<delta>"} to denote binary functions/operations (e.g. type @{type "('a,'b)\<xi>"}).*)
+unary functions/operations (e.g. type @{type "('a \<Rightarrow> 'b)"}); and the letters
+@{text "\<xi>"} and @{text "\<delta>"} to denote binary functions/operations (e.g. type @{type "('a \<Rightarrow> 'a \<Rightarrow> 'b)"}).*)
 
 (**Useful transformations on relations (on a same domain).*)
 abbreviation symm_clsr::"('a,'a)\<rho> \<Rightarrow> ('a,'a)\<rho>" ("_\<^sup>C" [90]) 
@@ -47,7 +45,7 @@ definition \<open>dense \<rho> \<equiv> \<forall>a b. \<rho>\<^sup>S a b \<longr
 
 
 (**Function composition.*)
-definition fun_comp :: "('b\<Rightarrow>'c)\<Rightarrow>('a\<Rightarrow>'b)\<Rightarrow>'a\<Rightarrow>'c" (infixl "\<circ>" 75) 
+definition fun_comp :: "('b \<Rightarrow> 'c) \<Rightarrow> ('a \<Rightarrow> 'b) \<Rightarrow> 'a \<Rightarrow> 'c" (infixl "\<circ>" 75) 
   where "\<phi> \<circ> \<psi> \<equiv> \<lambda>x. \<phi> (\<psi> x)"
 
 (**Injectivity and surjectivity.*)
@@ -56,7 +54,7 @@ definition "surjective \<phi> \<equiv> \<forall>y. \<exists>x. (\<phi> x) = y"
 abbreviation "bijective \<phi> \<equiv> injective \<phi> \<and> surjective \<phi>"
 
 (**Inverse is defined for bijective functions (only!).*)
-definition inverse::\<open>('a,'b)\<phi> \<Rightarrow> ('b,'a)\<phi>\<close> ("_\<inverse>")
+definition inverse::\<open>('a \<Rightarrow> 'b) \<Rightarrow> ('b \<Rightarrow> 'a)\<close> ("_\<inverse>")
   where "\<phi>\<inverse> \<equiv> \<lambda>b. THE a. (\<phi> a = b)"
 
 (**We verify some properties of inverse functions.*)
@@ -76,7 +74,7 @@ abbreviation "bijectiveRel \<phi> Dom Cod \<equiv> injectiveRel \<phi> Dom \<and
 
 (**Inverse (relativized to a given domain D) is defined only for \<phi> a bijective function (wrt. to D) 
  and an element b that is in the image of D under \<phi>.*)
-definition inverseRel::\<open>('a,'b)\<phi> \<Rightarrow> ('a\<Rightarrow> bool) \<Rightarrow> ('b,'a)\<phi>\<close> ("_[_]\<inverse>")
+definition inverseRel::\<open>('a \<Rightarrow> 'b) \<Rightarrow> ('a \<Rightarrow> bool) \<Rightarrow> ('b \<Rightarrow> 'a)\<close> ("_[_]\<inverse>")
   where "\<phi>[D]\<inverse> \<equiv> \<lambda>b. THE a. D a \<and> (\<phi> a = b)"
 
 lemma map_comp: "mapping \<phi> A B \<and> mapping \<psi> B C \<longrightarrow> mapping (\<psi> \<circ> \<phi>) A C" 
@@ -116,22 +114,22 @@ definition swap::\<open>('a \<Rightarrow> 'b \<Rightarrow> 'c) \<Rightarrow> ('b
   where "\<xi>\<^sup>\<leftrightarrow> \<equiv> \<lambda>B A. \<xi> A B"
 
 (**Projections map each a unary function into a 'projected' binary function.*)
-definition proj1::\<open>('a,'b)\<phi> \<Rightarrow> ('a,'b)\<xi>\<close> ("\<^bold>\<pi>\<^sub>1")
+definition proj1::\<open>('a \<Rightarrow> 'b) \<Rightarrow> ('a \<Rightarrow> 'a \<Rightarrow> 'b)\<close> ("\<^bold>\<pi>\<^sub>1")
   where "\<^bold>\<pi>\<^sub>1 \<phi> \<equiv> \<lambda>A B. \<phi> A"
-definition proj2::\<open>('a,'b)\<phi> \<Rightarrow> ('a,'b)\<xi>\<close> ("\<^bold>\<pi>\<^sub>2")
+definition proj2::\<open>('a \<Rightarrow> 'b) \<Rightarrow> ('a \<Rightarrow> 'a \<Rightarrow> 'b)\<close> ("\<^bold>\<pi>\<^sub>2")
   where "\<^bold>\<pi>\<^sub>2 \<phi> \<equiv> \<lambda>A B. \<phi> B"
 
 (**Diagonalization maps a binary function into a unary function.*)
-definition diag::\<open>('a,'b)\<xi> \<Rightarrow> ('a,'b)\<phi>\<close> ("\<langle>_\<rangle>")
+definition diag::\<open>('a \<Rightarrow> 'a \<Rightarrow> 'b) \<Rightarrow> ('a \<Rightarrow> 'b)\<close> ("\<langle>_\<rangle>")
   where "\<langle>\<xi>\<rangle> \<equiv> \<lambda>A. \<xi> A A"
 
 (**Partial application maps a binary function @{text "\<xi>"} into a unary function (modulo an element E).
  It comes in two flavours (#1 or #2) depending on whether @{text "\<xi>"} is partially applied to the 
  element E at the second, resp. first position. This 'switched' notation has been chosen for convenience.
  To avoid confusion we suggest employing the provided notation only.*)
-definition app1::\<open>('a,'b)\<xi> \<Rightarrow> 'a \<Rightarrow> ('a,'b)\<phi>\<close> ("\<lbrakk>_|'_ \<circ> _\<rbrakk>")
+definition app1::\<open>('a \<Rightarrow> 'a \<Rightarrow> 'b) \<Rightarrow> 'a \<Rightarrow> ('a \<Rightarrow> 'b)\<close> ("\<lbrakk>_|'_ \<circ> _\<rbrakk>")
   where "\<lbrakk>\<xi>|_\<circ> E\<rbrakk> \<equiv> \<lambda>A. \<xi> A E" (*argument A comes in first place*)
-definition app2::\<open>('a,'b)\<xi> \<Rightarrow> 'a \<Rightarrow> ('a,'b)\<phi>\<close> ("\<lbrakk>_|_ \<circ> '_\<rbrakk>")
+definition app2::\<open>('a \<Rightarrow> 'a \<Rightarrow> 'b) \<Rightarrow> 'a \<Rightarrow> ('a \<Rightarrow> 'b)\<close> ("\<lbrakk>_|_ \<circ> '_\<rbrakk>")
   where "\<lbrakk>\<xi>|E \<circ>_\<rbrakk> \<equiv> \<lambda>A. \<xi> E A" (*argument A comes in second place*)
 
 (**Projection and diagonalization are inverse in a sense.*)
@@ -150,11 +148,11 @@ lemma            \<open>\<^bold>\<pi>\<^sub>2 \<lbrakk>\<xi>|X \<circ> _\<rbrakk
 
 
 (**Range, direct and inverse image of a unary function  @{text "\<phi>"}.*)
-definition range::"('a,'b)\<phi> \<Rightarrow> ('b \<Rightarrow> bool)" ("\<lbrakk>_ -\<rbrakk>") 
+definition range::"('a \<Rightarrow> 'b) \<Rightarrow> ('b \<Rightarrow> bool)" ("\<lbrakk>_ -\<rbrakk>") 
   where "\<lbrakk>\<phi> -\<rbrakk> \<equiv> \<lambda>Y. \<exists>x. (\<phi> x) = Y"
-definition img_dir::"('a,'b)\<phi> \<Rightarrow> ('a \<Rightarrow> bool) \<Rightarrow> ('b \<Rightarrow> bool)" ("\<lbrakk>_ _\<rbrakk>") 
+definition img_dir::"('a \<Rightarrow> 'b) \<Rightarrow> ('a \<Rightarrow> bool) \<Rightarrow> ('b \<Rightarrow> bool)" ("\<lbrakk>_ _\<rbrakk>") 
   where "\<lbrakk>\<phi> S\<rbrakk> \<equiv> \<lambda>y. \<exists>x. (S x) \<and> (\<phi> x) = y"
-definition img_inv::"('a,'b)\<phi> \<Rightarrow> ('b \<Rightarrow> bool) \<Rightarrow> ('a \<Rightarrow> bool)" ("\<lbrakk>_ _\<rbrakk>\<inverse>") 
+definition img_inv::"('a \<Rightarrow> 'b) \<Rightarrow> ('b \<Rightarrow> bool) \<Rightarrow> ('a \<Rightarrow> bool)" ("\<lbrakk>_ _\<rbrakk>\<inverse>") 
   where "\<lbrakk>\<phi> S\<rbrakk>\<inverse> \<equiv> \<lambda>x. \<exists>y. (S y) \<and> (\<phi> x) = y"
 
 lemma range_img_dir_char: "(\<lbrakk>\<phi> -\<rbrakk> X) = (\<exists>S. \<lbrakk>\<phi> S\<rbrakk> X)" unfolding range_def img_dir_def by blast

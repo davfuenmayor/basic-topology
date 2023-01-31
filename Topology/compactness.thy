@@ -28,11 +28,11 @@ lemma FIUP_dual2: "(\<not>FUP S) = FIP S\<^sup>-" by (metis FIUP_dual1 dom_compl
  (eventually modulo certain conditions on \<C>). We can also employ BIP/BUP for FIP/FUP.*)
 
 (**The definition of compactness using closed sets*)
-definition compact_cl::"('a \<sigma>,'a \<sigma>)\<phi> \<Rightarrow> bool" ("compact\<^sup>c\<^sup>l")
+definition compact_cl::"('a \<sigma> \<Rightarrow> 'a \<sigma>) \<Rightarrow> bool" ("compact\<^sup>c\<^sup>l")
   where "compact\<^sup>c\<^sup>l \<C> \<equiv> \<forall>S. S \<sqsubseteq> Cl[\<C>] \<and> FIP S \<longrightarrow> \<not>(\<^bold>\<And>S \<^bold>\<approx> \<^bold>\<bottom>)"
 
 (**The more usual (dual) definition using open sets (i.e. 'every open cover has a finite subcover')*)
-definition compact_op::"('a \<sigma>,'a \<sigma>)\<phi> \<Rightarrow> bool" ("compact\<^sup>o\<^sup>p")
+definition compact_op::"('a \<sigma> \<Rightarrow> 'a \<sigma>) \<Rightarrow> bool" ("compact\<^sup>o\<^sup>p")
   where "compact\<^sup>o\<^sup>p \<C> \<equiv> \<forall>S. S \<sqsubseteq> Op[\<C>] \<and> \<^bold>\<Or>S \<^bold>\<approx> \<^bold>\<top> \<longrightarrow> FUP S"
 
 (**Both definitions above are equivalent (without assuming any condition on \<C>)*)

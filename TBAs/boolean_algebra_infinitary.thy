@@ -105,7 +105,7 @@ qed
 subsection \<open>Domains of propositions and ranges of functions\<close>
 
 (**This useful construct returns for a given set of propositions the set of their complements.*)
-definition dom_compl::"('w \<sigma>\<Rightarrow>bool)\<Rightarrow>('w \<sigma>\<Rightarrow>bool)" ("(_\<^sup>-)") 
+definition dom_compl::"('w \<sigma> \<Rightarrow> bool) \<Rightarrow> ('w \<sigma> \<Rightarrow> bool)" ("(_\<^sup>-)") 
   where "D\<^sup>- \<equiv> \<lambda>X. D(\<^bold>\<midarrow>X)"
 
 (*We verify that the above definition is equivalent to the intended one.*)
@@ -140,9 +140,9 @@ subsection \<open>Adding quantifiers (restricted and unrestricted)\<close>
 
 (**We can harness HOL to define quantification over individuals of arbitrary type (using polymorphism).
 These (unrestricted) quantifiers take a propositional function and give a proposition.*)  
-definition mforall::"('e,'w) \<pi> \<Rightarrow> 'w \<sigma>" ("\<Q>\<^sup>\<forall>_" [55]56) 
+definition mforall::"('e,'w)\<rho> \<Rightarrow> 'w \<sigma>" ("\<Q>\<^sup>\<forall>_" [55]56) 
   where "\<Q>\<^sup>\<forall>\<pi> \<equiv> \<lambda>w. \<forall>X. (\<pi> X) w"
-definition mexists::"('e,'w) \<pi> \<Rightarrow> 'w \<sigma>" ("\<Q>\<^sup>\<exists>_" [55]56) 
+definition mexists::"('e,'w)\<rho> \<Rightarrow> 'w \<sigma>" ("\<Q>\<^sup>\<exists>_" [55]56) 
   where "\<Q>\<^sup>\<exists>\<pi> \<equiv> \<lambda>w. \<exists>X. (\<pi> X) w"
 (**To improve readability, we introduce for them standard binder notation.*)
 abbreviation mforallB (binder"\<^bold>\<forall>"[55]56) where "\<^bold>\<forall>X. \<pi> X \<equiv> \<Q>\<^sup>\<forall>\<pi>"
@@ -150,9 +150,9 @@ abbreviation mexistsB (binder"\<^bold>\<exists>"[55]56) where "\<^bold>\<exists>
 
 (**Moreover, we define restricted quantifiers which take a 'functional domain' as additional parameter.
 The latter is a propositional function that maps each element 'e' to the proposition 'e exists'.*)
-definition mforall_restr::"('e,'w) \<pi> \<Rightarrow> ('e,'w) \<pi> \<Rightarrow>'w \<sigma>" ("\<Q>\<^sup>\<forall>[_]_") 
+definition mforall_restr::"('e,'w)\<rho> \<Rightarrow> ('e,'w)\<rho> \<Rightarrow> 'w \<sigma>" ("\<Q>\<^sup>\<forall>[_]_") 
   where "\<Q>\<^sup>\<forall>[\<delta>]\<pi> \<equiv> \<lambda>w.\<forall>X. (\<delta> X) w \<longrightarrow> (\<pi> X) w" 
-definition mexists_restr::"('e,'w) \<pi> \<Rightarrow> ('e,'w) \<pi> \<Rightarrow>'w \<sigma>" ("\<Q>\<^sup>\<exists>[_]_") 
+definition mexists_restr::"('e,'w)\<rho> \<Rightarrow> ('e,'w)\<rho> \<Rightarrow> 'w \<sigma>" ("\<Q>\<^sup>\<exists>[_]_") 
   where "\<Q>\<^sup>\<exists>[\<delta>]\<pi> \<equiv> \<lambda>w.\<exists>X. (\<delta> X) w  \<and>  (\<pi> X) w"
 
 declare mforall_def[iconn] mexists_def[iconn] mforall_restr_def[iconn] mexists_restr_def[iconn]
@@ -173,7 +173,7 @@ lemma Ra_all: "\<Q>\<^sup>\<forall>\<pi> \<^bold>\<approx> \<^bold>\<And>\<lbrak
 lemma Ra_ex:  "\<Q>\<^sup>\<exists>\<pi> \<^bold>\<approx> \<^bold>\<Or>\<lbrakk>\<pi> -\<rbrakk>" by (smt (verit) iconn range_def setequ_char supremum_def)
 
 (**The following 'type-lifting' function is useful for converting sets into 'rigid' propositional functions.*)
-abbreviation lift_conv::"('e\<Rightarrow>bool)\<Rightarrow>('e,'w) \<pi>" ("\<lparr>_\<rparr>") where "\<lparr>S\<rparr> \<equiv> \<lambda>X. \<lambda>w. S X"
+abbreviation lift_conv::"('e \<Rightarrow> bool) \<Rightarrow> ('e,'w)\<rho>" ("\<lparr>_\<rparr>") where "\<lparr>S\<rparr> \<equiv> \<lambda>X. \<lambda>w. S X"
 
 lemma Ra_restr_all: "\<Q>\<^sup>\<forall>[\<lparr>D\<rparr>]\<pi> \<^bold>\<approx> \<^bold>\<And>\<lbrakk>\<pi> D\<rbrakk>" by (smt (verit) iconn infimum_def img_dir_def setequ_char)
 lemma Ra_restr_ex:  "\<Q>\<^sup>\<exists>[\<lparr>D\<rparr>]\<pi> \<^bold>\<approx> \<^bold>\<Or>\<lbrakk>\<pi> D\<rbrakk>" by (smt (verit) iconn img_dir_def setequ_char supremum_def)

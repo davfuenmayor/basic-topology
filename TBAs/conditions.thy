@@ -3,13 +3,13 @@ theory conditions
 begin
 
 (** We define and interrelate some useful axiomatic conditions on unary operations
-(operators) having a 'w-parametric type @{type "('w \<sigma>,'w \<sigma>)\<phi>"} (i.e. @{type "('w\<Rightarrow>bool)\<Rightarrow>('w\<Rightarrow>bool)"}).
+(operators) having a 'w-parametric type @{type "('w \<sigma> \<Rightarrow> 'w \<sigma>)"} (i.e. @{type "('w\<Rightarrow>bool)\<Rightarrow>('w\<Rightarrow>bool)"}).
 Those operations are aimed at extending a Boolean algebra towards different sorts of topological Boolean algebras.*)
 
 named_theorems cond
 
 (**Monotonicity (MONO).*)
-definition MONO::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("MONO")
+definition MONO::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("MONO")
   where "MONO \<phi> \<equiv> \<forall>A B. A \<^bold>\<preceq> B \<longrightarrow> \<phi> A \<^bold>\<preceq> \<phi> B"
 
 declare MONO_def[cond]
@@ -20,9 +20,9 @@ lemma MONO_cons: "MONO \<phi> \<Longrightarrow> \<forall>A B C. A \<^bold>\<prec
 
 
 (**Expansive/extensive (EXPN) and its dual contractive (CNTR).*)
-definition EXPN::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("EXPN")
+definition EXPN::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("EXPN")
   where "EXPN \<phi>  \<equiv> \<forall>A. A \<^bold>\<preceq> \<phi> A"
-definition CNTR::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("CNTR")
+definition CNTR::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("CNTR")
   where "CNTR \<phi> \<equiv> \<forall>A. \<phi> A \<^bold>\<preceq> A"
 
 declare EXPN_def[cond] CNTR_def[cond]
@@ -31,9 +31,9 @@ lemma EXPN_CNTR_dual1: "EXPN \<phi> = CNTR \<phi>\<^sup>d" by (metis BA_cp BA_dn
 lemma EXPN_CNTR_dual2: "EXPN \<phi> = CNTR \<phi>\<^sup>d" by (simp add: EXPN_CNTR_dual1)
 
 (**Normality (NORM) and its dual (DNRM).*)
-definition NORM::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("NORM")
+definition NORM::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("NORM")
   where "NORM \<phi>  \<equiv> (\<phi> \<^bold>\<bottom>) \<^bold>\<approx> \<^bold>\<bottom>"
-definition DNRM::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("DNRM")
+definition DNRM::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("DNRM")
   where "DNRM \<phi> \<equiv> (\<phi> \<^bold>\<top>) \<^bold>\<approx> \<^bold>\<top>" 
 
 declare NORM_def[cond] DNRM_def[cond]
@@ -46,11 +46,11 @@ lemma EXPN_impl_DNRM: "EXPN \<phi> \<Longrightarrow> DNRM \<phi>" by (simp add: 
 lemma CNTR_impl_NORM: "CNTR \<phi> \<Longrightarrow> NORM \<phi>" by (metis NORM_def bottom_def CNTR_def setequ_def subset_def)
 
 (**Idempotence (IDEM).*)
-definition IDEM::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("IDEM") 
+definition IDEM::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("IDEM") 
   where "IDEM \<phi>  \<equiv> \<forall>A. (\<phi> A) \<^bold>\<approx> \<phi>(\<phi> A)"
-definition IDEM_a::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("IDEM\<^sup>a") 
+definition IDEM_a::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("IDEM\<^sup>a") 
   where "IDEM_a \<phi> \<equiv> \<forall>A. (\<phi> A) \<^bold>\<preceq> \<phi>(\<phi> A)"
-definition IDEM_b::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("IDEM\<^sup>b") 
+definition IDEM_b::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("IDEM\<^sup>b") 
   where "IDEM_b \<phi> \<equiv> \<forall>A. (\<phi> A) \<^bold>\<succeq> \<phi>(\<phi> A)"
 lemma IDEM_char: "IDEM \<phi> = (IDEM_a \<phi> \<and> IDEM_b \<phi>)" using IDEM_def IDEM_a_def IDEM_b_def by (metis setequ_def) 
 
@@ -68,21 +68,21 @@ lemma CNTR_impl_IDEM_b: "CNTR \<phi> \<Longrightarrow> IDEM\<^sup>b \<phi>" by (
 lemma IDEM_Ra_fp: "IDEM \<phi> \<Longrightarrow> \<lbrakk>\<phi> -\<rbrakk> = fp \<phi>" unfolding IDEM_def fixpoint_pred_def setequ_equ range_def by fastforce
 
 (**Distribution over joins or additivity (ADDI).*)
-definition ADDI::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("ADDI")
+definition ADDI::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("ADDI")
   where "ADDI \<phi>   \<equiv> \<forall>A B. \<phi>(A \<^bold>\<or> B) \<^bold>\<approx> (\<phi> A) \<^bold>\<or> (\<phi> B)" 
-definition ADDI_a::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("ADDI\<^sup>a")
+definition ADDI_a::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("ADDI\<^sup>a")
   where "ADDI\<^sup>a \<phi> \<equiv> \<forall>A B. \<phi>(A \<^bold>\<or> B) \<^bold>\<preceq> (\<phi> A) \<^bold>\<or> (\<phi> B)"
-definition ADDI_b::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("ADDI\<^sup>b")
+definition ADDI_b::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("ADDI\<^sup>b")
   where "ADDI\<^sup>b \<phi> \<equiv> \<forall>A B. \<phi>(A \<^bold>\<or> B) \<^bold>\<succeq> (\<phi> A) \<^bold>\<or> (\<phi> B)" 
 
 declare ADDI_def[cond] ADDI_a_def[cond] ADDI_b_def[cond]
 
 (**Distribution over meets or multiplicativity (MULT).*)
-definition MULT::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("MULT") 
+definition MULT::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("MULT") 
   where "MULT \<phi>   \<equiv> \<forall>A B. \<phi>(A \<^bold>\<and> B) \<^bold>\<approx> (\<phi> A) \<^bold>\<and> (\<phi> B)" 
-definition MULT_a::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("MULT\<^sup>a")
+definition MULT_a::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("MULT\<^sup>a")
   where "MULT\<^sup>a \<phi> \<equiv> \<forall>A B. \<phi>(A \<^bold>\<and> B) \<^bold>\<preceq> (\<phi> A) \<^bold>\<and> (\<phi> B)" 
-definition MULT_b::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("MULT\<^sup>b")
+definition MULT_b::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("MULT\<^sup>b")
   where "MULT_b \<phi> \<equiv> \<forall>A B. \<phi>(A \<^bold>\<and> B) \<^bold>\<succeq> (\<phi> A) \<^bold>\<and> (\<phi> B)"
 
 declare MULT_def[cond] MULT_a_def[cond] MULT_b_def[cond]
@@ -103,7 +103,7 @@ lemma MULTa_ADDIb_dual2: "ADDI\<^sup>b \<phi> = MULT\<^sup>a \<phi>\<^sup>d" usi
 (*these two lemmas below are introduced for technical reasons (as stepping stones)*)
 lemma MULTb_impl_ADDIa: "\<forall>\<phi>. MULT\<^sup>b \<phi> \<longrightarrow> ADDI\<^sup>a \<phi>\<^sup>d" unfolding MULT_b_def ADDI_a_def op_dual_def order conn by auto
 lemma ADDIa_impl_MULTb: "\<forall>\<phi>. ADDI\<^sup>a \<phi> \<longrightarrow> MULT\<^sup>b \<phi>\<^sup>d" proof -
-    { fix \<phi>::"('w \<sigma>,'w \<sigma>)\<phi>" { assume cl1a: "ADDI\<^sup>a \<phi>" 
+    { fix \<phi>::"('w \<sigma> \<Rightarrow> 'w \<sigma>)" { assume cl1a: "ADDI\<^sup>a \<phi>" 
       { fix A and B
         have "\<^bold>\<midarrow>\<phi>(\<^bold>\<midarrow>(A \<^bold>\<and> B)) \<^bold>\<approx> \<^bold>\<midarrow>\<phi>(\<^bold>\<midarrow>A \<^bold>\<or> \<^bold>\<midarrow>B)" unfolding conn order by simp
         moreover from cl1a have "\<^bold>\<midarrow>(\<phi>(\<^bold>\<midarrow>A) \<^bold>\<or> \<phi>(\<^bold>\<midarrow>B)) \<^bold>\<preceq> \<^bold>\<midarrow>\<phi>(\<^bold>\<midarrow>A \<^bold>\<or> \<^bold>\<midarrow>B)" using ADDI_a_def BA_cp by blast
@@ -148,14 +148,14 @@ lemma "MONO \<phi> \<Longrightarrow> CNTR \<phi> \<Longrightarrow> IDEM \<phi> \
 
 
 (**Properties regarding distribution over implication/difference.*)
-definition DISTR_impl_inc::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("DISTR\<^sub>\<rightarrow>\<^sup>i")
+definition DISTR_impl_inc::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("DISTR\<^sub>\<rightarrow>\<^sup>i")
   where "DISTR\<^sub>\<rightarrow>\<^sup>i \<phi> \<equiv> \<forall>A B. \<phi> (A \<^bold>\<rightarrow> B) \<^bold>\<preceq> (\<phi> A) \<^bold>\<rightarrow> (\<phi> B)" 
-definition DISTR_impl_dec::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("DISTR\<^sub>\<rightarrow>\<^sup>d")
+definition DISTR_impl_dec::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("DISTR\<^sub>\<rightarrow>\<^sup>d")
   where "DISTR\<^sub>\<rightarrow>\<^sup>d \<phi> \<equiv> \<forall>A B. \<phi> (A \<^bold>\<rightarrow> B) \<^bold>\<succeq> (\<phi> A) \<^bold>\<rightarrow> (\<phi> B)"
 
-definition DISTR_diff_inc::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("DISTR\<^sub>\<leftharpoonup>\<^sup>i")
+definition DISTR_diff_inc::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("DISTR\<^sub>\<leftharpoonup>\<^sup>i")
   where "DISTR\<^sub>\<leftharpoonup>\<^sup>i \<phi> \<equiv> \<forall>A B. \<phi> (A \<^bold>\<leftharpoonup> B) \<^bold>\<preceq> (\<phi> A) \<^bold>\<leftharpoonup> (\<phi> B)" 
-definition DISTR_diff_dec::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("DISTR\<^sub>\<leftharpoonup>\<^sup>d")
+definition DISTR_diff_dec::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("DISTR\<^sub>\<leftharpoonup>\<^sup>d")
   where "DISTR\<^sub>\<leftharpoonup>\<^sup>d \<phi> \<equiv> \<forall>A B. \<phi> (A \<^bold>\<leftharpoonup> B) \<^bold>\<succeq> (\<phi> A) \<^bold>\<leftharpoonup> (\<phi> B)" 
 
 lemma DISTR_diff_inc_prop: "MONO \<phi> \<Longrightarrow> CNTR \<phi> \<Longrightarrow> DISTR\<^sub>\<leftharpoonup>\<^sup>i \<phi>" unfolding DISTR_diff_inc_def CNTR_def by (smt (verit) MONO_def diff_def subset_def)

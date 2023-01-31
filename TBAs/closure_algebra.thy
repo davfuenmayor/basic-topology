@@ -80,20 +80,20 @@ section \<open>Closure algebra\<close>
 We write \<C> for a unary operator intended as a closure-like operator (though unconstrained by default)*)
 
 (**Interior operator as derived from closure.*)
-abbreviation Int_cl::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> ('w \<sigma>,'w \<sigma>)\<phi>" ("\<I>[_]") 
+abbreviation Int_cl::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>)" ("\<I>[_]") 
   where "\<I>[\<C>] \<equiv> \<C>\<^sup>d"
 
 (**Frontier (aka. 'boundary') operator as derived from closure.
  (cf. 'Grenze' @{cite Hausdorff}, 'fronti\`ere' @{cite Zarycki-1} @{cite Kuratowski-2})*)
-definition Fr_cl::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> ('w \<sigma>,'w \<sigma>)\<phi>" ("\<F>[_]")
+definition Fr_cl::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>)" ("\<F>[_]")
   where "\<F>[\<C>] \<equiv> \<lambda>A. \<C> A \<^bold>\<and> \<C> (\<^bold>\<midarrow>A)"
 
 (**Border operator as derived from closure (cf. 'Rand' @{cite Hausdorff}, 'bord' @{cite Zarycki-1})*)
-definition Br_cl::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> ('w \<sigma>,'w \<sigma>)\<phi>" ("\<B>[_]") 
+definition Br_cl::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>)" ("\<B>[_]") 
   where "\<B>[\<C>] \<equiv> \<lambda>A. A \<^bold>\<and> \<C> (\<^bold>\<midarrow>A)"
 
 (**(Hausdorff's) Residue operator as derived from closure (via border).*)
-definition Rs_cl::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> ('w \<sigma>,'w \<sigma>)\<phi>" ("\<R>[_]") 
+definition Rs_cl::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>)" ("\<R>[_]") 
   where "\<R>[\<C>] \<equiv> \<lambda>A. \<B>[\<C>](\<^bold>\<midarrow>(\<B>[\<C>](\<^bold>\<midarrow>A)))"
 
 

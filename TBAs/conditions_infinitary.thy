@@ -6,21 +6,21 @@ begin
  axiomatic conditions on operators.*)
 
 (**Distribution over infinite meets (infima) or infinite multiplicativity (iMULT).*)
-definition iMULT::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("iMULT")
+definition iMULT::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("iMULT")
   where "iMULT \<phi>   \<equiv> \<forall>S. \<phi>(\<^bold>\<And>S) \<^bold>\<approx> \<^bold>\<And>\<lbrakk>\<phi> S\<rbrakk>" 
-definition iMULT_a::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("iMULT\<^sup>a")
+definition iMULT_a::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("iMULT\<^sup>a")
   where "iMULT\<^sup>a \<phi> \<equiv> \<forall>S. \<phi>(\<^bold>\<And>S) \<^bold>\<preceq> \<^bold>\<And>\<lbrakk>\<phi> S\<rbrakk>"
-definition iMULT_b::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("iMULT\<^sup>b")
+definition iMULT_b::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("iMULT\<^sup>b")
   where "iMULT\<^sup>b \<phi> \<equiv> \<forall>S. \<phi>(\<^bold>\<And>S) \<^bold>\<succeq> \<^bold>\<And>\<lbrakk>\<phi> S\<rbrakk>"
 
 declare iMULT_def[cond] iMULT_a_def[cond] iMULT_b_def[cond]
 
 (**Distribution over infinite joins (suprema) or infinite additivity (iADDI).*)
-definition iADDI::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("iADDI")
+definition iADDI::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("iADDI")
   where "iADDI \<phi>   \<equiv> \<forall>S. \<phi>(\<^bold>\<Or>S) \<^bold>\<approx> \<^bold>\<Or>\<lbrakk>\<phi> S\<rbrakk>" 
-definition iADDI_a::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("iADDI\<^sup>a")
+definition iADDI_a::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("iADDI\<^sup>a")
   where "iADDI\<^sup>a \<phi> \<equiv> \<forall>S. \<phi>(\<^bold>\<Or>S) \<^bold>\<preceq> \<^bold>\<Or>\<lbrakk>\<phi> S\<rbrakk>" 
-definition iADDI_b::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> bool" ("iADDI\<^sup>b")
+definition iADDI_b::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> bool" ("iADDI\<^sup>b")
   where "iADDI\<^sup>b \<phi> \<equiv> \<forall>S. \<phi>(\<^bold>\<Or>S) \<^bold>\<succeq> \<^bold>\<Or>\<lbrakk>\<phi> S\<rbrakk>"
 
 declare iADDI_def[cond] iADDI_a_def[cond] iADDI_b_def[cond]

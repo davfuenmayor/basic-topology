@@ -18,13 +18,13 @@ abbreviation Nbhd_all::"('w,'w \<sigma>)\<rho> \<Rightarrow> bool" ("\<NN>")
 
 (**Neighborhood functions are useful to introduce the notions of adherent (aka. closure)
  and accumulation (aka. limit) points of a set (wrt. a neighborhood function).*)
-definition adherent_points::"('w,'w \<sigma>)\<rho> \<Rightarrow> ('w \<sigma>,'w \<sigma>)\<phi>" ("ADH[_]") 
+definition adherent_points::"('w,'w \<sigma>)\<rho> \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>)" ("ADH[_]") 
   where "ADH[F] A \<equiv> \<lambda>p. \<forall>N. F p N \<longrightarrow> \<not>Disj N A"
-definition accumulation_points::"('w,'w \<sigma>)\<rho> \<Rightarrow> ('w \<sigma>,'w \<sigma>)\<phi>" ("ACC[_]") 
+definition accumulation_points::"('w,'w \<sigma>)\<rho> \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>)" ("ACC[_]") 
   where "ACC[F] A \<equiv> \<lambda>p. \<forall>N. F p N \<longrightarrow> \<not>Disj N (A \<^bold>\<leftharpoonup> \<lbrace>p\<rbrace>)"
 
 (**We can in fact easily define a neighborhood function given a closure operator.*)
-definition Nbhd_Cl::"('w \<sigma>,'w \<sigma>)\<phi>\<Rightarrow>('w,'w \<sigma>)\<rho>" ("\<N>[_]") 
+definition Nbhd_Cl::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> ('w,'w \<sigma>)\<rho>" ("\<N>[_]") 
   where "\<N>[\<C>] \<equiv> \<I>[\<C>]\<^sup>\<leftrightarrow>"
 
 (**We prove below that in doing this the characterising neighborhood conditions are satisfied.*)
@@ -49,7 +49,7 @@ lemma open_nbhd: "MONO \<C> \<Longrightarrow> Cl_2 \<C> \<Longrightarrow> \<fora
 
 
 (**Having a closure operator allows for an alternative characterization of the set of limit points*)
-definition limit::"('w \<sigma>,'w \<sigma>)\<phi>\<Rightarrow>('w \<sigma>,'w \<sigma>)\<phi>" ("limit[_]")
+definition limit::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>)" ("limit[_]")
   where "limit[\<C>] A \<equiv> \<lambda>w. \<C> (A \<^bold>\<leftharpoonup> \<lbrace>w\<rbrace>) w"
 
 lemma "MONO \<C> \<Longrightarrow> limit[\<C>] = ACC[\<N>[\<C>]]" 

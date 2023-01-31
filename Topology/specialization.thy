@@ -25,9 +25,9 @@ We explore minimal conditions under which some relevant results for the semantic
 subsection \<open>Specialization relations\<close>
 
 (**Closure/interior(-like) operators can be derived from an arbitrary relation (as in modal logic)*)
-definition Cl_rel::"('w,'w)\<rho> \<Rightarrow> ('w \<sigma>,'w \<sigma>)\<phi>" ("\<C>[_]") 
+definition Cl_rel::"('w,'w)\<rho> \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>)" ("\<C>[_]") 
   where "\<C>[R] \<equiv> \<lambda>A. \<lambda>w. \<exists>v. R w v \<and> A v"
-definition Int_rel::"('w,'w)\<rho> \<Rightarrow> ('w \<sigma>,'w \<sigma>)\<phi>" ("\<I>[_]") 
+definition Int_rel::"('w,'w)\<rho> \<Rightarrow> ('w \<sigma> \<Rightarrow> 'w \<sigma>)" ("\<I>[_]") 
   where "\<I>[R] \<equiv> \<lambda>A. \<lambda>w. \<forall>v. R w v \<longrightarrow> A v"
 
 (**Duality between interior and closure follows directly:*)
@@ -42,7 +42,7 @@ lemma rC3: "Cl_3 \<C>[R]" by (simp add: iADDI_NORM rC1i)
 lemma rC4: "reflexive R \<and> transitive R \<longrightarrow> Cl_4 \<C>[R]" by (smt (verit, best) Cl_rel_def EXPN_def IDEM_def rC2 setequ_char subset_def transitive_def)
 
 (**A specialization relation can be derived from a given operation (intended as a closure-like operation).*)
-definition spec_rel::"('w \<sigma>,'w \<sigma>)\<phi> \<Rightarrow> ('w,'w)\<rho>" ("sp[_]") 
+definition spec_rel::"('w \<sigma> \<Rightarrow> 'w \<sigma>) \<Rightarrow> ('w,'w)\<rho>" ("sp[_]") 
   where "sp[\<C>] \<equiv> \<lambda>w v. \<C> \<lbrace>v\<rbrace> w"
 
 (**Preorder properties of the specialization relation follow directly from the corresponding operation's conditions.*)
