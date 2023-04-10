@@ -122,6 +122,12 @@ definition OpenMap::"('u \<sigma> \<Rightarrow> 'u \<sigma>) \<Rightarrow> ('v \
 definition Homeomorphism::"('u \<sigma> \<Rightarrow> 'u \<sigma>) \<Rightarrow> ('v \<sigma> \<Rightarrow> 'v \<sigma>) \<Rightarrow> ('u \<Rightarrow> 'v) \<Rightarrow> bool" ("Hom[_,_]")
   where "Hom[\<C>\<^sub>1,\<C>\<^sub>2] \<phi> \<equiv> bijective \<phi> \<and> Cont\<^sup>C[\<C>\<^sub>1,\<C>\<^sub>2] \<phi> \<and> Cont\<^sup>C[\<C>\<^sub>2,\<C>\<^sub>1] \<phi>\<inverse>"
 
+
+(*As an example we can state that the image under a continuous map of a compact set is compact.
+  The proof of this fact (under minimal conditions) is left as an exercise.*)
+lemma "\<CC> \<C>\<^sub>1 \<Longrightarrow> \<CC> \<C>\<^sub>2 \<Longrightarrow>
+     Cont\<^sup>c\<^sup>l[\<C>\<^sub>1,\<C>\<^sub>2] \<phi> \<Longrightarrow> \<forall>X. compactSet\<^sup>c\<^sup>l \<C>\<^sub>1 X \<longrightarrow> compactSet\<^sup>c\<^sup>l \<C>\<^sub>2 \<lbrakk>\<phi> X\<rbrakk>" oops
+
 (**Exercise: verify further properties*)
 
 end
